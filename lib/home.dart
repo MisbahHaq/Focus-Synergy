@@ -200,10 +200,11 @@ class _BasicAudioPlayerState extends State<BasicAudioPlayer> {
       body: Center(
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: <Color>[Colors.black, Colors.blue]),
+            color: Colors.black,
+            // gradient: LinearGradient(
+            //     begin: Alignment.topCenter,
+            //     end: Alignment.bottomCenter,
+            //     colors: <Color>[Colors.black, Colors.blue]),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

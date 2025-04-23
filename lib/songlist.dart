@@ -194,11 +194,11 @@ class _SongListPageState extends State<SongListPage> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/g.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
+            // image: DecorationImage(
+            //   image: AssetImage("assets/images/g.jpg"),
+            //   fit: BoxFit.cover,
+            // ),
+            color: Colors.black),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35),
           child: Column(
