@@ -1,42 +1,35 @@
 import { v2 as cloudinary } from 'cloudinary';
 
 (async function() {
+  cloudinary.config({ 
+    cloud_name: 'drcpslfrz', 
+    api_key: '561268345467682', 
+    api_secret: '9rgaPDVLKRwHZKoVtuBZRBjWiY0' 
+  });
 
-    // Configuration
-    cloudinary.config({ 
-        cloud_name: 'drcpslfrz', 
-        api_key: '561268345467682', 
-        api_secret: '<your_api_secret>' // Click 'View API Keys' above to copy your API secret
+  try {
+    const uploadResult = await cloudinary.uploader.upload(
+      'C:/Users/Misbah/Desktop/REPRESENT/public/assets/owners/baggy-cargo-pant_1.webp', 
+      { public_id: 'baggy-cargo-pant' }
+    );
+
+    console.log("✅ Uploaded:", uploadResult.secure_url);
+
+    const optimizeUrl = cloudinary.url('baggy-cargo-pant', {
+      fetch_format: 'auto',
+      quality: 'auto'
     });
-    
-    // Upload an image
-     const uploadResult = await cloudinary.uploader
-       .upload(
-           'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
-               public_id: 'shoes',
-           }
-       )
-       .catch((error) => {
-           console.log(error);
-       });
-    
-    console.log(uploadResult);
-    
-    // Optimize delivery by resizing and applying auto-format and auto-quality
-    const optimizeUrl = cloudinary.url('shoes', {
-        fetch_format: 'auto',
-        quality: 'auto'
+    console.log("⚡ Optimized:", optimizeUrl);
+
+    const autoCropUrl = cloudinary.url('baggy-cargo-pant', {
+      crop: 'auto',
+      gravity: 'auto',
+      width: 500,
+      height: 500,
     });
+    console.log("✂️ Cropped:", autoCropUrl);
     
-    console.log(optimizeUrl);
-    
-    // Transform the image: auto-crop to square aspect_ratio
-    const autoCropUrl = cloudinary.url('shoes', {
-        crop: 'auto',
-        gravity: 'auto',
-        width: 500,
-        height: 500,
-    });
-    
-    console.log(autoCropUrl);    
+  } catch (error) {
+    console.error("❌ Upload failed:", error);
+  }
 })();
