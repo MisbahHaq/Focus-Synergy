@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppConfig } from '../AppContext';
+import { submitProposal } from '../firebase';
 import LucideIcon from './LucideIcon';
 
 interface PrepopulationData {
@@ -35,6 +36,7 @@ export default function ContactForm({ prepopulatedEstimate, onClearEstimate, sel
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
+  const [submitError, setSubmitError] = useState('');
 
   // Auto-fill when a specific service is selected
   useEffect(() => {
@@ -76,20 +78,34 @@ export default function ContactForm({ prepopulatedEstimate, onClearEstimate, sel
     }
   }, [prepopulatedEstimate]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
-    // Simulate reliable api transmission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await submitProposal({
+        name,
+        email,
+        company,
+        message,
+        budget,
+        prepopulatedEstimate,
+        selectedServiceId: selectedServiceId || undefined,
+        sourceUrl: window.location.href
+      });
+
       setIsSubmitted(true);
-      // Generate unique random booking reference code
       const randNum = Math.floor(100000 + Math.random() * 900000);
       setBookingRef(`AWX-REQP-${randNum}`);
-    }, 1500);
+    } catch (error) {
+      setSubmitError('Firebase database rules blocked the proposal submission. Update Realtime Database rules to allow writes to /proposals.');
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -242,6 +258,12 @@ export default function ContactForm({ prepopulatedEstimate, onClearEstimate, sel
                   </span>
                 </div>
 
+                {submitError && (
+                  <p className="text-red-500 text-[10px] font-mono uppercase tracking-wider">
+                    {submitError}
+                  </p>
+                )}
+
                 {/* Submission core action */}
                 <div className="pt-6 border-t border-neutral-200 flex items-center justify-between">
                   <span className="text-[10px] text-neutral-400 font-mono">* Required Inputs</span>
@@ -338,7 +360,7 @@ export default function ContactForm({ prepopulatedEstimate, onClearEstimate, sel
                   Our USA-based dev lead has been pinged. We are preparing your spec assessment and custom timeline map right now.
                 </p>
                 <p className="text-[10px] text-neutral-450 font-mono uppercase mt-1">
-                  Confirmation receipt has been simulated to {email}
+                  Confirmation receipt has been queued through Firebase for {email}
                 </p>
               </div>
 
@@ -351,6 +373,8 @@ export default function ContactForm({ prepopulatedEstimate, onClearEstimate, sel
                     setEmail('');
                     setCompany('');
                     setMessage('');
+                    setBookingRef('');
+                    setSubmitError('');
                   }}
                   className="px-5 py-3 rounded-none text-xs font-bold uppercase tracking-widest text-[#0a0a0a] bg-white hover:bg-neutral-50 border border-neutral-250 cursor-pointer transition-all"
                 >
