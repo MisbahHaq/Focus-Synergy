@@ -106,9 +106,9 @@
 
       .row-inputs {
         display: grid;
-        grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
-        gap: 8px;
-        margin-bottom: 8px;
+        grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+        gap: 10px;
+        margin-bottom: 10px;
       }
 
       .tax-inputs {
@@ -346,6 +346,13 @@
               oninput="updateInvoice()"
             />
             <input
+              type="text"
+              placeholder="DD-MM-YYYY"
+              class="item-date"
+              value="23-06-2026"
+              oninput="updateInvoice()"
+            />
+            <input
               type="number"
               placeholder="Qty"
               class="item-qty"
@@ -466,6 +473,7 @@
           <button class="btn btn-danger" onclick="this.parentElement.remove(); updateInvoice();">×</button>
           <div class="row-inputs">
               <input type="text" placeholder="Item Name" class="item-name" value="Microsoft 360" oninput="updateInvoice()">
+              <input type="text" placeholder="DD-MM-YYYY" class="item-date" value="23-06-2026" oninput="updateInvoice()">
               <input type="number" placeholder="Qty" class="item-qty" value="1" oninput="updateInvoice()">
               <input type="number" placeholder="$/Unit" class="item-price" value="0" oninput="updateInvoice()">
               <input type="text" placeholder="PKR Total" class="item-pkr" value="0.00" oninput="updateInvoice()">
@@ -497,9 +505,8 @@
         document.getElementById("previewDate").innerText =
           document.getElementById("inputDate").value;
 
-        const targetDateStr = "23-06-2026";
-
         const itemNames = document.getElementsByClassName("item-name");
+        const itemDates = document.getElementsByClassName("item-date");
         const itemQtys = document.getElementsByClassName("item-qty");
         const itemPrices = document.getElementsByClassName("item-price");
         const itemPkrs = document.getElementsByClassName("item-pkr");
@@ -526,7 +533,7 @@
           tableHTML += `
             <tr>
                 <td>${itemNames[i].value}</td>
-                <td>${targetDateStr}</td>
+                <td>${itemDates[i].value}</td>
                 <td>${qty}</td>
                 <td>$${unitP}</td>
                 <td>${usdTotal}</td>
@@ -534,7 +541,7 @@
             </tr>
             <tr>
                 <td>${taxNames[i].value}</td>
-                <td>${targetDateStr}</td>
+                <td>${itemDates[i].value}</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
