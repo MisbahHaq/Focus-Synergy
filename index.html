@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Invoice Generator</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #f0f2f5;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Layout Structure */
+      .editor-container {
+        width: 40%;
+        background-color: #ffffff;
+        padding: 25px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        z-index: 10;
+      }
+
+      .preview-container {
+        width: 60%;
+        padding: 40px;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        background-color: #e5e5e5;
+      }
+
+      /* Form Styling */
+      h2 {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+      }
+
+      h3 {
+        margin-top: 25px;
+        margin-bottom: 10px;
+        color: #444;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+        font-size: 0.9rem;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.95rem;
+      }
+
+      input:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      /* Dynamic Blocks Wrapper */
+      .item-block,
+      .slip-block {
+        background: #fdfdfd;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 15px;
+        position: relative;
+      }
+
+      .row-inputs {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 2fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .tax-inputs {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 10px;
+      }
+
+      /* Action Buttons */
+      .btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-danger {
+        background-color: #dc3545;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
+      .btn-danger:hover {
+        background-color: #bd2130;
+      }
+
+      /* Invoice Template Styling (Replicating Image) */
+      .invoice-box {
+        width: 100%;
+        max-width: 800px;
+        background-color: #faf8f5;
+        padding: 50px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        color: #111;
+        min-height: 297mm;
+      }
+
+      .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 30px;
+      }
+
+      .logo-placeholder {
+        width: 150px;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-placeholder img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .invoice-title {
+        font-size: 3.5rem;
+        font-family: "Times New Roman", Times, serif;
+        font-weight: 500;
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+
+      .meta-row {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        margin-top: 30px;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+      }
+
+      .divider {
+        border-top: 2px solid #000;
+        margin: 15px 0;
+      }
+
+      .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      .invoice-table th {
+        text-align: left;
+        font-weight: bold;
+        font-size: 0.85rem; /* Made table headers slightly smaller */
+        padding: 12px 5px;
+      }
+
+      .invoice-table td {
+        padding: 12px 5px;
+        font-size: 0.8rem; /* Reduced font size for lines inside the table */
+        vertical-align: middle;
+      }
+
+      .invoice-table tr {
+        border-bottom: 1px solid #000;
+      }
+
+      .invoice-table th:nth-child(n + 3),
+      .invoice-table td:nth-child(n + 3) {
+        text-align: right;
+      }
+
+      .grand-total-section {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 40px 0;
+        font-size: 1.6rem;
+        font-weight: bold;
+      }
+
+      .grand-total-label {
+        margin-right: 120px;
+        font-size: 1.8rem;
+      }
+
+      /* Bank Transaction Image Grid */
+      .bank-section-title {
+        font-size: 1.2rem;
+        font-weight: normal;
+        margin-bottom: 25px;
+      }
+
+      .slips-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 60px;
+      }
+
+      .slip-image-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 320px;
+        overflow: hidden;
+        padding: 0;
+      }
+
+      .slip-image-wrapper img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .footer-thankyou {
+        font-size: 1.2rem;
+        margin-top: 40px;
+      }
+
+      .footer-line {
+        border-top: 1px dashed #000;
+        width: 250px;
+        float: right;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="editor-container">
+      <h2>Invoice Configurator</h2>
+
+      <div class="form-group">
+        <label>Vendor / Asset Name</label>
+        <input
+          type="text"
+          id="inputAsset"
+          value="UNITY ASSET"
+          oninput="updateInvoice()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Invoice Date</label>
+        <input
+          type="text"
+          id="inputDate"
+          value="23 June 2026"
+          oninput="updateInvoice()"
+        />
+      </div>
+
+      <h3>Line Items</h3>
+      <div id="itemsContainer">
+        <div class="item-block">
+          <button
+            class="btn btn-danger"
+            onclick="
+              this.parentElement.remove();
+              updateInvoice();
+            "
+          >
+            X
+          </button>
+          <div class="row-inputs">
+            <input
+              type="text"
+              placeholder="Item Name"
+              class="item-name"
+              value="Microsoft 360"
+              oninput="updateInvoice()"
+            />
+            <input
+              type="number"
+              placeholder="Qty"
+              class="item-qty"
+              value="14"
+              oninput="updateInvoice()"
+            />
+            <input
+              type="number"
+              placeholder="$/Unit"
+              class="item-price"
+              value="4"
+              oninput="updateInvoice()"
+            />
+            <input
+              type="text"
+              placeholder="PKR Total"
+              class="item-pkr"
+              value="16,212.68"
+              oninput="updateInvoice()"
+            />
+          </div>
+          <div class="tax-inputs">
+            <input
+              type="text"
+              placeholder="Tax Line Label"
+              class="tax-name"
+              value="Tax"
+              oninput="updateInvoice()"
+            />
+            <input
+              type="text"
+              placeholder="Tax PKR"
+              class="tax-pkr"
+              value="810.63"
+              oninput="updateInvoice()"
+            />
+          </div>
+        </div>
+      </div>
+      <button class="btn" onclick="addItemRow()">+ Add Product Item</button>
+
+      <div class="form-group" style="margin-top: 10px">
+        <label>Grand Total Display</label>
+        <input
+          type="text"
+          id="inputGrandTotal"
+          value="20,671.16"
+          oninput="updateInvoice()"
+        />
+      </div>
+
+      <h3>Bank Transaction Images</h3>
+      <div id="slipsContainer"></div>
+      <button class="btn" onclick="addSlipRow()">+ Add Slip Image</button>
+    </div>
+
+    <div class="preview-container">
+      <div class="invoice-box">
+        <div class="invoice-header">
+          <div class="logo-placeholder">
+            <img
+              src="TLL-LOGO_NEW1.png"
+              alt="The Location Lab"
+              onerror="
+                this.style.display = 'none';
+                this.parentElement.innerText = 'TLL Logo Missing';
+              "
+            />
+          </div>
+          <div class="invoice-title">INVOICE</div>
+        </div>
+
+        <div class="meta-row">
+          <span id="previewAsset">UNITY ASSET</span>
+          <span id="previewDate">23 June 2026</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th style="width: 25%">Item</th>
+              <th style="width: 20%">Date</th>
+              <th style="width: 12%">Quantity</th>
+              <th style="width: 13%">Unit Price</th>
+              <th style="width: 15%">Total Amount</th>
+              <th style="width: 15%">Total</th>
+            </tr>
+          </thead>
+          <tbody id="previewTableBody"></tbody>
+        </table>
+
+        <div class="grand-total-section">
+          <span class="grand-total-label">Total</span>
+          <span id="previewGrandTotal">20,671.16</span>
+        </div>
+
+        <div class="bank-transactions">
+          <h4 class="bank-section-title">Bank Transactions:</h4>
+          <div class="slips-grid" id="previewSlipsGrid"></div>
+        </div>
+
+        <div class="footer-thankyou">
+          Thank you!
+          <div class="footer-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function addItemRow() {
+        const container = document.getElementById("itemsContainer");
+        const newBlock = document.createElement("div");
+        newBlock.className = "item-block";
+        newBlock.innerHTML = `
+                <button class="btn btn-danger" onclick="this.parentElement.remove(); updateInvoice();">X</button>
+                <div class="row-inputs">
+                    <input type="text" placeholder="Item Name" class="item-name" value="Microsoft 360" oninput="updateInvoice()">
+                    <input type="number" placeholder="Qty" class="item-qty" value="1" oninput="updateInvoice()">
+                    <input type="number" placeholder="$/Unit" class="item-price" value="0" oninput="updateInvoice()">
+                    <input type="text" placeholder="PKR Total" class="item-pkr" value="0.00" oninput="updateInvoice()">
+                </div>
+                <div class="tax-inputs">
+                    <input type="text" placeholder="Tax Line Label" class="tax-name" value="Tax" oninput="updateInvoice()">
+                    <input type="text" placeholder="Tax PKR" class="tax-pkr" value="0.00" oninput="updateInvoice()">
+                </div>
+            `;
+        container.appendChild(newBlock);
+        updateInvoice();
+      }
+
+      function addSlipRow() {
+        const container = document.getElementById("slipsContainer");
+        const newBlock = document.createElement("div");
+        newBlock.className = "slip-block";
+        newBlock.innerHTML = `
+                <button class="btn btn-danger" onclick="this.parentElement.remove(); updateInvoice();">X</button>
+                <label>Upload Slip Image File</label>
+                <input type="file" class="slip-file" accept="image/*" onchange="updateInvoice()">
+            `;
+        container.appendChild(newBlock);
+      }
+
+      function updateInvoice() {
+        document.getElementById("previewAsset").innerText =
+          document.getElementById("inputAsset").value;
+        document.getElementById("previewDate").innerText =
+          document.getElementById("inputDate").value;
+        document.getElementById("previewGrandTotal").innerText =
+          document.getElementById("inputGrandTotal").value;
+
+        const targetDateStr = "23-06-2026";
+
+        const itemNames = document.getElementsByClassName("item-name");
+        const itemQtys = document.getElementsByClassName("item-qty");
+        const itemPrices = document.getElementsByClassName("item-price");
+        const itemPkrs = document.getElementsByClassName("item-pkr");
+        const taxNames = document.getElementsByClassName("tax-name");
+        const taxPkrs = document.getElementsByClassName("tax-pkr");
+
+        let tableHTML = "";
+        for (let i = 0; i < itemNames.length; i++) {
+          let qty = itemQtys[i].value;
+          let unitP = itemPrices[i].value;
+          let usdTotal = qty && unitP ? `$${qty * unitP}` : "-";
+
+          tableHTML += `
+                    <tr>
+                        <td>${itemNames[i].value}</td>
+                        <td>${targetDateStr}</td>
+                        <td>${qty}</td>
+                        <td>$${unitP}</td>
+                        <td>${usdTotal}</td>
+                        <td>PKR ${itemPkrs[i].value}</td>
+                    </tr>
+                    <tr>
+                        <td>${taxNames[i].value}</td>
+                        <td>${targetDateStr}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>PKR ${taxPkrs[i].value}</td>
+                    </tr>
+                `;
+        }
+        document.getElementById("previewTableBody").innerHTML = tableHTML;
+
+        const slipFiles = document.getElementsByClassName("slip-file");
+        const slipsGrid = document.getElementById("previewSlipsGrid");
+        slipsGrid.innerHTML = "";
+
+        for (let j = 0; j < slipFiles.length; j++) {
+          const file = slipFiles[j].files[0];
+          if (file) {
+            const reader = new FileReader();
+            const card = document.createElement("div");
+            card.className = "slip-image-wrapper";
+            card.innerHTML = `<span>Loading Image...</span>`;
+            slipsGrid.appendChild(card);
+
+            reader.onload = function (e) {
+              card.innerHTML = `<img src="${e.target.result}" alt="Transaction Slip">`;
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      }
+
+      window.onload = updateInvoice;
+    </script>
+  </body>
+</html>
