@@ -7,139 +7,167 @@
     <style>
       * {
         box-sizing: border-box;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
         margin: 0;
         padding: 0;
       }
 
       body {
-        background-color: #f0f2f5;
+        background-color: #f8fafc;
         display: flex;
         height: 100vh;
         overflow: hidden;
       }
 
-      /* Layout Structure */
+      /* Minimal Configurator Panel Structure */
       .editor-container {
-        width: 40%;
+        width: 35%;
+        min-width: 360px;
         background-color: #ffffff;
-        padding: 25px;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        border-right: 1px solid #e2e8f0;
         overflow-y: auto;
         z-index: 10;
       }
 
       .preview-container {
-        width: 60%;
+        width: 65%;
         padding: 40px;
         overflow-y: auto;
         display: flex;
         justify-content: center;
-        background-color: #e5e5e5;
+        background-color: #f1f5f9;
       }
 
-      /* Form Styling */
-      h2 {
-        margin-bottom: 20px;
-        color: #333;
-        font-size: 1.5rem;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
+      /* Minimal Form Controls */
+      .editor-container h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 24px;
       }
 
-      h3 {
-        margin-top: 25px;
-        margin-bottom: 10px;
-        color: #444;
+      .editor-container h3 {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        margin: 28px 0 16px 0;
       }
 
       .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 16px;
+      }
+
+      .form-row-two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
       }
 
       label {
         display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #555;
-        font-size: 0.9rem;
+        margin-bottom: 6px;
+        color: #475569;
+        font-size: 0.8rem;
+        font-weight: 500;
       }
 
-      input,
-      select {
+      input[type="text"],
+      input[type="number"],
+      input[type="file"] {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 0.95rem;
+        padding: 8px 12px;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        color: #334155;
+        transition: all 0.2s;
       }
 
       input:focus {
-        border-color: #007bff;
+        background-color: #fff;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         outline: none;
       }
 
-      /* Dynamic Blocks Wrapper */
+      /* Minimal Row item styling */
       .item-block,
       .slip-block {
-        background: #fdfdfd;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        padding: 15px;
-        margin-bottom: 15px;
         position: relative;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px dashed #e2e8f0;
       }
 
       .row-inputs {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr 2fr;
-        gap: 10px;
-        margin-bottom: 10px;
+        grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
+        gap: 8px;
+        margin-bottom: 8px;
       }
 
       .tax-inputs {
         display: grid;
-        grid-template-columns: 3fr 1fr;
-        gap: 10px;
+        grid-template-columns: 3.5fr 1.5fr;
+        gap: 8px;
       }
 
-      /* Action Buttons */
-      .btn {
-        display: inline-block;
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
+      /* Minimal Actions */
+      .btn-link {
+        background: none;
         border: none;
-        border-radius: 4px;
+        color: #3b82f6;
+        font-size: 0.85rem;
+        font-weight: 500;
         cursor: pointer;
-        font-weight: bold;
-        font-size: 0.9rem;
-        margin-bottom: 15px;
+        padding: 4px 0;
+        display: inline-flex;
+        align-items: center;
+        transition: color 0.15s;
       }
 
-      .btn:hover {
-        background-color: #0056b3;
+      .btn-link:hover {
+        color: #2563eb;
+        text-decoration: underline;
       }
 
       .btn-danger {
-        background-color: #dc3545;
         position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 4px 8px;
-        font-size: 0.8rem;
-      }
-      .btn-danger:hover {
-        background-color: #bd2130;
+        right: -8px;
+        top: -8px;
+        background: #ef4444;
+        color: white;
+        border: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s;
       }
 
-      /* Invoice Template Styling (Replicating Image) */
+      .item-block:hover .btn-danger,
+      .slip-block:hover .btn-danger {
+        opacity: 1;
+      }
+
+      /* Invoice Template Styling */
       .invoice-box {
         width: 100%;
         max-width: 800px;
         background-color: #faf8f5;
         padding: 50px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         color: #111;
         min-height: 297mm;
       }
@@ -176,7 +204,6 @@
       .meta-row {
         display: flex;
         justify-content: space-between;
-        font-weight: bold;
         margin-top: 30px;
         font-size: 1.1rem;
         text-transform: uppercase;
@@ -196,13 +223,13 @@
       .invoice-table th {
         text-align: left;
         font-weight: bold;
-        font-size: 0.85rem; /* Made table headers slightly smaller */
+        font-size: 0.85rem;
         padding: 12px 5px;
       }
 
       .invoice-table td {
         padding: 12px 5px;
-        font-size: 0.8rem; /* Reduced font size for lines inside the table */
+        font-size: 0.8rem;
         vertical-align: middle;
       }
 
@@ -229,7 +256,6 @@
         font-size: 1.8rem;
       }
 
-      /* Bank Transaction Image Grid */
       .bank-section-title {
         font-size: 1.2rem;
         font-weight: normal;
@@ -277,24 +303,26 @@
     <div class="editor-container">
       <h2>Invoice Configurator</h2>
 
-      <div class="form-group">
-        <label>Vendor / Asset Name</label>
-        <input
-          type="text"
-          id="inputAsset"
-          value="UNITY ASSET"
-          oninput="updateInvoice()"
-        />
-      </div>
+      <div class="form-row-two">
+        <div class="form-group">
+          <label>Vendor / Asset</label>
+          <input
+            type="text"
+            id="inputAsset"
+            value="UNITY ASSET"
+            oninput="updateInvoice()"
+          />
+        </div>
 
-      <div class="form-group">
-        <label>Invoice Date</label>
-        <input
-          type="text"
-          id="inputDate"
-          value="23 June 2026"
-          oninput="updateInvoice()"
-        />
+        <div class="form-group">
+          <label>Invoice Date</label>
+          <input
+            type="text"
+            id="inputDate"
+            value="23 June 2026"
+            oninput="updateInvoice()"
+          />
+        </div>
       </div>
 
       <h3>Line Items</h3>
@@ -307,7 +335,7 @@
               updateInvoice();
             "
           >
-            X
+            ×
           </button>
           <div class="row-inputs">
             <input
@@ -357,21 +385,22 @@
           </div>
         </div>
       </div>
-      <button class="btn" onclick="addItemRow()">+ Add Product Item</button>
+      <button class="btn-link" onclick="addItemRow()">
+        + Add Product Item
+      </button>
 
-      <div class="form-group" style="margin-top: 10px">
+      <div class="form-group" style="margin-top: 24px">
         <label>Grand Total Display</label>
         <input
           type="text"
           id="inputGrandTotal"
-          value="20,671.16"
-          oninput="updateInvoice()"
+          readonly
         />
       </div>
 
       <h3>Bank Transaction Images</h3>
       <div id="slipsContainer"></div>
-      <button class="btn" onclick="addSlipRow()">+ Add Slip Image</button>
+      <button class="btn-link" onclick="addSlipRow()">+ Add Slip Image</button>
     </div>
 
     <div class="preview-container">
@@ -434,18 +463,18 @@
         const newBlock = document.createElement("div");
         newBlock.className = "item-block";
         newBlock.innerHTML = `
-                <button class="btn btn-danger" onclick="this.parentElement.remove(); updateInvoice();">X</button>
-                <div class="row-inputs">
-                    <input type="text" placeholder="Item Name" class="item-name" value="Microsoft 360" oninput="updateInvoice()">
-                    <input type="number" placeholder="Qty" class="item-qty" value="1" oninput="updateInvoice()">
-                    <input type="number" placeholder="$/Unit" class="item-price" value="0" oninput="updateInvoice()">
-                    <input type="text" placeholder="PKR Total" class="item-pkr" value="0.00" oninput="updateInvoice()">
-                </div>
-                <div class="tax-inputs">
-                    <input type="text" placeholder="Tax Line Label" class="tax-name" value="Tax" oninput="updateInvoice()">
-                    <input type="text" placeholder="Tax PKR" class="tax-pkr" value="0.00" oninput="updateInvoice()">
-                </div>
-            `;
+          <button class="btn btn-danger" onclick="this.parentElement.remove(); updateInvoice();">×</button>
+          <div class="row-inputs">
+              <input type="text" placeholder="Item Name" class="item-name" value="Microsoft 360" oninput="updateInvoice()">
+              <input type="number" placeholder="Qty" class="item-qty" value="1" oninput="updateInvoice()">
+              <input type="number" placeholder="$/Unit" class="item-price" value="0" oninput="updateInvoice()">
+              <input type="text" placeholder="PKR Total" class="item-pkr" value="0.00" oninput="updateInvoice()">
+          </div>
+          <div class="tax-inputs">
+              <input type="text" placeholder="Tax Line Label" class="tax-name" value="Tax" oninput="updateInvoice()">
+              <input type="text" placeholder="Tax PKR" class="tax-pkr" value="0.00" oninput="updateInvoice()">
+          </div>
+        `;
         container.appendChild(newBlock);
         updateInvoice();
       }
@@ -455,10 +484,10 @@
         const newBlock = document.createElement("div");
         newBlock.className = "slip-block";
         newBlock.innerHTML = `
-                <button class="btn btn-danger" onclick="this.parentElement.remove(); updateInvoice();">X</button>
-                <label>Upload Slip Image File</label>
-                <input type="file" class="slip-file" accept="image/*" onchange="updateInvoice()">
-            `;
+          <button class="btn btn-danger" onclick="this.parentElement.remove(); updateInvoice();">×</button>
+          <label>Upload Slip Image File</label>
+          <input type="file" class="slip-file" accept="image/*" onchange="updateInvoice()">
+        `;
         container.appendChild(newBlock);
       }
 
@@ -467,8 +496,6 @@
           document.getElementById("inputAsset").value;
         document.getElementById("previewDate").innerText =
           document.getElementById("inputDate").value;
-        document.getElementById("previewGrandTotal").innerText =
-          document.getElementById("inputGrandTotal").value;
 
         const targetDateStr = "23-06-2026";
 
@@ -479,6 +506,17 @@
         const taxNames = document.getElementsByClassName("tax-name");
         const taxPkrs = document.getElementsByClassName("tax-pkr");
 
+        let grandTotal = 0;
+        for (let i = 0; i < itemNames.length; i++) {
+          let pkr = parseFloat(itemPkrs[i].value.replace(/,/g, '')) || 0;
+          let tax = parseFloat(taxPkrs[i].value.replace(/,/g, '')) || 0;
+          grandTotal += pkr + tax;
+        }
+
+        let grandTotalFormatted = grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById("previewGrandTotal").innerText = grandTotalFormatted;
+        document.getElementById("inputGrandTotal").value = grandTotalFormatted;
+
         let tableHTML = "";
         for (let i = 0; i < itemNames.length; i++) {
           let qty = itemQtys[i].value;
@@ -486,23 +524,23 @@
           let usdTotal = qty && unitP ? `$${qty * unitP}` : "-";
 
           tableHTML += `
-                    <tr>
-                        <td>${itemNames[i].value}</td>
-                        <td>${targetDateStr}</td>
-                        <td>${qty}</td>
-                        <td>$${unitP}</td>
-                        <td>${usdTotal}</td>
-                        <td>PKR ${itemPkrs[i].value}</td>
-                    </tr>
-                    <tr>
-                        <td>${taxNames[i].value}</td>
-                        <td>${targetDateStr}</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>PKR ${taxPkrs[i].value}</td>
-                    </tr>
-                `;
+            <tr>
+                <td>${itemNames[i].value}</td>
+                <td>${targetDateStr}</td>
+                <td>${qty}</td>
+                <td>$${unitP}</td>
+                <td>${usdTotal}</td>
+                <td>PKR ${itemPkrs[i].value}</td>
+            </tr>
+            <tr>
+                <td>${taxNames[i].value}</td>
+                <td>${targetDateStr}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>PKR ${taxPkrs[i].value}</td>
+            </tr>
+          `;
         }
         document.getElementById("previewTableBody").innerHTML = tableHTML;
 
