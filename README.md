@@ -16,20 +16,20 @@ It's built around one truth: **tracking only works if it's frictionless.**
 
 No account setup friction — sign in with email or Google and your data syncs in real time via Firebase. It runs as a website or as a tiny native desktop app powered by Tauri.
 
-## ✨ Features
+##  Features
 
-- ⚡ **Instant capture** — add a topic or habit and press Enter. Two seconds, no mouse.
-- ⏱️ **Deep Work Timer** — start, pause, and log sessions per topic or habit with a live counter.
-- 📊 **Analytics Dashboard** — time allocation breakdowns with visual progress bars.
-- 🗓️ **Activity Calendar** — year-round focus heatmap and monthly calendar showing daily intensity.
-- 🌱 **Seasons Planner** — structured 4–6 week focus blocks with professional/personal goals and daily energy logging.
-- 📝 **Notes Workspace** — rich-text notes editor that auto-saves as you type.
-- 🔔 **Multi-provider Auth** — Email/Password and Google Sign-In.
-- ☁️ **Live Sync** — every change mirrored to Firestore across devices in real time.
-- 🪶 **Tiny desktop shell** — Tauri wraps the web app in a native window (~10 MB), far lighter than Electron.
-- 📱 **Responsive UI** — Tailwind CSS, looks good on phone and desktop.
+-  **Instant capture** — add a topic or habit and press Enter. Two seconds, no mouse.
+-  **Deep Work Timer** — start, pause, and log sessions per topic or habit with a live counter.
+-  **Analytics Dashboard** — time allocation breakdowns with visual progress bars.
+-  **Activity Calendar** — year-round focus heatmap and monthly calendar showing daily intensity.
+-  **Seasons Planner** — structured 4–6 week focus blocks with professional/personal goals and daily energy logging.
+-  **Notes Workspace** — rich-text notes editor that auto-saves as you type.
+-  **Multi-provider Auth** — Email/Password and Google Sign-In.
+-  **Live Sync** — every change mirrored to Firestore across devices in real time.
+-  **Tiny desktop shell** — Tauri wraps the web app in a native window (~10 MB), far lighter than Electron.
+-  **Responsive UI** — Tailwind CSS, looks good on phone and desktop.
 
-## 🧠 Built for focus
+##  Built for focus
 
 Most productivity apps are built for people who just need a nudge. FocusHub is built for people whose attention is the scarce resource — so capturing and reviewing must be near-zero friction.
 
@@ -56,7 +56,7 @@ Concretely, this means:
 | Build Tooling | Node.js, `@tauri-apps/cli`, Cargo (Rust toolchain) |
 | Packaging | MSI + NSIS (Windows) · DMG (macOS) · .deb + AppImage (Linux) |
 
-## 📥 Download
+##  Download
 
 | Platform | Architecture | Download |
 | --- | --- | --- |
@@ -69,7 +69,7 @@ Concretely, this means:
 >
 > Releases are not code-signed on Windows/macOS by default — you may see a SmartScreen/ Gatekeeper warning.
 
-## 🔨 Build from Source
+##  Build from Source
 
 **Prerequisites:** Rust stable · Node.js 18+ · Cargo on PATH · WebView2 (Windows)
 
@@ -99,7 +99,7 @@ npx serve frontend
 python -m http.server 3000 frontend
 ```
 
-## ⚙️ Configuration
+##  Configuration
 
 1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com).
 2. Enable **Authentication** (Email/Password **and** Google) and a **Firestore Database**.
@@ -122,7 +122,7 @@ window.__FIREBASE_CONFIG__ = {
 
 Tauri's webview runs on `http://localhost`. For Google login in the desktop app, add `localhost` to Firebase → **Authentication → Settings → Authorized domains**. The app auto-switches Google login from popup to redirect flow when running in Tauri — no code change needed.
 
-## 🌐 Deployment (Web)
+##  Deployment (Web)
 
 FocusHub is a static site. **Set the publish/build directory to `frontend/`** (the web files live there, not the repo root).
 
@@ -132,7 +132,7 @@ FocusHub is a static site. **Set the publish/build directory to `frontend/`** (t
 | Firebase Hosting | `firebase.json` public dir → `frontend` |
 | GitHub Pages | Pages source → `frontend` folder |
 
-## 🤝 Contributing
+##  Contributing
 
 FocusHub is open source and contributions are welcome.
 
@@ -144,7 +144,7 @@ FocusHub is open source and contributions are welcome.
 
 Please keep the UX calm and low-friction — no feature should add cognitive load to someone mid-focus-session.
 
-## ☕ Support
+##  Support
 
 FocusHub is free and open-source, built to help you focus better, one session at a time.
 
