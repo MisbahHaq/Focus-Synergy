@@ -35,6 +35,11 @@
       "icons/128x128@2x.png",
       "icons/icon.icns"
     ],
+    "windows": {
+      "nsis": {
+        "installerIcon": "icons/icon.ico"
+      }
+    },
     "category": "Productivity",
     "shortDescription": "Track focus loops and build lasting habits",
     "longDescription": "FocusHub is a lightweight desktop workspace to log deep work sessions, maintain consistency streaks, and audit productivity metrics."
