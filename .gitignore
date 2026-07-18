@@ -1,0 +1,8 @@
+env.js
+node_modules/
+package-lock.json
+.DS_Store
+
+src-tauri/target/
+src-tauri/gen/
+
