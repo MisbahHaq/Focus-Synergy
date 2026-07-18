@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="fav.png" type="image/png">
+    <link rel="apple-touch-icon" href="fav.png">
+    <meta name="theme-color" content="#1e1e1e">
+    <title>FocusHub - Habits, Topics & Analytics</title>
+    <meta name="description" content="FocusHub helps you track habits, topics, and deep work sessions with timers, analytics, activity calendars, and notes.">
+    <meta name="keywords" content="time tracker, habit tracker, focus, deep work, productivity, analytics, time management, pomodoro">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        [contenteditable]:empty:before { content: attr(placeholder); color: #9ca3af; pointer-events: none; }
+        [contenteditable] ul, [contenteditable] ol { margin-left: 1.25rem; margin: 0.5rem 0; }
+        [contenteditable] li { margin-bottom: 0.25rem; }
+        [contenteditable] strong { font-weight: 600; }
+        
+        .heatmap-cell, .calendar-cell { position: relative; }
+        .heatmap-cell:hover::after, .calendar-cell:hover::after {
+            content: attr(data-tooltip);
+            position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+            background: #1e1e1e; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 10px;
+        }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 font-sans min-h-screen selection:bg-zinc-200">
+
+    <div id="loginScreen" class="flex h-screen items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-6 border border-zinc-200 w-full max-w-md min-w-[340px]">
+            <div class="flex items-center justify-center mb-6">
+                <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center mr-3">
+                    <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold">FocusHub</h1>
+            </div>
+            
+            <div class="flex gap-2 mb-6 bg-zinc-100 p-1 rounded-lg">
+                <button onclick="showTab('loginTab')" id="btn-login-tab" class="flex-1 py-2 rounded-md bg-white font-semibold text-sm">Login</button>
+                <button onclick="showTab('registerTab')" id="btn-register-tab" class="flex-1 py-2 rounded-md text-zinc-500 font-semibold text-sm">Register</button>
+            </div>
+
+            <div id="loginTab">
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Email</label>
+                        <input type="email" id="loginEmail" class="w-full mt-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Password</label>
+                        <input type="password" id="loginPassword" class="w-full mt-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900" placeholder="••••••••">
+                    </div>
+                    <button onclick="login()" class="w-full bg-zinc-900 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition hover:bg-zinc-800">
+                        <i data-lucide="log-in" class="w-4 h-4"></i> Sign In
+                    </button>
+                    <div class="relative my-2">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-zinc-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                            <span class="px-2 bg-white text-zinc-400">or</span>
+                        </div>
+                    </div>
+                    <button onclick="googleLogin()" class="w-full bg-white border border-zinc-200 text-zinc-700 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition hover:bg-zinc-50">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                        Continue with Google
+                    </button>
+                </div>
+                <div id="loginError" class="text-red-500 text-xs mt-3 text-center"></div>
+            </div>
+
+            <div id="registerTab" class="hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Full Name</label>
+                        <input type="text" id="registerName" class="w-full mt-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Email</label>
+                        <input type="email" id="registerEmail" class="w-full mt-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Password</label>
+                        <input type="password" id="registerPassword" class="w-full mt-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900" placeholder="Min 6 characters">
+                    </div>
+                    <button onclick="register()" class="w-full bg-zinc-900 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition hover:bg-zinc-800">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i> Create Account
+                    </button>
+                </div>
+                <div id="registerError" class="text-red-500 text-xs mt-3 text-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainApp" class="flex h-screen overflow-hidden hidden">
+        <aside class="w-20 lg:w-24 bg-[#1e1e1e] flex flex-col justify-between items-center py-8 z-10">
+            <div class="flex flex-col items-center gap-12 w-full">
+                <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center cursor-pointer transition">
+                    <i data-lucide="layers" class="w-5 h-5 text-gray-900"></i>
+                </div>
+                
+                <nav class="flex flex-col gap-6 w-full px-3">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all bg-white/10 text-white" title="Tracker & Timer">
+                        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                    </button>
+<button onclick="switchTab('seasons')" id="btn-seasons" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300" title="Seasons Planner">
+                        <i data-lucide="sprout" class="w-5 h-5"></i>
+                    </button>
+                    <button onclick="switchTab('calendar')" id="btn-calendar" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300" title="Activity Calendar">
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
+                    </button>
+                    <button onclick="switchTab('notes')" id="btn-notes" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300" title="Notes Section">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </button>
+                </nav>
+            </div>
+            
+            <button class="w-12 h-12 rounded-xl flex items-center justify-center text-gray-500 hover:text-gray-300 hover:bg-white/5 transition">
+                <i data-lucide="log-out" class="w-5 h-5"></i>
+            </button>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-6 lg:p-10 flex flex-col gap-8">
+            
+            <header class="flex justify-between items-center bg-white rounded-xl p-4 border border-zinc-200">
+                <div class="flex items-center gap-3 pl-2">
+                    <h1 class="text-2xl font-bold tracking-tight text-zinc-900">Habits & Topics Explorer</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- <div class="relative hidden sm:block">
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" placeholder="Search insights..." class="bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-gray-400 w-48 transition">
+                    </div> -->
+                    <!-- <button class="p-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl text-gray-600 transition relative">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        <span class="w-1.5 h-1.5 bg-rose-500 rounded-full absolute top-2 right-2"></span>
+                    </button> -->
+<div class="flex items-center gap-2 border-l border-gray-200 pl-4">
+                         <div id="userDisplay" class="flex items-center gap-2"></div>
+                     </div>
+                </div>
+            </header>
+
+            <section id="tab-dashboard" class="tab-content space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Deep Work Focus</h2>
+                        <p class="text-gray-500 text-xs mt-0.5">Spin up custom counters to measure skill cultivation.</p>
+                    </div>
+                    <div class="flex gap-2 w-full sm:w-auto bg-white p-2 rounded-lg border border-zinc-200">
+                        <input type="text" id="newItemName" placeholder="New track title..." class="bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 flex-1 sm:w-56">
+                        <select id="newItemType" class="bg-white border border-zinc-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-zinc-900 text-zinc-600 font-medium">
+                            <option value="topic">Topic</option>
+                            <option value="habit">Habit</option>
+                        </select>
+                        <button onclick="addItem()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-zinc-100 border border-zinc-200 rounded-xl p-6 flex flex-col justify-between min-h-[260px]">
+                        <div class="z-10">
+                            <span class="text-[11px] font-bold tracking-wider text-zinc-500 uppercase">Active Core Monitor</span>
+                            <h3 id="activeItemTitle" class="text-2xl font-bold mt-1 text-zinc-900">No Item Selected</h3>
+                        </div>
+
+                        <div class="my-auto py-2 z-10 flex items-baseline gap-3">
+                            <div id="timerDisplay" class="text-5xl font-bold tracking-tight text-zinc-900 font-mono">00:00:00</div>
+                            <span class="text-xs bg-zinc-900 text-white font-mono px-2 py-0.5 rounded-full font-medium" id="streakBadge">Session Counter</span>
+                        </div>
+                        
+                        <div class="flex gap-3 z-10">
+                            <button id="timerToggleBtn" onclick="toggleTimer()" disabled class="flex-1 bg-white border border-zinc-200 text-zinc-400 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed transition">
+                                <i data-lucide="play" class="w-4 h-4"></i> Start Session
+                            </button>
+                            <button id="timerLogBtn" onclick="logTimer()" disabled class="bg-zinc-900 text-white/40 font-semibold px-5 rounded-lg flex items-center justify-center cursor-not-allowed transition">
+                                <i data-lucide="check" class="w-4 h-4"></i> Log
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 flex flex-col justify-between gap-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-bold text-zinc-800 uppercase tracking-wide">Top Focus Metrics</h4>
+                            <i data-lucide="sliders-horizontal" class="w-4 h-4 text-zinc-400"></i>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 h-full" id="highlightsGrid"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-7 bg-white border border-zinc-200 rounded-xl p-6 flex flex-col">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900">Today's Agenda & Stats</h3>
+                                <p class="text-xs text-zinc-400 mt-0.5" id="statsSubHeader">Active elements available for timeline recording</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-12 text-[11px] font-bold text-zinc-400 uppercase tracking-wider border-b border-zinc-100 pb-3 mb-2 px-2">
+                            <div class="col-span-5">Name / Category</div>
+                            <div class="col-span-4 text-center">Status / Local Timer</div>
+                            <div class="col-span-2 text-right">Logged Time</div>
+                            <div class="col-span-1 text-right"></div>
+                        </div>
+
+                        <div id="unifiedItemsList" class="space-y-1 divide-y divide-zinc-50 overflow-y-auto max-h-[340px] pr-1"></div>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-zinc-900 border border-zinc-800 rounded-xl p-6 text-white flex flex-col justify-between min-h-[380px] relative overflow-hidden">
+                        <div>
+                            <h3 class="text-lg font-bold">Quick Notes & Deep Dives</h3>
+                            <p class="text-zinc-400 text-xs mt-1 leading-relaxed">Synthesize active mental models or log reference data quickly during running review modules.</p>
+                            <div class="mt-6 space-y-4 border-l-2 border-white/10 pl-4 py-1">
+                                <p class="text-sm font-medium text-zinc-200 italic">"Remember to review system scalability parameters before finalizing deployment notes."</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('notes')" class="mt-8 bg-white/10 hover:bg-white text-white hover:text-zinc-900 w-full font-bold text-sm py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 border border-white/5">
+                            All Notes Workspace <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-seasons" class="tab-content hidden space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Seasons Planner</h2>
+                        <p class="text-gray-500 text-sm mt-0.5">Structured 4–6 week focus blocks for sustained professional and personal growth.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="createNewSeason()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i> New Season
+                        </button>
+                        <button onclick="toggleBacklogDrawer()" class="bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="inbox" class="w-4 h-4"></i> Not Right Now <span id="backlogBadge" class="bg-zinc-200 text-zinc-700 text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="seasonsListContainer" class="space-y-4"></div>
+
+                <div id="backlogDrawer" class="hidden bg-white border border-zinc-200 rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-900 flex items-center gap-2">
+                            <i data-lucide="inbox" class="w-5 h-5 text-zinc-400"></i> Not Right Now
+                        </h3>
+                        <button onclick="toggleBacklogDrawer()" class="text-xs text-zinc-400 hover:text-zinc-600 transition">Close</button>
+                    </div>
+                    <p class="text-xs text-zinc-400 mb-4">Ideas, frameworks, and hobbies parked here won't distract your current focus.</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="backlogInput" placeholder="Park an idea, framework, or hobby..." class="flex-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900">
+                        <button onclick="addBacklogItem()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Add</button>
+                    </div>
+                    <div id="backlogList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
+                </div>
+
+                <div id="seasonDetailContainer" class="hidden space-y-6">
+                    <div class="bg-zinc-100 border border-zinc-200 rounded-xl p-6 relative overflow-hidden">
+                        <div class="z-10 relative">
+                            <span class="text-[11px] font-bold tracking-wider text-zinc-500 uppercase">Current Season</span>
+                            <h3 id="detailSeasonTitle" class="text-2xl font-bold mt-1 text-zinc-900">Season Title</h3>
+                            <p id="detailSeasonDates" class="text-sm text-zinc-600 mt-1"></p>
+
+                            <div class="mt-6">
+                                <div class="flex justify-between text-xs font-bold text-zinc-600 mb-2">
+                                    <span>Season Progress</span>
+                                    <span id="detailSeasonProgress">0%</span>
+                                </div>
+                                <div class="w-full bg-zinc-200 h-3 rounded-full overflow-hidden">
+                                    <div id="detailSeasonProgressBar" class="bg-zinc-900 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-between text-[10px] text-zinc-400 mt-1">
+                                    <span id="detailSeasonStart">Start</span>
+                                    <span id="detailSeasonEnd">End</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white border border-zinc-200 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
+                            <div class="absolute top-4 right-4">
+                                <select id="devBacklogSelect" class="bg-white border border-zinc-200 rounded-md px-2 py-1 text-[10px] font-bold text-zinc-700">
+                                    <option value="">Load from backlog</option>
+                                </select>
+                            </div>
+                            <div class="z-10">
+                                <span class="text-[11px] font-bold tracking-wider text-zinc-500 uppercase">Developer / Professional Goal</span>
+                                <h4 id="detailDevGoal" class="text-xl font-bold mt-2 text-zinc-900">No goal set</h4>
+                            </div>
+                            <div class="z-10 mt-6 bg-zinc-50 rounded-lg p-4 border border-zinc-100">
+                                <span class="text-[10px] font-bold tracking-wider text-zinc-500 uppercase">Non-Negotiable Minimum</span>
+                                <p id="detailDevMicro" class="text-sm font-semibold text-zinc-800 mt-1">No micro-habit set</p>
+                                <button onclick="toggleMicroHabit('dev')" id="btnMicroDev" class="mt-3 w-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold py-2 rounded-lg transition">Mark Complete Today</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-zinc-200 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
+                            <div class="absolute top-4 right-4">
+                                <select id="personalBacklogSelect" class="bg-white border border-zinc-200 rounded-md px-2 py-1 text-[10px] font-bold text-zinc-700">
+                                    <option value="">Load from backlog</option>
+                                </select>
+                            </div>
+                            <div class="z-10">
+                                <span class="text-[11px] font-bold tracking-wider text-zinc-500 uppercase">Personal / Spiritual / Hobby Goal</span>
+                                <h4 id="detailPersonalGoal" class="text-xl font-bold mt-2 text-zinc-900">No goal set</h4>
+                            </div>
+                            <div class="z-10 mt-6 bg-zinc-50 rounded-lg p-4 border border-zinc-100">
+                                <span class="text-[10px] font-bold tracking-wider text-zinc-500 uppercase">Non-Negotiable Minimum</span>
+                                <p id="detailPersonalMicro" class="text-sm font-semibold text-zinc-800 mt-1">No micro-habit set</p>
+                                <button onclick="toggleMicroHabit('personal')" id="btnMicroPersonal" class="mt-3 w-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold py-2 rounded-lg transition">Mark Complete Today</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-zinc-200 rounded-xl p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900">Daily Energy Log</h3>
+                                <p class="text-xs text-zinc-400 mt-0.5">Log tasks by your current energy level to optimize focus.</p>
+                            </div>
+                            <div class="flex items-center gap-2 bg-zinc-100 p-1 rounded-lg border border-zinc-200">
+                                <button onclick="setEnergyMode('production')" id="btnProduction" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-zinc-900 text-white">High-Energy Production</button>
+                                <button onclick="setEnergyMode('consumption')" id="btnConsumption" class="px-3 py-1.5 rounded-md text-xs font-bold transition text-zinc-500 hover:text-zinc-900">Low-Energy Consumption</button>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="dailyLogInput" placeholder="What are you working on right now?" class="flex-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900">
+                            <button onclick="addDailyLog()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Log</button>
+                        </div>
+                        <div id="dailyLogList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <button onclick="closeSeasonDetail()" class="text-zinc-500 hover:text-zinc-700 text-sm font-semibold px-4 py-2 transition">Back to Seasons</button>
+                        <button onclick="completeCurrentSeason()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition">Complete Season</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-calendar" class="tab-content hidden space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Activity & Consistency</h2>
+                    <p class="text-gray-500 text-sm mt-0.5">Track systemic metrics and running loops directly.</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 border border-zinc-200 flex flex-col gap-4">
+                    <div class="flex justify-between items-center flex-wrap gap-2">
+                        <div>
+                            <h3 class="text-base font-bold text-zinc-900">Focus Matrix Progression</h3>
+                            <p class="text-zinc-400 text-xs">A breakdown of running time contributions over the year.</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs text-zinc-500 bg-zinc-50 px-3 py-1.5 rounded-lg border border-zinc-200">
+                            <span>Less</span>
+                            <div class="w-3 h-3 bg-zinc-100 border border-zinc-200 rounded-sm"></div>
+                            <div class="w-3 h-3 bg-zinc-300 border border-zinc-400 rounded-sm"></div>
+                            <div class="w-3 h-3 bg-zinc-400 border border-zinc-500 rounded-sm"></div>
+                            <div class="w-3 h-3 bg-zinc-600 border border-zinc-700 rounded-sm"></div>
+                            <div class="w-3 h-3 bg-zinc-800 border border-zinc-900 rounded-sm"></div>
+                            <span>More</span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto no-scrollbar w-full border border-zinc-100 rounded-lg p-4 bg-zinc-50/50">
+                        <div class="min-w-[760px] flex gap-2">
+                            <div class="grid grid-rows-7 gap-1 text-[10px] text-gray-400 font-semibold uppercase pr-2 justify-center pt-5">
+                                <div></div><div>Mon</div><div></div><div>Wed</div><div></div><div>Fri</div><div></div>
+                            </div>
+                            <div class="flex-1 flex flex-col gap-1">
+                                <div id="heatmapMonthsHeader" class="flex text-[10px] text-gray-400 font-bold uppercase tracking-wider h-4 relative"></div>
+                                <div id="heatmapGrid" class="grid grid-flow-col grid-rows-7 gap-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-12 flex flex-col gap-6">
+                        <div class="flex justify-between items-center bg-white rounded-xl p-5 border border-zinc-200">
+                            <h3 id="calendarMonthYear" class="text-base font-bold text-zinc-800">Month Year</h3>
+                            <div class="flex gap-1">
+                                <button onclick="changeMonth(-1)" class="p-2 bg-zinc-50 hover:bg-zinc-100 rounded-lg border border-zinc-200 text-zinc-600 transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                <button onclick="changeMonth(1)" class="p-2 bg-zinc-50 hover:bg-zinc-100 rounded-lg border border-zinc-200 text-zinc-600 transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 border border-zinc-200">
+                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-400 uppercase mb-4">
+                                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                            </div>
+                            <div id="calendarGrid" class="grid grid-cols-7 gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-notes" class="tab-content hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-zinc-900">Notes Workspace</h2>
+                    <button onclick="createNewNote()" class="bg-zinc-900 text-white px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-zinc-800 transition"><i data-lucide="file-plus" class="w-4 h-4"></i> New Entry</button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-16rem)]">
+                    <div class="lg:col-span-4 bg-white border border-zinc-200 rounded-xl p-4 flex flex-col overflow-hidden">
+                        <div id="notesList" class="space-y-2 overflow-y-auto pr-1 flex-1"></div>
+                    </div>
+                    <div id="noteEditor" class="hidden lg:col-span-8 bg-white border border-zinc-200 rounded-xl p-6 flex flex-col space-y-4">
+                        <input type="text" id="noteTitleInput" oninput="saveCurrentNote()" placeholder="Untitled Concept" class="bg-transparent text-xl font-bold focus:outline-none w-full text-zinc-900">
+                        <div class="flex items-center gap-2 border-b border-zinc-100 pb-2">
+                            <button type="button" onclick="formatNoteText('bold')" class="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 transition" title="Bold"><b class="text-xs font-bold">B</b></button>
+                            <button type="button" onclick="formatNoteText('italic')" class="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 transition" title="Italic"><i class="text-xs font-italic">I</i></button>
+                            <div class="w-px h-5 bg-zinc-200"></div>
+                            <button type="button" onclick="formatNoteText('ul')" class="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 transition" title="Bullet List">•</button>
+                            <button type="button" onclick="formatNoteText('ol')" class="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 transition" title="Numbered List">1.</button>
+                        </div>
+                        <div id="noteBodyInput" contenteditable="true" oninput="saveCurrentNote()" placeholder="Start writing down your ideas..." class="w-full flex-1 bg-transparent text-zinc-700 focus:outline-none resize-none leading-relaxed text-sm p-3 border border-zinc-200 rounded-lg min-h-[200px] overflow-y-auto"></div>
+                    </div>
+                    <div id="noNotePlaceholder" class="lg:col-span-8 bg-white/60 border border-dashed border-zinc-300 rounded-xl flex flex-col items-center justify-center text-zinc-400">
+                        <p class="text-sm font-medium">Select an item or write a new note map.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="env.js"></script>
+    <script type="module">
+        if (!window.__FIREBASE_CONFIG__) {
+            window.__FIREBASE_CONFIG__ = {
+                apiKey: "AIzaSyC8uv1WfD9WgWIx3Ooawbm4sbDFIvzifd4",
+                authDomain: "timetable-a3aa5.firebaseapp.com",
+                projectId: "timetable-a3aa5",
+                storageBucket: "timetable-a3aa5.firebasestorage.app",
+                messagingSenderId: "943686608958",
+                appId: "1:943686608958:web:e804b0755ca4f2be42496f",
+                measurementId: "G-C3D66ZS6HL"
+            };
+        }
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getFirestore, collection, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { 
+            getAuth, getRedirectResult, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithRedirect, updateProfile 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const GOOGLE_USE_REDIRECT = typeof window !== "undefined" && !!window.__TAURI_INTERNALS__;
+
+        const firebaseConfig = window.__FIREBASE_CONFIG__;
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        window.state = {
+            user: null,
+            items: [],      
+            logs: [],      
+            notes: [],
+            seasons: [],
+            backlog: [],
+            dailyLogs: [],
+            habitLogs: [],
+            selectedItemId: null,
+            selectedNoteId: null,
+            selectedSeasonId: null,
+            currentCalendarDate: new Date(),
+            dailyEnergyMode: 'production',
+            backlogOpen: false
+        };
+
+        let coreGlobalLoop = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            showTab('loginTab');
+            onAuthStateChanged(auth, (user) => {
+                window.state.user = user;
+                const loginScreen = document.getElementById('loginScreen');
+                const mainApp = document.getElementById('mainApp');
+                const userDisplay = document.getElementById('userDisplay');
+                
+                if (user) {
+                    loginScreen.classList.add('hidden');
+                    mainApp.classList.remove('hidden');
+                    userDisplay.innerHTML = `<span>${user.displayName || user.email}</span> <button onclick="logout()" class="ml-2 text-red-400 hover:text-red-300 text-xs underline">Logout</button>`;
+                    
+                    syncCollection('items', 'createdAt', (data) => {
+                        window.state.items = data.filter(item => item.userId === user.uid).map(item => ({
+                            ...item,
+                            isRunning: item.isRunning || false,
+                            accumulatedSeconds: item.accumulatedSeconds || 0
+                        }));
+                        renderDashboard();
+                        renderAnalyticsViews();
+                        renderCalendarViews();
+                    });
+
+                    syncCollection('logs', 'timestamp', (data) => {
+                        window.state.logs = data.filter(log => log.userId === user.uid);
+                        renderDashboard();
+                        renderAnalyticsViews();
+                        renderCalendarViews();
+                    });
+
+                    syncCollection('notes', 'updatedAt', (data) => {
+                        window.state.notes = data.filter(note => note.userId === user.uid);
+                        renderNotesList();
+                    });
+
+                    syncCollection('seasons', 'createdAt', (data) => {
+                        window.state.seasons = data.filter(s => s.userId === user.uid);
+                        renderSeasonsView();
+                    });
+
+                    syncCollection('backlog', 'createdAt', (data) => {
+                        window.state.backlog = data.filter(b => b.userId === user.uid);
+                        renderSeasonsView();
+                    });
+
+                    syncCollection('dailyLogs', 'timestamp', (data) => {
+                        window.state.dailyLogs = data.filter(log => log.userId === user.uid);
+                        renderSeasonsView();
+                    });
+
+                    syncCollection('habitLogs', 'date', (data) => {
+                        window.state.habitLogs = data.filter(h => h.userId === user.uid);
+                        renderSeasonsView();
+                    });
+
+                    coreGlobalLoop = setInterval(processingEngineCycle, 200);
+                } else {
+                    loginScreen.classList.remove('hidden');
+                    mainApp.classList.add('hidden');
+                }
+            });
+        });
+
+        window.register = async function() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(cred.user, { displayName: name });
+                await setDoc(doc(db, 'users', cred.user.uid), { name: name, email: email });
+                document.getElementById('registerName').value = '';
+                document.getElementById('registerEmail').value = '';
+                document.getElementById('registerPassword').value = '';
+                document.getElementById('registerError').innerText = '';
+            } catch (e) {
+                document.getElementById('registerError').innerText = e.message;
+            }
+        };
+
+        window.login = async function() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginError').innerText = '';
+            } catch (e) {
+                document.getElementById('loginError').innerText = e.message;
+            }
+        };
+
+        window.logout = async function() {
+            if (coreGlobalLoop) {
+                clearInterval(coreGlobalLoop);
+                coreGlobalLoop = null;
+            }
+            window.state = {
+                user: null,
+                items: [],
+                logs: [],
+                notes: [],
+                seasons: [],
+                backlog: [],
+                dailyLogs: [],
+                habitLogs: [],
+                selectedItemId: null,
+                selectedNoteId: null,
+                selectedSeasonId: null,
+                currentCalendarDate: new Date(),
+                dailyEnergyMode: 'production',
+                backlogOpen: false
+            };
+            await signOut(auth);
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('registerName').value = '';
+            document.getElementById('registerEmail').value = '';
+            document.getElementById('registerPassword').value = '';
+            showTab('loginTab');
+        };
+
+        window.googleLogin = async function() {
+            const provider = new GoogleAuthProvider();
+            try {
+                if (GOOGLE_USE_REDIRECT) {
+                    await signInWithRedirect(auth, provider);
+                } else {
+                    await signInWithPopup(auth, provider);
+                }
+            } catch (e) {
+                document.getElementById('loginError').innerText = e.message;
+            }
+        };
+
+        if (GOOGLE_USE_REDIRECT) {
+            getRedirectResult(auth).catch((e) => {
+                console.error("Google redirect sign-in failed:", e);
+            });
+        }
+
+        function syncCollection(collectionName, orderField, callback) {
+            const userId = window.state.user.uid;
+            const q = query(collection(db, 'users', userId, collectionName), orderBy(orderField, "asc"));
+            onSnapshot(q, (snapshot) => {
+                const dataArray = [];
+                snapshot.forEach((doc) => {
+                    dataArray.push({ id: doc.id, ...doc.data() });
+                });
+                callback(dataArray);
+            }, (error) => {
+                console.error(`Error reading database stream for ${collectionName}:`, error);
+            });
+        }
+
+        window.addItem = async function() {
+            const nameInput = document.getElementById('newItemName');
+            const typeInput = document.getElementById('newItemType');
+            const name = nameInput.value.trim();
+            if (!name) return;
+
+            const newItem = {
+                name: name,
+                type: typeInput.value,
+                createdAt: new Date().toISOString(),
+                isRunning: false,
+                accumulatedSeconds: 0,
+                startedAt: null,
+                userId: window.state.user.uid
+            };
+
+            try {
+                await addDoc(collection(db, 'users', window.state.user.uid, 'items'), newItem);
+                nameInput.value = '';
+            } catch(e) {
+                console.error("Firestore error during item allocation", e);
+            }
+        };
+
+        window.deleteItem = async function(id, event) {
+            event.stopPropagation();
+            if (window.state.selectedItemId === id) {
+                window.state.selectedItemId = null;
+                syncActiveMonitorPanel();
+            }
+            try {
+                await deleteDoc(doc(db, 'users', window.state.user.uid, 'items', id));
+            } catch(e) {
+                console.error("Firestore cleanup error processing item extraction", e);
+            }
+        };
+
+        window.toggleTimer = async function() {
+            const activeItem = window.state.items.find(i => i.id === window.state.selectedItemId);
+            if (!activeItem) return;
+
+            const now = Date.now();
+            let updatePayload = {};
+
+            if (activeItem.isRunning) {
+                const elapsed = Math.floor((now - activeItem.startedAt) / 1000);
+                updatePayload = {
+                    accumulatedSeconds: activeItem.accumulatedSeconds + elapsed,
+                    isRunning: false,
+                    startedAt: null
+                };
+            } else {
+                updatePayload = {
+                    isRunning: true,
+                    startedAt: now
+                };
+            }
+
+            try {
+                await updateDoc(doc(db, 'users', window.state.user.uid, 'items', activeItem.id), updatePayload);
+            } catch(e) {
+                console.error("Timer engine sync calculation failed to record", e);
+            }
+        };
+
+        window.logTimer = async function() {
+            const activeItem = window.state.items.find(i => i.id === window.state.selectedItemId);
+            if (!activeItem) return;
+
+            let totalLogged = activeItem.accumulatedSeconds;
+            if (activeItem.isRunning && activeItem.startedAt) {
+                totalLogged += Math.floor((Date.now() - activeItem.startedAt) / 1000);
+            }
+
+            if (totalLogged <= 0) return;
+
+            try {
+                await addDoc(collection(db, 'users', window.state.user.uid, 'logs'), {
+                    itemId: activeItem.id,
+                    timestamp: new Date().toISOString(),
+                    seconds: totalLogged,
+                    userId: window.state.user.uid
+                });
+
+                await updateDoc(doc(db, 'users', window.state.user.uid, 'items', activeItem.id), {
+                    accumulatedSeconds: 0,
+                    isRunning: false,
+                    startedAt: null
+                });
+            } catch(e) {
+                console.error("Execution cycle aborted during operational logging", e);
+            }
+        };
+
+        window.createNewNote = async function() {
+            const defaultNote = {
+                title: 'Untitled Concept',
+                body: '',
+                updatedAt: new Date().toISOString(),
+                userId: window.state.user.uid
+            };
+            try {
+                const docRef = await addDoc(collection(db, 'users', window.state.user.uid, 'notes'), defaultNote);
+                window.state.selectedNoteId = docRef.id;
+                renderNotesList();
+                openNoteEditor(docRef.id);
+            } catch(e) {
+                console.error("Failed structural construction of notes element", e);
+            }
+        };
+
+        window.saveCurrentNote = async function() {
+            if (!window.state.selectedNoteId) return;
+            const titleInput = document.getElementById('noteTitleInput').value;
+            const bodyInput = document.getElementById('noteBodyInput').innerHTML;
+
+            try {
+                await updateDoc(doc(db, 'users', window.state.user.uid, 'notes', window.state.selectedNoteId), {
+                    title: titleInput,
+                    body: bodyInput,
+                    updatedAt: new Date().toISOString()
+                });
+            } catch(e) {
+                console.error("Draft compilation dropped by backend handler", e);
+            }
+        };
+
+        window.deleteNote = async function(id, event) {
+            event.stopPropagation();
+            if (window.state.selectedNoteId === id) {
+                window.state.selectedNoteId = null;
+                document.getElementById('noteEditor').classList.add('hidden');
+                document.getElementById('noNotePlaceholder').classList.remove('hidden');
+            }
+            try {
+                await deleteDoc(doc(db, 'users', window.state.user.uid, 'notes', id));
+            } catch(e) {
+                console.error("Notes execution matrix dropped targeting document deletion", e);
+            }
+        };
+
+        function processingEngineCycle() {
+            const now = Date.now();
+            window.state.items.forEach(item => {
+                if (item.isRunning && item.startedAt) {
+                    const elapsed = Math.floor((now - item.startedAt) / 1000);
+                    const localLiveSec = item.accumulatedSeconds + elapsed;
+                    
+                    const counterNode = document.getElementById(`live-timer-${item.id}`);
+                    if(counterNode) counterNode.innerText = formatTimeHMS(localLiveSec);
+                    
+                    if (window.state.selectedItemId === item.id) {
+                        document.getElementById('timerDisplay').innerText = formatTimeHMS(localLiveSec);
+                    }
+                }
+            });
+        }
+
+        function getActiveSeason() {
+            return window.state.seasons.find(s => s.isActive && !s.isCompleted) || null;
+        }
+
+        window.createNewSeason = async function() {
+            const title = prompt('Season Title (e.g., "Foundations Q3"):');
+            if (!title) return;
+
+            const weeksStr = prompt('Duration in weeks (4-6):', '5');
+            const weeks = Math.min(6, Math.max(4, parseInt(weeksStr) || 5));
+
+            const devGoal = prompt('Professional / Developer Goal:');
+            const personalGoal = prompt('Personal / Spiritual / Hobby Goal:');
+            const devMicro = prompt('Dev/Professional Micro-Habit (daily minimum):');
+            const personalMicro = prompt('Personal Micro-Habit (daily minimum):');
+
+            const startDate = new Date();
+            const endDate = new Date(startDate.getTime() + weeks * 7 * 24 * 60 * 60 * 1000);
+
+            const newSeason = {
+                title,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                durationWeeks: weeks,
+                devGoal: devGoal || '',
+                personalGoal: personalGoal || '',
+                devMicroHabit: devMicro || '',
+                personalMicroHabit: personalMicro || '',
+                isActive: true,
+                isCompleted: false,
+                userId: window.state.user.uid,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                if (getActiveSeason()) {
+                    await updateDoc(doc(db, 'users', window.state.user.uid, 'seasons', getActiveSeason().id), { isActive: false });
+                }
+                await addDoc(collection(db, 'users', window.state.user.uid, 'seasons'), newSeason);
+            } catch(e) {
+                console.error("Season initialization failed:", e);
+            }
+        };
+
+        window.selectSeason = function(id) {
+            window.state.selectedSeasonId = id;
+            renderSeasonsView();
+        };
+
+        window.closeSeasonDetail = function() {
+            window.state.selectedSeasonId = null;
+            renderSeasonsView();
+        };
+
+        window.completeCurrentSeason = async function() {
+            const active = getActiveSeason();
+            if (!active) return;
+            if (!confirm('Mark this season as complete? This will finalize your current focus block.')) return;
+
+            try {
+                await updateDoc(doc(db, 'users', window.state.user.uid, 'seasons', active.id), {
+                    isActive: false,
+                    isCompleted: true,
+                    completedAt: new Date().toISOString()
+                });
+                window.state.selectedSeasonId = null;
+                renderSeasonsView();
+            } catch(e) {
+                console.error("Season completion failed:", e);
+            }
+        };
+
+        window.toggleBacklogDrawer = function() {
+            window.state.backlogOpen = !window.state.backlogOpen;
+            renderSeasonsView();
+        };
+
+        window.addBacklogItem = async function() {
+            const input = document.getElementById('backlogInput');
+            const title = input.value.trim();
+            if (!title) return;
+
+            try {
+                await addDoc(collection(db, 'users', window.state.user.uid, 'backlog'), {
+                    title,
+                    userId: window.state.user.uid,
+                    createdAt: new Date().toISOString(),
+                    promoted: false
+                });
+                input.value = '';
+            } catch(e) {
+                console.error("Backlog submission failed:", e);
+            }
+        };
+
+        window.deleteBacklogItem = async function(id, event) {
+            event.stopPropagation();
+            try {
+                await deleteDoc(doc(db, 'users', window.state.user.uid, 'backlog', id));
+            } catch(e) {
+                console.error("Backlog deletion failed:", e);
+            }
+        };
+
+        window.promoteBacklogToSeason = async function(backlogId, goalType) {
+            const item = window.state.backlog.find(b => b.id === backlogId);
+            if (!item) return;
+
+            const active = getActiveSeason();
+            if (!active) {
+                alert('No active season. Create a season first to promote items.');
+                return;
+            }
+
+            const field = goalType === 'dev' ? 'devGoal' : 'personalGoal';
+
+            try {
+                await updateDoc(doc(db, 'users', window.state.user.uid, 'seasons', active.id), { [field]: item.title });
+                await deleteDoc(doc(db, 'users', window.state.user.uid, 'backlog', backlogId));
+            } catch(e) {
+                console.error("Promotion failed:", e);
+            }
+        };
+
+        window.setEnergyMode = function(mode) {
+            window.state.dailyEnergyMode = mode;
+            renderSeasonsView();
+        };
+
+        window.addDailyLog = async function() {
+            const input = document.getElementById('dailyLogInput');
+            const task = input.value.trim();
+            if (!task) return;
+
+            const active = getActiveSeason();
+
+            try {
+                await addDoc(collection(db, 'users', window.state.user.uid, 'dailyLogs'), {
+                    task,
+                    energyType: window.state.dailyEnergyMode,
+                    seasonId: active ? active.id : 'general',
+                    userId: window.state.user.uid,
+                    timestamp: new Date().toISOString(),
+                    date: new Date().toISOString().split('T')[0]
+                });
+                input.value = '';
+            } catch(e) {
+                console.error("Daily log failed:", e);
+            }
+        };
+
+        window.deleteDailyLog = async function(id, event) {
+            event.stopPropagation();
+            try {
+                await deleteDoc(doc(db, 'users', window.state.user.uid, 'dailyLogs', id));
+            } catch(e) {
+                console.error("Daily log deletion failed:", e);
+            }
+        };
+
+        window.toggleMicroHabit = async function(type) {
+            const active = getActiveSeason();
+            if (!active) return;
+
+            const today = new Date().toISOString().split('T')[0];
+            const existingLog = window.state.habitLogs.find(h => h.date === today && h.seasonId === active.id && h.userId === window.state.user.uid);
+
+            if (existingLog) {
+                const field = type === 'dev' ? 'devCompleted' : 'personalCompleted';
+                try {
+                    await updateDoc(doc(db, 'users', window.state.user.uid, 'habitLogs', existingLog.id), { [field]: !existingLog[field] });
+                } catch(e) {
+                    console.error("Habit update failed:", e);
+                }
+            } else {
+                try {
+                    await addDoc(collection(db, 'users', window.state.user.uid, 'habitLogs'), {
+                        date: today,
+                        seasonId: active.id,
+                        devCompleted: type === 'dev',
+                        personalCompleted: type === 'personal',
+                        userId: window.state.user.uid
+                    });
+                } catch(e) {
+                    console.error("Habit creation failed:", e);
+                }
+            }
+            renderSeasonsView();
+        };
+
+        window.deleteSeason = async function(id, event) {
+            if (event) event.stopPropagation();
+            if (!confirm('Delete this season and all associated data?')) return;
+            try {
+                await deleteDoc(doc(db, 'users', window.state.user.uid, 'seasons', id));
+                if (window.state.selectedSeasonId === id) window.state.selectedSeasonId = null;
+            } catch(e) {
+                console.error("Season deletion failed:", e);
+            }
+        };
+
+        function getSeasonProgress(season) {
+            if (!season) return 0;
+            const now = new Date();
+            const start = new Date(season.startDate);
+            const end = new Date(season.endDate);
+            const total = end.getTime() - start.getTime();
+            const elapsed = now.getTime() - start.getTime();
+            if (total <= 0) return 0;
+            return Math.max(0, Math.min(100, Math.round((elapsed / total) * 100)));
+        }
+
+        function getHabitStatus(type) {
+            const active = getActiveSeason();
+            if (!active) return { completed: false, done: false };
+            const today = new Date().toISOString().split('T')[0];
+            const log = window.state.habitLogs.find(h => h.date === today && h.seasonId === active.id && h.userId === window.state.user.uid);
+            return { completed: !!log, done: type === 'dev' ? (log ? log.devCompleted : false) : (log ? log.personalCompleted : false) };
+        }
+
+        function renderSeasonsView() {
+            const listContainer = document.getElementById('seasonsListContainer');
+            const detailContainer = document.getElementById('seasonDetailContainer');
+
+            if (!listContainer || !detailContainer) return;
+
+            document.getElementById('backlogBadge').innerText = window.state.backlog.filter(b => !b.promoted).length;
+
+            if (window.state.selectedSeasonId) {
+                listContainer.innerHTML = '';
+                detailContainer.classList.remove('hidden');
+                renderSeasonDetail();
+            } else {
+                detailContainer.classList.add('hidden');
+                renderSeasonsList();
+            }
+        }
+
+        function renderSeasonsList() {
+            const listContainer = document.getElementById('seasonsListContainer');
+            if (!listContainer) return;
+
+            if (window.state.seasons.length === 0) {
+                listContainer.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 italic bg-white rounded-xl border border-zinc-200">No seasons initialized yet. Create your first season above to begin.</div>';
+                return;
+            }
+
+            listContainer.innerHTML = window.state.seasons.map(season => {
+                const progress = getSeasonProgress(season);
+                const statusBadge = season.isCompleted
+                    ? '<span class="bg-zinc-200 text-zinc-700 text-[10px] px-2 py-1 rounded-full font-bold">Completed</span>'
+                    : season.isActive
+                        ? '<span class="bg-zinc-900 text-white text-[10px] px-2 py-1 rounded-full font-bold">Active</span>'
+                        : '<span class="bg-zinc-100 text-zinc-500 text-[10px] px-2 py-1 rounded-full font-bold">Upcoming</span>';
+
+                return `
+                    <div onclick="selectSeason('${season.id}')" class="bg-white border border-zinc-200 rounded-xl p-5 flex justify-between items-center cursor-pointer hover:border-zinc-300 transition">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-zinc-100 flex items-center justify-center border border-zinc-200">
+                                <i data-lucide="sprout" class="w-5 h-5 text-zinc-600"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-base font-bold text-zinc-900">${season.title}</h4>
+                                    ${statusBadge}
+                                </div>
+                                <p class="text-xs text-zinc-400 mt-1">${formatDateRange(season.startDate, season.endDate)} • ${season.durationWeeks} weeks</p>
+                                <div class="w-full bg-zinc-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div class="bg-zinc-900 h-full rounded-full" style="width: ${progress}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-zinc-500">${progress}%</span>
+                            <button onclick="event.stopPropagation(); deleteSeason('${season.id}')" class="p-2 hover:bg-zinc-100 rounded-lg text-zinc-400 hover:text-zinc-900 transition">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function renderSeasonDetail() {
+            const season = window.state.seasons.find(s => s.id === window.state.selectedSeasonId);
+            if (!season) return;
+
+            const progress = getSeasonProgress(season);
+            document.getElementById('detailSeasonTitle').innerText = season.title;
+            document.getElementById('detailSeasonDates').innerText = `${formatDateRange(season.startDate, season.endDate)} • ${season.durationWeeks} weeks`;
+            document.getElementById('detailSeasonProgress').innerText = `${progress}%`;
+            document.getElementById('detailSeasonProgressBar').style.width = `${progress}%`;
+            document.getElementById('detailSeasonStart').innerText = new Date(season.startDate).toLocaleDateString();
+            document.getElementById('detailSeasonEnd').innerText = new Date(season.endDate).toLocaleDateString();
+
+            document.getElementById('detailDevGoal').innerText = season.devGoal || 'No goal set';
+            document.getElementById('detailPersonalGoal').innerText = season.personalGoal || 'No goal set';
+            document.getElementById('detailDevMicro').innerText = season.devMicroHabit || 'No micro-habit set';
+            document.getElementById('detailPersonalMicro').innerText = season.personalMicroHabit || 'No micro-habit set';
+
+            const devHabit = getHabitStatus('dev');
+            const personalHabit = getHabitStatus('personal');
+
+            const btnDev = document.getElementById('btnMicroDev');
+            btnDev.innerText = devHabit.done ? '✓ Completed Today' : 'Mark Complete Today';
+            btnDev.className = devHabit.done ? 'mt-3 w-full bg-zinc-900 text-white text-xs font-bold py-2 rounded-lg opacity-60' : 'mt-3 w-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold py-2 rounded-lg transition';
+
+            const btnPersonal = document.getElementById('btnMicroPersonal');
+            btnPersonal.innerText = personalHabit.done ? '✓ Completed Today' : 'Mark Complete Today';
+            btnPersonal.className = personalHabit.done ? 'mt-3 w-full bg-zinc-900 text-white text-xs font-bold py-2 rounded-lg opacity-60' : 'mt-3 w-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold py-2 rounded-lg transition';
+
+            renderBacklog();
+            renderDailyLogs();
+            lucide.createIcons();
+        }
+
+        function renderBacklog() {
+            const container = document.getElementById('backlogList');
+            const drawer = document.getElementById('backlogDrawer');
+            if (!container || !drawer) return;
+
+            const unpromoted = window.state.backlog.filter(b => !b.promoted);
+
+            if (window.state.backlogOpen) {
+                drawer.classList.remove('hidden');
+            } else {
+                drawer.classList.add('hidden');
+            }
+
+            if (unpromoted.length === 0) {
+                container.innerHTML = '<div class="text-xs text-zinc-400 italic text-center py-6">All ideas are currently in motion. Nothing parked here.</div>';
+            } else {
+                container.innerHTML = unpromoted.map(item => {
+                    return `
+                        <div class="flex items-center justify-between bg-zinc-50 border border-zinc-200 rounded-lg p-3">
+                            <span class="text-sm text-zinc-700 font-medium flex-1">${item.title}</span>
+                            <div class="flex items-center gap-1 ml-2">
+                                <button onclick="promoteBacklogToSeason('${item.id}', 'dev')" class="px-2 py-1 bg-zinc-200 text-zinc-700 text-[10px] font-bold rounded-md hover:bg-zinc-300 transition">Dev</button>
+                                <button onclick="promoteBacklogToSeason('${item.id}', 'personal')" class="px-2 py-1 bg-zinc-200 text-zinc-700 text-[10px] font-bold rounded-md hover:bg-zinc-300 transition">Personal</button>
+                                <button onclick="deleteBacklogItem('${item.id}', event)" class="p-1 hover:bg-zinc-200 rounded text-zinc-400 hover:text-zinc-900 transition">
+                                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const active = getActiveSeason();
+            if (active) {
+                const devSelect = document.getElementById('devBacklogSelect');
+                const personalSelect = document.getElementById('personalBacklogSelect');
+                if (devSelect) {
+                    devSelect.innerHTML = '<option value="">Load from backlog</option>' + unpromoted.map(b => `<option value="${b.id}">${b.title}</option>`).join('');
+                    devSelect.onchange = (e) => { if (e.target.value) promoteBacklogToSeason(e.target.value, 'dev'); };
+                }
+                if (personalSelect) {
+                    personalSelect.innerHTML = '<option value="">Load from backlog</option>' + unpromoted.map(b => `<option value="${b.id}">${b.title}</option>`).join('');
+                    personalSelect.onchange = (e) => { if (e.target.value) promoteBacklogToSeason(e.target.value, 'personal'); };
+                }
+            }
+            lucide.createIcons();
+        }
+
+        function renderDailyLogs() {
+            const container = document.getElementById('dailyLogList');
+            if (!container) return;
+
+            const active = getActiveSeason();
+            const logs = window.state.dailyLogs.filter(l => l.userId === window.state.user.uid && (!active || l.seasonId === active.id));
+
+            logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            if (logs.length === 0) {
+                container.innerHTML = '<div class="text-xs text-zinc-400 italic text-center py-4">No entries logged yet. Start by adding one above.</div>';
+            } else {
+                container.innerHTML = logs.map(log => {
+                    const isProduction = log.energyType === 'production';
+                    return `
+                        <div class="flex items-center justify-between ${isProduction ? 'bg-zinc-50 border-zinc-200' : 'bg-zinc-100 border-zinc-300'} border rounded-lg p-3">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-mono text-zinc-500">${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                <span class="text-xs font-bold ${isProduction ? 'bg-zinc-900 text-white' : 'bg-zinc-200 text-zinc-700'} px-2 py-0.5 rounded-full">${isProduction ? 'Production' : 'Consumption'}</span>
+                                <span class="text-sm text-zinc-700 font-medium">${log.task}</span>
+                            </div>
+                            <button onclick="deleteDailyLog('${log.id}', event)" class="p-1 hover:bg-zinc-200 rounded text-zinc-400 hover:text-zinc-900 transition">
+                                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+            lucide.createIcons();
+        }
+
+        function formatDateRange(start, end) {
+            const s = new Date(start);
+            const e = new Date(end);
+            const opts = { month: 'short', day: 'numeric' };
+            return `${s.toLocaleDateString('en-US', opts)} – ${e.toLocaleDateString('en-US', opts)}`;
+        }
+
+        window.renderSeasonsView = renderSeasonsView;
+    </script>
+
+    <script>
+        function formatTimeHMS(totalSeconds) {
+            const hrs = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            const mins = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            const secs = (totalSeconds % 60).toString().padStart(2, '0');
+            return `${hrs}:${mins}:${secs}`;
+        }
+
+        function formatHoursAndMins(totalSeconds) {
+            const hrs = Math.floor(totalSeconds / 3600);
+            const mins = Math.floor((totalSeconds % 3600) / 60);
+            if(hrs === 0) return `${mins}m`;
+            return `${hrs}h ${mins}m`;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-white');
+                btn.classList.add('text-gray-500', 'hover:bg-white/5', 'hover:text-gray-300');
+            });
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-white/10', 'text-white');
+                activeBtn.classList.remove('text-gray-500', 'hover:bg-white/5', 'hover:text-gray-300');
+            }
+            if(tabId === 'calendar') {
+                renderCalendarViews();
+            }
+            if(tabId === 'seasons') {
+                renderSeasonsView();
+            }
+        }
+
+        function showTab(tabId) {
+            document.getElementById('loginTab').classList.toggle('hidden', tabId !== 'loginTab');
+            document.getElementById('registerTab').classList.toggle('hidden', tabId !== 'registerTab');
+            
+            document.getElementById('btn-login-tab').className = `flex-1 py-2 rounded-md ${tabId === 'loginTab' ? 'bg-white font-semibold' : 'text-zinc-500 font-semibold'} text-sm`;
+            document.getElementById('btn-register-tab').className = `flex-1 py-2 rounded-md ${tabId === 'registerTab' ? 'bg-white font-semibold' : 'text-zinc-500 font-semibold'} text-sm`;
+            
+            document.getElementById('loginError').innerText = '';
+            document.getElementById('registerError').innerText = '';
+        }
+
+        function selectItemForTimer(id) {
+            window.state.selectedItemId = id;
+            renderDashboard(); 
+        }
+
+        function syncActiveMonitorPanel() {
+            const activeItem = window.state.items.find(i => i.id === window.state.selectedItemId);
+            const toggleBtn = document.getElementById('timerToggleBtn');
+            const logBtn = document.getElementById('timerLogBtn');
+            const titleDisplay = document.getElementById('activeItemTitle');
+            const displayTime = document.getElementById('timerDisplay');
+
+            if (!activeItem) {
+                titleDisplay.innerText = "No Item Selected";
+                displayTime.innerText = "00:00:00";
+                toggleBtn.disabled = true;
+                logBtn.disabled = true;
+                toggleBtn.className = "flex-1 bg-white border border-zinc-200 text-zinc-400 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed transition";
+                logBtn.className = "bg-zinc-900 text-white/40 font-semibold px-5 rounded-lg flex items-center justify-center cursor-not-allowed";
+                return;
+            }
+
+            titleDisplay.innerText = activeItem.name;
+            toggleBtn.disabled = false;
+            
+            let currentDisplaySeconds = activeItem.accumulatedSeconds;
+            if (activeItem.isRunning && activeItem.startedAt) {
+                currentDisplaySeconds += Math.floor((Date.now() - activeItem.startedAt) / 1000);
+            }
+            displayTime.innerText = formatTimeHMS(currentDisplaySeconds);
+
+            if (activeItem.isRunning) {
+                toggleBtn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Pause Monitor`;
+                toggleBtn.className = "flex-1 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition";
+                logBtn.disabled = false;
+                logBtn.className = "bg-zinc-900 hover:bg-zinc-800 text-white font-semibold px-5 rounded-lg flex items-center justify-center transition";
+            } else {
+                toggleBtn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Start Session`;
+                toggleBtn.className = "flex-1 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition";
+                
+                if (activeItem.accumulatedSeconds > 0) {
+                    logBtn.disabled = false;
+                    logBtn.className = "bg-zinc-900 hover:bg-zinc-800 text-white font-semibold px-5 rounded-lg flex items-center justify-center transition";
+                } else {
+                    logBtn.disabled = true;
+                    logBtn.className = "bg-zinc-900 text-white/40 font-semibold px-5 rounded-lg flex items-center justify-center cursor-not-allowed";
+                }
+            }
+            lucide.createIcons();
+        }
+
+        function renderDashboard() {
+            const container = document.getElementById('unifiedItemsList');
+            if(!container) return;
+            container.innerHTML = '';
+
+            let totalTopicSec = 0;
+            let totalHabitSec = 0;
+
+            const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+
+            window.state.items.forEach(item => {
+                const historicalSeconds = window.state.logs
+                    .filter(l => l.itemId === item.id && new Date(l.timestamp) >= monthStart)
+                    .reduce((acc, curr) => acc + curr.seconds, 0);
+                if (item.type === 'topic') totalTopicSec += historicalSeconds;
+                if (item.type === 'habit') totalHabitSec += historicalSeconds;
+            });
+
+            const metricsGrid = document.getElementById('highlightsGrid');
+            if(metricsGrid) {
+                metricsGrid.innerHTML = `
+                    <div class="bg-white border border-zinc-200 rounded-lg p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider font-bold text-zinc-400">Topics This Month</span>
+                            <h5 class="text-xl font-bold text-zinc-900 mt-1">${formatHoursAndMins(totalTopicSec)}</h5>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center mt-3"><i data-lucide="code-2" class="w-4 h-4"></i></div>
+                    </div>
+                    <div class="bg-white border border-zinc-200 rounded-lg p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider font-bold text-zinc-400">Habits This Month</span>
+                            <h5 class="text-xl font-bold text-zinc-900 mt-1">${formatHoursAndMins(totalHabitSec)}</h5>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center mt-3"><i data-lucide="activity" class="w-4 h-4"></i></div>
+                    </div>
+                    <div class="bg-white border border-zinc-200 rounded-lg p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider font-bold text-zinc-400">This Month Total</span>
+                            <h5 class="text-xl font-bold text-zinc-900 mt-1">${formatHoursAndMins(totalTopicSec + totalHabitSec)}</h5>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center mt-3"><i data-lucide="globe" class="w-4 h-4"></i></div>
+                    </div>
+                `;
+            }
+
+            if (window.state.items.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-xs text-zinc-400 italic">No tracking entries initialized yet. Add above.</div>`;
+                document.getElementById('statsSubHeader').innerText = "0 focus monitors active.";
+                syncActiveMonitorPanel();
+                lucide.createIcons();
+                return;
+            }
+
+            document.getElementById('statsSubHeader').innerText = `${window.state.items.length} focus monitors configured in local viewport structure.`;
+
+            window.state.items.forEach(item => {
+                const historicalSeconds = window.state.logs.filter(l => l.itemId === item.id).reduce((acc, curr) => acc + curr.seconds, 0);
+                const isSelected = window.state.selectedItemId === item.id;
+                
+                const elementRow = document.createElement('div');
+                elementRow.className = `grid grid-cols-12 items-center py-3 px-2 rounded-lg text-xs font-medium cursor-pointer transition ${isSelected ? 'bg-zinc-100 border border-zinc-200' : 'hover:bg-zinc-50'}`;
+                elementRow.onclick = () => selectItemForTimer(item.id);
+
+                elementRow.innerHTML = `
+                    <div class="col-span-5 flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full ${item.type === 'topic' ? 'bg-zinc-400' : 'bg-zinc-700'}"></div>
+                        <div>
+                            <div class="text-sm font-semibold text-zinc-900">${item.name}</div>
+                            <div class="text-[10px] text-zinc-400 capitalize">${item.type}</div>
+                        </div>
+                    </div>
+                    <div class="col-span-4 text-center font-mono text-zinc-500">
+                        <span id="live-timer-${item.id}">${formatTimeHMS(item.accumulatedSeconds)}</span>
+                        ${item.isRunning ? '<span class="ml-1.5 px-1.5 py-0.5 bg-zinc-900 text-white text-[9px] rounded-full font-sans font-bold">LIVE</span>' : ''}
+                    </div>
+                    <div class="col-span-2 text-right font-semibold text-zinc-700">${formatHoursAndMins(historicalSeconds)}</div>
+                    <div class="col-span-1 text-right">
+                        <button onclick="deleteItem('${item.id}', event)" class="p-1 hover:bg-zinc-200 rounded text-zinc-400 hover:text-zinc-900 transition">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(elementRow);
+            });
+
+            syncActiveMonitorPanel();
+            lucide.createIcons();
+        }
+
+        function renderAnalyticsViews() {
+            const weeklyContainer = document.getElementById('weeklyAnalyticsContainer');
+            const monthlyContainer = document.getElementById('monthlyAnalyticsContainer');
+            if(!weeklyContainer || !monthlyContainer) return;
+
+            weeklyContainer.innerHTML = '';
+            monthlyContainer.innerHTML = '';
+
+            const computeBarRange = (dayWindow) => {
+                const map = {};
+                const now = new Date();
+                const cutoff = new Date(now.getTime() - dayWindow * 24 * 60 * 60 * 1000);
+
+                window.state.items.forEach(i => { map[i.name] = 0; });
+
+                window.state.logs.forEach(log => {
+                    const logDate = new Date(log.timestamp);
+                    if(logDate >= cutoff) {
+                        const match = window.state.items.find(i => i.id === log.itemId);
+                        if(match) {
+                            map[match.name] = (map[match.name] || 0) + log.seconds;
+                        }
+                    }
+                });
+                return map;
+            };
+
+            const generateHTMLBars = (dataMap) => {
+                const total = Object.values(dataMap).reduce((a, b) => a + b, 0);
+                if(total === 0) return `<div class="text-xs text-gray-400 italic py-4 text-center">No structural log records verified in range context.</div>`;
+
+                return Object.entries(dataMap).map(([name, sec]) => {
+                    const pct = total > 0 ? Math.min(100, Math.round((sec / total) * 100)) : 0;
+                    return `
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-gray-700">${name}</span>
+                                <span class="text-gray-400">${formatHoursAndMins(sec)} (${pct}%)</span>
+                            </div>
+                            <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-zinc-900 h-full rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            weeklyContainer.innerHTML = generateHTMLBars(computeBarRange(7));
+            monthlyContainer.innerHTML = generateHTMLBars(computeBarRange(30));
+        }
+
+        /* DYNAMIC CALENDAR & GITHUB CONTRIBUTION GRID OPERATIONS */
+        function changeMonth(dir) {
+            window.state.currentCalendarDate.setMonth(window.state.currentCalendarDate.getMonth() + dir);
+            renderCalendarViews();
+        }
+
+        function renderCalendarViews() {
+            renderMonthlyGrid();
+            renderGitHubHeatmap();
+        }
+
+        function renderMonthlyGrid() {
+            const grid = document.getElementById('calendarGrid');
+            const label = document.getElementById('calendarMonthYear');
+            if(!grid || !label) return;
+
+            grid.innerHTML = '';
+            const d = window.state.currentCalendarDate;
+            const year = d.getFullYear();
+            const month = d.getMonth();
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            label.innerText = `${monthNames[month]} ${year}`;
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Padding blocks for off-grid initial offsets
+            for(let i=0; i<firstDayIndex; i++) {
+                const pad = document.createElement('div');
+                pad.className = "bg-zinc-50/40 min-h-[76px] rounded-lg border border-zinc-100/40";
+                grid.appendChild(pad);
+            }
+
+            for(let day=1; day<=totalDays; day++) {
+                const currentLoopDateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                
+                let habitSecToday = 0;
+                let topicSecToday = 0;
+                const habitBreakdown = {};
+                const topicBreakdown = {};
+                
+                window.state.logs.forEach(log => {
+                    if (log.timestamp.split('T')[0] === currentLoopDateStr) {
+                        const match = window.state.items.find(i => i.id === log.itemId);
+                        if (match) {
+                            if (match.type === 'habit') {
+                                habitSecToday += log.seconds;
+                                habitBreakdown[match.name] = (habitBreakdown[match.name] || 0) + log.seconds;
+                            } else {
+                                topicSecToday += log.seconds;
+                                topicBreakdown[match.name] = (topicBreakdown[match.name] || 0) + log.seconds;
+                            }
+                        }
+                    }
+                });
+                
+                const totalSecToday = habitSecToday + topicSecToday;
+
+                const dayCard = document.createElement('div');
+                dayCard.className = `min-h-[76px] p-2 rounded-lg border flex flex-col justify-between text-xs transition relative calendar-cell ${totalSecToday > 0 ? 'bg-zinc-100 border-zinc-200' : 'bg-white border-zinc-200/70 hover:bg-zinc-50'}`;
+                
+                let tooltipContent = '';
+                if (totalSecToday > 0) {
+                    const habitDetails = Object.entries(habitBreakdown).map(([name, sec]) => `${name}: ${formatHoursAndMins(sec)}`).join('\n');
+                    const topicDetails = Object.entries(topicBreakdown).map(([name, sec]) => `${name}: ${formatHoursAndMins(sec)}`).join('\n');
+                    tooltipContent = `Habits: ${formatHoursAndMins(habitSecToday)}\n${habitDetails}\n\nTopics: ${formatHoursAndMins(topicSecToday)}\n${topicDetails}\n\nTotal: ${formatHoursAndMins(totalSecToday)}`;
+                }
+                
+                dayCard.innerHTML = `
+                    <span class="font-bold text-zinc-400">${day}</span>
+                    ${totalSecToday > 0 ? `
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-1">
+                                <span class="bg-zinc-900 text-white font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-md w-fit">${formatHoursAndMins(habitSecToday)}</span>
+                                <span class="text-[8px] text-zinc-500 font-semibold">habits</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="bg-zinc-300 text-zinc-800 font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-md w-fit">${formatHoursAndMins(topicSecToday)}</span>
+                                <span class="text-[8px] text-zinc-500 font-semibold">topics</span>
+                            </div>
+                        </div>
+                    ` : '<span class="text-[9px] text-zinc-300 italic">No entry</span>'}
+                `;
+                dayCard.setAttribute('data-tooltip', tooltipContent);
+                grid.appendChild(dayCard);
+            }
+        }
+
+        function renderGitHubHeatmap() {
+            const grid = document.getElementById('heatmapGrid');
+            const header = document.getElementById('heatmapMonthsHeader');
+            if (!grid || !header) return;
+
+            grid.innerHTML = '';
+            header.innerHTML = '';
+
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            
+            // Build absolute bounds starting back from the exact same weekday 53 weeks ago
+            const startDate = new Date(currentYear, 0, 1); 
+            const startDayOffset = startDate.getDay(); 
+            startDate.setDate(startDate.getDate() - startDayOffset); // Backtrack to Sunday boundary
+
+            const totalDaysToRender = 53 * 7; 
+            const monthPositions = {};
+
+            // Accumulate operational analytics mapped directly into timestamp references
+            const habitAggregator = {};
+            const topicAggregator = {};
+            window.state.logs.forEach(log => {
+                const dateKey = log.timestamp.split('T')[0];
+                const match = window.state.items.find(i => i.id === log.itemId);
+                if (match) {
+                    if (match.type === 'habit') {
+                        habitAggregator[dateKey] = (habitAggregator[dateKey] || 0) + log.seconds;
+                    } else {
+                        topicAggregator[dateKey] = (topicAggregator[dateKey] || 0) + log.seconds;
+                    }
+                }
+            });
+
+            for (let i = 0; i < totalDaysToRender; i++) {
+                const workingDate = new Date(startDate.getTime());
+                workingDate.setDate(startDate.getDate() + i);
+
+                const dateKey = workingDate.getFullYear() + '-' + 
+                                String(workingDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                                String(workingDate.getDate()).padStart(2, '0');
+
+                const habitSec = habitAggregator[dateKey] || 0;
+                const topicSec = topicAggregator[dateKey] || 0;
+                const totalSec = habitSec + topicSec;
+                const hoursLogged = totalSec / 3600;
+
+                // Allocate positioning column indexes based on 7-day row layouts
+                const columnIdx = Math.floor(i / 7);
+                const monthName = workingDate.toLocaleString('en-US', { month: 'short' });
+
+                if (workingDate.getDate() <= 7 && workingDate.getDay() === 0) {
+                    monthPositions[columnIdx] = monthName;
+                }
+
+                const cell = document.createElement('div');
+                cell.className = 'w-3 h-3 rounded-[2px] transition heatmap-cell ';
+                
+                // Set native styling based on hours logged
+                if (hoursLogged === 0) {
+                    cell.className += 'bg-zinc-100 border border-zinc-200/50';
+                } else if (hoursLogged < 1) {
+                    cell.className += 'bg-zinc-300 border border-zinc-400';
+                } else if (hoursLogged < 3) {
+                    cell.className += 'bg-zinc-400 border border-zinc-500';
+                } else if (hoursLogged < 5) {
+                    cell.className += 'bg-zinc-600 border border-zinc-700';
+                } else {
+                    cell.className += 'bg-zinc-800 border border-zinc-900';
+                }
+
+                const readableDate = workingDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                let tooltipText = '';
+                if (totalSec > 0) {
+                    const habitDayLogs = window.state.logs.filter(log => log.timestamp.split('T')[0] === dateKey && window.state.items.find(i => i.id === log.itemId)?.type === 'habit');
+                    const topicDayLogs = window.state.logs.filter(log => log.timestamp.split('T')[0] === dateKey && window.state.items.find(i => i.id === log.itemId)?.type === 'topic');
+                    
+                    const habitDetails = {};
+                    habitDayLogs.forEach(log => {
+                        const item = window.state.items.find(i => i.id === log.itemId);
+                        if (item) habitDetails[item.name] = (habitDetails[item.name] || 0) + log.seconds;
+                    });
+                    const topicDetails = {};
+                    topicDayLogs.forEach(log => {
+                        const item = window.state.items.find(i => i.id === log.itemId);
+                        if (item) topicDetails[item.name] = (topicDetails[item.name] || 0) + log.seconds;
+                    });
+                    
+                    const habitLines = Object.entries(habitDetails).map(([name, sec]) => `${name}: ${formatHoursAndMins(sec)}`).join('\n');
+                    const topicLines = Object.entries(topicDetails).map(([name, sec]) => `${name}: ${formatHoursAndMins(sec)}`).join('\n');
+                    
+                    tooltipText = `Habits: ${formatHoursAndMins(habitSec)}\n${habitLines}\n\nTopics: ${formatHoursAndMins(topicSec)}\n${topicLines}\n\nTotal: ${formatHoursAndMins(totalSec)} on ${readableDate}`;
+                } else {
+                    tooltipText = `No time logged on ${readableDate}`;
+                }
+                cell.setAttribute('data-tooltip', tooltipText);
+                
+                grid.appendChild(cell);
+            }
+
+            // Build structural heading labels representing monthly grid column groupings
+            Object.entries(monthPositions).forEach(([colIdx, name]) => {
+                const span = document.createElement('span');
+                span.className = 'absolute font-semibold';
+                span.style.left = `${colIdx * 16}px`; 
+                span.innerText = name;
+                header.appendChild(span);
+            });
+        }
+
+        /* NOTES LIST SELECTION ARCHITECTURE */
+        function renderNotesList() {
+            const container = document.getElementById('notesList');
+            if(!container) return;
+            container.innerHTML = '';
+
+            if(window.state.notes.length === 0) {
+                container.innerHTML = `<div class="text-xs text-zinc-400 italic text-center py-8">No notes tracked. Click 'New Entry' above.</div>`;
+                return;
+            }
+
+            window.state.notes.forEach(note => {
+                const isSelected = window.state.selectedNoteId === note.id;
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-lg border text-left cursor-pointer transition relative ${isSelected ? 'bg-zinc-100 border-zinc-300' : 'bg-zinc-50/50 border-zinc-200/70 hover:bg-white'}`;
+                card.onclick = () => openNoteEditor(note.id);
+
+                card.innerHTML = `
+                    <div class="pr-6">
+                        <h4 class="text-sm font-bold text-zinc-900 truncate">${note.title || 'Untitled Concept'}</h4>
+                        <p class="text-xs text-zinc-400 line-clamp-2 mt-1 font-normal">${note.body ? note.body.replace(/<[^>]*>/g, '') : 'Empty note content...'}</p>
+                    </div>
+                    <button onclick="deleteNote('${note.id}', event)" class="absolute top-4 right-4 p-1 hover:bg-zinc-200/60 text-zinc-300 hover:text-zinc-900 rounded transition">
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function openNoteEditor(id) {
+            window.state.selectedNoteId = id;
+            const targetNote = window.state.notes.find(n => n.id === id);
+            if(!targetNote) return;
+
+            document.getElementById('noNotePlaceholder').classList.add('hidden');
+            const editor = document.getElementById('noteEditor');
+            editor.classList.remove('hidden');
+
+            document.getElementById('noteTitleInput').value = targetNote.title || '';
+            document.getElementById('noteBodyInput').innerHTML = targetNote.body || '';
+
+            renderNotesList();
+            lucide.createIcons();
+        }
+
+        window.formatNoteText = function(command) {
+            const editor = document.getElementById('noteBodyInput');
+            
+            if (command === 'bold') {
+                document.execCommand('bold', false, null);
+            } else if (command === 'italic') {
+                document.execCommand('italic', false, null);
+            } else if (command === 'ul' || command === 'ol') {
+                document.execCommand(command === 'ul' ? 'insertUnorderedList' : 'insertOrderedList', false, null);
+            }
+            editor.focus();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const loginIcons = document.querySelectorAll('#loginScreen [data-lucide]');
+            loginIcons.forEach(icon => lucide.createIcons({node: icon}));
+        });
+    </script>
+</body>
+</html>
