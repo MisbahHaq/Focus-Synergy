@@ -6,8 +6,6 @@ A calm, keyboard-friendly workspace for deep work — timers, habits, seasons, n
 
 License: MIT · Built with Tauri · Vanilla JS · Firebase · Rust
 
-Download · Ko-fi
-
 ## What is FocusHub?
 
 FocusHub is a productivity dashboard that helps you log deep work sessions, maintain consistency streaks, and audit your focus patterns — all from a single, clean interface.
@@ -44,7 +42,7 @@ Concretely, this means:
 | Lose data between devices | Real-time Firestore sync |
 | Require a server to function | Desktop app runs fully offline-capable via cached assets |
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 | --- | --- |
@@ -99,38 +97,9 @@ npx serve frontend
 python -m http.server 3000 frontend
 ```
 
-##  Configuration
-
-1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com).
-2. Enable **Authentication** (Email/Password **and** Google) and a **Firestore Database**.
-3. A safe default Firebase config is hard-coded in `frontend/dashboard.html`. To override it, add `env.js` at the repo root:
-
-```javascript
-window.__FIREBASE_CONFIG__ = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-```
-
-> `env.js` is git-ignored. Firebase web API keys are public by design — protect data with **Firestore Security Rules**.
-
 ### Desktop-only step (Google Sign-In)
 
 Tauri's webview runs on `http://localhost`. For Google login in the desktop app, add `localhost` to Firebase → **Authentication → Settings → Authorized domains**. The app auto-switches Google login from popup to redirect flow when running in Tauri — no code change needed.
-
-##  Deployment (Web)
-
-FocusHub is a static site. **Set the publish/build directory to `frontend/`** (the web files live there, not the repo root).
-
-| Host | Setting |
-| --- | --- |
-| Netlify / Vercel | Publish directory → `frontend` (no build command) |
-| Firebase Hosting | `firebase.json` public dir → `frontend` |
-| GitHub Pages | Pages source → `frontend` folder |
 
 ##  Contributing
 
@@ -147,10 +116,6 @@ Please keep the UX calm and low-friction — no feature should add cognitive loa
 ##  Support
 
 FocusHub is free and open-source, built to help you focus better, one session at a time.
-
-If it's helped you, a Ko-fi goes a long way:
-
-Support on Ko-fi
 
 ## 📄 License
 
