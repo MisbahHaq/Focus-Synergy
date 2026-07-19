@@ -6,7 +6,10 @@
     "static-server": "node scripts/static-server.js"
   },
   "dependencies": {
-    "firebase": "^12.13.0"
+    "firebase": "^12.13.0",
+    "ico": "^0.3.3",
+    "png-to-ico": "^3.0.2",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.5.0"
