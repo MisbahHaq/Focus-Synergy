@@ -3,6 +3,7 @@
     "tauri": "tauri",
     "dev": "tauri dev",
     "build": "tauri build",
+    "build:env": "node scripts/build-frontend.js",
     "static-server": "node scripts/static-server.js"
   },
   "dependencies": {

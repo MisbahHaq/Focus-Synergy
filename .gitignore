@@ -1,4 +1,6 @@
 env.js
+.env
+frontend/env.js
 node_modules/
 package-lock.json
 .DS_Store

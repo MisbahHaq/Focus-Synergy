@@ -435,15 +435,7 @@
     <script src="env.js"></script>
     <script type="module">
         if (!window.__FIREBASE_CONFIG__) {
-            window.__FIREBASE_CONFIG__ = {
-                apiKey: "AIzaSyC8uv1WfD9WgWIx3Ooawbm4sbDFIvzifd4",
-                authDomain: "timetable-a3aa5.firebaseapp.com",
-                projectId: "timetable-a3aa5",
-                storageBucket: "timetable-a3aa5.firebasestorage.app",
-                messagingSenderId: "943686608958",
-                appId: "1:943686608958:web:e804b0755ca4f2be42496f",
-                measurementId: "G-C3D66ZS6HL"
-            };
+            throw new Error("Firebase config missing. Run `npm run build:env` and ensure .env is populated (see .env.example).");
         }
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
