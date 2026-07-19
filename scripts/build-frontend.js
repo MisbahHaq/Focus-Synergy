@@ -36,7 +36,9 @@ function getEnv() {
   return { ...fileVars, ...process.env };
 }
 
-if (fs.existsSync(dotEnvPath)) {
+const hasEnvVars = Boolean(process.env.FIREBASE_API_KEY || process.env.FIREBASE_PROJECT_ID);
+
+if (fs.existsSync(dotEnvPath) || hasEnvVars) {
   const env = getEnv();
   const config = {
     apiKey: env.FIREBASE_API_KEY,
