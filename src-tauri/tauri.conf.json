@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "FocusHub",
+  "productName": "Focus Synergy",
   "version": "0.1.0",
-  "identifier": "com.focushub.desktop",
+  "identifier": "com.focussynergy.desktop",
   "build": {
     "frontendDist": "../frontend",
     "devUrl": "http://localhost:5173",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "FocusHub",
+        "title": "Focus Synergy",
         "width": 1200,
         "height": 800,
         "minWidth": 900,
@@ -42,6 +42,6 @@
     },
     "category": "Productivity",
     "shortDescription": "Track focus loops and build lasting habits",
-    "longDescription": "FocusHub is a lightweight desktop workspace to log deep work sessions, maintain consistency streaks, and audit productivity metrics."
+    "longDescription": "Focus Synergy is a lightweight desktop workspace to log deep work sessions, maintain consistency streaks, and audit productivity metrics."
   }
 }

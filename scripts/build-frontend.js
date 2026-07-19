@@ -36,10 +36,7 @@ function getEnv() {
   return { ...fileVars, ...process.env };
 }
 
-if (fs.existsSync(envSrc)) {
-  fs.copyFileSync(envSrc, envDest);
-  console.log("Copied env.js into frontend build context.");
-} else {
+if (fs.existsSync(dotEnvPath)) {
   const env = getEnv();
   const config = {
     apiKey: env.FIREBASE_API_KEY,
@@ -57,5 +54,10 @@ if (fs.existsSync(envSrc)) {
 
   const out = `window.__FIREBASE_CONFIG__ = ${JSON.stringify(config, null, 4)};\nwindow.__CLOUDINARY_CONFIG__ = ${JSON.stringify(cloudinary, null, 4)};\n`;
   fs.writeFileSync(envDest, out);
-  console.log("Generated frontend/env.js from .env or environment variables.");
+  console.log("Generated frontend/env.js from .env.");
+} else if (fs.existsSync(envSrc)) {
+  fs.copyFileSync(envSrc, envDest);
+  console.log("Copied env.js into frontend build context.");
+} else {
+  console.warn("No .env or env.js source found; frontend/env.js was not generated.");
 }

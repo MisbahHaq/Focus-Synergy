@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    focushub_lib::run()
+    focus_synergy_lib::run()
 }

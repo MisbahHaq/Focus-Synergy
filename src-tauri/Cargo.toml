@@ -1,12 +1,12 @@
 [package]
-name = "focushub"
+name = "focus_synergy"
 version = "0.1.0"
-description = "FocusHub desktop app"
+description = "Focus Synergy desktop app"
 authors = ["you"]
 edition = "2021"
 
 [lib]
-name = "focushub_lib"
+name = "focus_synergy_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
