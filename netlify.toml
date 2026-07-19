@@ -3,6 +3,12 @@
   command = "node ../scripts/build-frontend.js"
   publish = "."
 
+[build.environment]
+  # Firebase web config is client-side and safe to expose to the browser.
+  # These keys are intentionally shipped in env.js, so exclude them from
+  # Netlify's secrets scanner (which would otherwise fail the build).
+  SECRETS_SCAN_OMIT_KEYS = "FIREBASE_API_KEY,FIREBASE_AUTH_DOMAIN,FIREBASE_PROJECT_ID,FIREBASE_STORAGE_BUCKET,FIREBASE_MESSAGING_SENDER_ID,FIREBASE_APP_ID,FIREBASE_MEASUREMENT_ID,CLOUDINARY_CLOUD_NAME,CLOUDINARY_UPLOAD_PRESET"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
