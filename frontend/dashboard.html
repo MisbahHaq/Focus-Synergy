@@ -219,9 +219,9 @@
                     <div class="lg:col-span-5 bg-zinc-900 border border-zinc-800 rounded-xl p-6 text-white flex flex-col justify-between min-h-[380px] relative overflow-hidden">
                         <div>
                             <h3 class="text-lg font-bold">Quick Notes & Deep Dives</h3>
-                            <p class="text-zinc-400 text-xs mt-1 leading-relaxed">Synthesize active mental models or log reference data quickly during running review modules.</p>
+                            <p class="text-zinc-400 text-xs mt-1 leading-relaxed">Art and Love are the same Thing:.</p>
                             <div class="mt-6 space-y-4 border-l-2 border-white/10 pl-4 py-1">
-                                <p class="text-sm font-medium text-zinc-200 italic">"Remember to review system scalability parameters before finalizing deployment notes."</p>
+                                <p class="text-sm font-medium text-zinc-200 italic">"It's the process of seeing yourself in things that are not you."</p>
                             </div>
                         </div>
                         <button onclick="switchTab('notes')" class="mt-8 bg-white/10 hover:bg-white text-white hover:text-zinc-900 w-full font-bold text-sm py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 border border-white/5">
@@ -471,6 +471,19 @@
             backlogOpen: false
         };
 
+        const soundFiles = {
+            'nav tap': 'sounds/nav tap.mp3',
+            'timer start': 'sounds/timer start.wav'
+        };
+
+        window.playSound = function(name) {
+            const src = soundFiles[name];
+            if (!src) return;
+            const audio = new Audio(src);
+            audio.volume = 0.5;
+            audio.play().catch(() => {});
+        }
+
         let coreGlobalLoop = null;
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -685,6 +698,7 @@
                     startedAt: null
                 };
             } else {
+                playSound('timer start');
                 updatePayload = {
                     isRunning: true,
                     startedAt: now
@@ -708,6 +722,8 @@
             }
 
             if (totalLogged <= 0) return;
+
+            playSound('nav tap');
 
             try {
                 await addDoc(collection(db, 'users', window.state.user.uid, 'logs'), {
@@ -925,6 +941,8 @@
             const task = input.value.trim();
             if (!task) return;
 
+            playSound('nav tap');
+
             const active = getActiveSeason();
 
             try {
@@ -952,6 +970,7 @@
         };
 
         window.toggleMicroHabit = async function(type) {
+            playSound('nav tap');
             const active = getActiveSeason();
             if (!active) return;
 
@@ -1213,6 +1232,7 @@
         }
 
         function switchTab(tabId) {
+            playSound('nav tap');
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
             
