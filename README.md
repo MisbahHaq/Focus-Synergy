@@ -1,4 +1,4 @@
-# FocusHub
+# Focus Synergy
 
 **Track focus loops. Build lasting habits.**
 
