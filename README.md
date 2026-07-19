@@ -1,4 +1,4 @@
-# FocusHub
+# Focus Synergy
 
 **Track focus loops. Build lasting habits.**
 
@@ -6,41 +6,26 @@ A calm, keyboard-friendly workspace for deep work — timers, habits, seasons, n
 
 License: MIT · Built with Tauri · Vanilla JS · Firebase · Rust
 
-## What is FocusHub?
+## What is Focus Synergy?
 
-FocusHub is a productivity dashboard that helps you log deep work sessions, maintain consistency streaks, and audit your focus patterns — all from a single, clean interface.
+Focus Synergy is a productivity dashboard that helps you log deep work sessions, maintain consistency streaks, and audit your focus patterns — all from a single, clean interface.
 
 It's built around one truth: **tracking only works if it's frictionless.**
 
-No account setup friction — sign in with email or Google and your data syncs in real time via Firebase. It runs as a website or as a tiny native desktop app powered by Tauri.
+Sign in with email or Google and your data syncs in real time via Firebase. It runs as a website or as a tiny native desktop app powered by Tauri.
 
-##  Features
+## Features
 
--  **Instant capture** — add a topic or habit and press Enter. Two seconds, no mouse.
--  **Deep Work Timer** — start, pause, and log sessions per topic or habit with a live counter.
--  **Analytics Dashboard** — time allocation breakdowns with visual progress bars.
--  **Activity Calendar** — year-round focus heatmap and monthly calendar showing daily intensity.
--  **Seasons Planner** — structured 4–6 week focus blocks with professional/personal goals and daily energy logging.
--  **Notes Workspace** — rich-text notes editor that auto-saves as you type.
--  **Multi-provider Auth** — Email/Password and Google Sign-In.
--  **Live Sync** — every change mirrored to Firestore across devices in real time.
--  **Tiny desktop shell** — Tauri wraps the web app in a native window (~10 MB), far lighter than Electron.
--  **Responsive UI** — Tailwind CSS, looks good on phone and desktop.
-
-##  Built for focus
-
-Most productivity apps are built for people who just need a nudge. FocusHub is built for people whose attention is the scarce resource — so capturing and reviewing must be near-zero friction.
-
-Concretely, this means:
-
-| What most apps do | What FocusHub does |
-| --- | --- |
-| Scatter features across menus | One dashboard, everything one click away |
-| Force manual time logging | Live timer with one-tap log |
-| Hide long-term trends | Year heatmap + monthly calendar front and center |
-| Big, heavy desktop apps (Electron) | Tiny native Tauri shell (~10 MB) |
-| Lose data between devices | Real-time Firestore sync |
-| Require a server to function | Desktop app runs fully offline-capable via cached assets |
+- **Deep Work Timer** — create *Topics* or *Habits*, then start, pause, and log focused sessions with a live counter and per-item timers.
+- **Analytics & Highlights** — see time allocation and top focus metrics across your tracked items at a glance.
+- **Activity Calendar** — a year-long focus heatmap plus a navigable month calendar showing daily intensity.
+- **Seasons Planner** — structured 4–6 week focus blocks with a professional/personal goal, a daily "non-negotiable minimum" micro-habit, and a daily energy log (high-energy production vs. low-energy consumption).
+- **Not-Right-Now Backlog** — park ideas, frameworks, and hobbies so they don't distract your current season.
+- **Notes Workspace** — a rich-text notes editor (bold, italic, lists) that auto-saves as you type.
+- **Multi-provider Auth** — Email/Password and Google Sign-In.
+- **Live Sync** — every change is mirrored to Firestore in real time via snapshot listeners.
+- **Tiny desktop shell** — Tauri wraps the web app in a native window (~10 MB), far lighter than Electron.
+- **Responsive UI** — Tailwind CSS, looks good on phone and desktop.
 
 ## Tech Stack
 
@@ -48,43 +33,84 @@ Concretely, this means:
 | --- | --- |
 | Shell | Tauri 2 — native window, OS integrations |
 | Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+ modules) |
-| Styling | Tailwind CSS (CDN), Lucide Icons (CDN), Google Fonts |
-| Backend-as-a-Service | Firebase Auth + Firestore (loaded via ESM CDN) |
+| Styling | Tailwind CSS (CDN), Lucide Icons (CDN), Plus Jakarta Sans (Google Fonts) |
+| Backend-as-a-Service | Firebase Auth + Cloud Firestore (loaded via ESM CDN) |
+| Realtime | Firestore `onSnapshot` listeners per collection |
 | Core | Rust — Tauri runtime, IPC, window management |
 | Build Tooling | Node.js, `@tauri-apps/cli`, Cargo (Rust toolchain) |
 | Packaging | MSI + NSIS (Windows) · DMG (macOS) · .deb + AppImage (Linux) |
 
-##  Download
+## Project Structure
+
+```
+Focus Synergy/
+├── frontend/                # Static web app (vanilla JS)
+│   ├── index.html           # Marketing / landing page
+│   ├── dashboard.html       # Authenticated app shell (login, tracker, calendar, notes, seasons)
+│   ├── env.js               # Injected Firebase + Cloudinary config (generated; see .env.example)
+│   └── fav.png
+├── src-tauri/               # Rust desktop shell
+│   ├── src/
+│   │   ├── main.rs          # Entry point, calls the library run()
+│   │   └── lib.rs           # Tauri builder, plugins, context
+│   ├── tauri.conf.json      # App config (product name, identifier, window, bundling)
+│   ├── Cargo.toml           # Rust package manifest
+│   └── Cargo.lock
+├── scripts/
+│   ├── static-server.js     # Local dev server on :5173
+│   └── build-frontend.js    # Copies/generates frontend/env.js from .env
+├── package.json             # npm scripts (dev, build, tauri)
+└── README.md
+```
+
+## Data Model
+
+Data is stored per-user under `users/{uid}/` in Firestore, one collection per feature:
+
+- `items` — topics and habits with running timers (`accumulatedSeconds`, `startedAt`, `isRunning`)
+- `logs` — completed focus sessions (seconds logged per item)
+- `notes` — rich-text notes (title + body, auto-saved)
+- `seasons` — focus blocks with dev/personal goals and micro-habits
+- `backlog` — parked ideas
+- `dailyLogs` — per-day energy-mode activity entries
+- `habitLogs` — daily micro-habit completion
+
+## Download
 
 | Platform | Architecture | Download |
 | --- | --- | --- |
-| Windows | x64 | `FocusHub_0.1.0_x64-setup.exe` · `FocusHub_0.1.0_x64_en-US.msi` |
-| macOS | Apple Silicon (M1/M2/M3) | `FocusHub_0.1.0_aarch64.dmg` |
-| macOS | Intel | `FocusHub_0.1.0_x64.dmg` |
-| Linux | x86_64 | `FocusHub_0.1.0_amd64.deb` · `FocusHub_0.1.0_x86_64.AppImage` |
+| Windows | x64 | `FocusSynergy_0.1.0_x64-setup.exe` · `FocusSynergy_0.1.0_x64_en-US.msi` |
+| macOS | Apple Silicon (M1/M2/M3) | `FocusSynergy_0.1.0_aarch64.dmg` |
+| macOS | Intel | `FocusSynergy_0.1.0_x64.dmg` |
+| Linux | x86_64 | `FocusSynergy_0.1.0_amd64.deb` · `FocusSynergy_0.1.0_x86_64.AppImage` |
 
 > Build installers yourself with `npm run tauri build` — artifacts land in `src-tauri/target/release/bundle/`.
 >
 > Releases are not code-signed on Windows/macOS by default — you may see a SmartScreen/ Gatekeeper warning.
 
-##  Build from Source
+## Build from Source
 
 **Prerequisites:** Rust stable · Node.js 18+ · Cargo on PATH · WebView2 (Windows)
 
 ```bash
-# Clone
-git clone https://github.com/your-username/focus-hub.git
-cd focus-hub
+# 1. Configure Firebase credentials
+cp .env.example .env
+#    Edit .env with your Firebase project values. .env is git-ignored and is
+#    the ONLY place secrets live — frontend/env.js is generated from it and
+#    is also git-ignored, so no credentials are ever committed.
 
-# Install JS dependencies (Tauri CLI + dev server)
+# 2. Install JS dependencies (Tauri CLI)
 npm install
 
-# Run in dev mode (hot-reload UI + Rust backend)
-npm run tauri dev
+# 3. Generate frontend/env.js from .env
+npm run build:env
+
+# 4. Run in dev mode (hot-reload UI + Rust backend)
+npm run dev
 # or double-click dev.bat on Windows
 
-# Build a release binary + installer for your platform
-npm run tauri build
+# 5. Build a release binary + installer for your platform
+npm run build
 ```
 
 Built artifacts land in `src-tauri/target/release/bundle/`.
@@ -92,6 +118,8 @@ Built artifacts land in `src-tauri/target/release/bundle/`.
 ### Run the web app only
 
 ```bash
+# Generate env.js and serve the static frontend
+npm run build:env
 npx serve frontend
 # or
 python -m http.server 3000 frontend
@@ -101,9 +129,9 @@ python -m http.server 3000 frontend
 
 Tauri's webview runs on `http://localhost`. For Google login in the desktop app, add `localhost` to Firebase → **Authentication → Settings → Authorized domains**. The app auto-switches Google login from popup to redirect flow when running in Tauri — no code change needed.
 
-##  Contributing
+## Contributing
 
-FocusHub is open source and contributions are welcome.
+Focus Synergy is open source and contributions are welcome.
 
 1. Fork the repository.
 2. Create a feature branch: `git checkout -b feature/amazing-feature`.
@@ -113,10 +141,10 @@ FocusHub is open source and contributions are welcome.
 
 Please keep the UX calm and low-friction — no feature should add cognitive load to someone mid-focus-session.
 
-##  Support
+## Support
 
-FocusHub is free and open-source, built to help you focus better, one session at a time.
+Focus Synergy is free and open-source, built to help you focus better, one session at a time.
 
-## 📄 License
+## License
 
-MIT © FocusHub
+MIT © Focus Synergy

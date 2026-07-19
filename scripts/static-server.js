@@ -39,5 +39,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`FocusHub dev server running at http://localhost:${PORT}`);
+  console.log(`Focus Synergy dev server running at http://localhost:${PORT}`);
 });
