@@ -23,6 +23,12 @@
         [contenteditable] li { margin-bottom: 0.25rem; }
         [contenteditable] strong { font-weight: 600; }
         
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tab-enter { animation: tabFadeIn 0.25s ease-out; }
+        
         .heatmap-cell, .calendar-cell { position: relative; }
         .heatmap-cell:hover::after, .calendar-cell:hover::after {
             content: attr(data-tooltip);
@@ -1233,8 +1239,14 @@
 
         function switchTab(tabId) {
             playSound('nav tap');
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('tab-enter');
+            });
+            const target = document.getElementById(`tab-${tabId}`);
+            target.classList.remove('hidden');
+            void target.offsetWidth;
+            target.classList.add('tab-enter');
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-white/10', 'text-white');
