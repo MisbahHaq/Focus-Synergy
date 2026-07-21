@@ -5,7 +5,8 @@
     "build": "tauri build",
     "build:env": "node scripts/build-frontend.js",
     "static-server": "node scripts/static-server.js",
-    "deploy:rules": "firebase deploy --only firestore:rules"
+    "deploy:rules": "firebase deploy --only firestore:rules",
+    "test:rules": "firebase emulators:exec --only firestore 'node scripts/test-rules.js'"
   },
   "dependencies": {
     "firebase": "^12.13.0",
@@ -14,6 +15,7 @@
     "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.5.0"
+    "@tauri-apps/cli": "^2.5.0",
+    "@firebase/rules-unit-testing": "^3.0.0"
   }
 }

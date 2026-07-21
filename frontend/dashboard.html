@@ -730,6 +730,7 @@
         import { checkBreakReminder, resetTimerNotificationState } from './js/modules/notifications.js';
         import { calculateSeasonRetrospective, renderRetrospectiveModal } from './js/modules/retrospective.js';
         import { startOnboardingTour } from './js/modules/onboarding.js';
+        import { isTauriEnv } from './js/modules/export.js';
 
         const GOOGLE_USE_REDIRECT = typeof window !== "undefined" && !!window.__TAURI_INTERNALS__;
         const firebaseConfig = window.__FIREBASE_CONFIG__ || {};
@@ -762,6 +763,25 @@
             breakNotificationsEnabled: true,
             breakThresholdMinutes: 50,
             storageMode: getStorageMode()
+        };
+
+        window.checkForUpdates = async function() {
+            if (!isTauriEnv() || !window.__TAURI__?.updater?.checkUpdate) {
+                window.showToast('Update check is only available in the desktop app.', 'warning');
+                return;
+            }
+            try {
+                const { checkUpdate } = window.__TAURI__.updater;
+                const update = await checkUpdate();
+                if (update) {
+                    window.showToast(`Update available: ${update.version}. Restart to install.`, 'info');
+                } else {
+                    window.showToast('You are on the latest version.', 'info');
+                }
+            } catch (e) {
+                console.error('Update check failed:', e);
+                window.showToast('Failed to check for updates.', 'warning');
+            }
         };
 
         window.storageAdapter = null;
@@ -893,7 +913,7 @@
                 }));
                 
                 // Reconcile stale timers (> 24h)
-                checkStaleTimersOnLoad();
+                checkStaleTimersOnLoad().catch(e => console.error('Stale timer check failed:', e));
 
                 renderDashboard();
                 renderAnalyticsViews();
@@ -961,6 +981,15 @@
             if (coreGlobalLoop) clearInterval(coreGlobalLoop);
             coreGlobalLoop = setInterval(processingEngineCycle, 200);
 
+            // Silent startup update check for desktop app
+            if (isTauriEnv() && window.__TAURI__?.updater?.checkUpdate) {
+                window.__TAURI__.updater.checkUpdate().then(update => {
+                    if (update) {
+                        window.showToast(`Update available: ${update.version}. Restart to install.`, 'info');
+                    }
+                }).catch(() => {});
+            }
+
             // Check onboarding tour flag
             const hasSeen = localStorage.getItem(`onboarding_seen_${user.uid}`);
             if (!hasSeen) {
@@ -970,19 +999,16 @@
             }
         }
 
-        function checkStaleTimersOnLoad() {
+        async function checkStaleTimersOnLoad() {
             const now = Date.now();
-            window.state.items.forEach(async (item) => {
-                if (item.isRunning && item.startedAt) {
-                    const elapsedMs = now - item.startedAt;
-                    if (elapsedMs > 24 * 60 * 60 * 1000) { // > 24 hours
-                        const confirmReset = confirm(`Timer for "${item.name || 'Item'}" was left running for > 24 hours. Do you want to reset this session?`);
-                        if (confirmReset && window.storageAdapter) {
-                            await window.storageAdapter.stopItemTimer(item.id, item.accumulatedSeconds || 0);
-                        }
-                    }
+            const staleItems = window.state.items.filter(item => item.isRunning && item.startedAt && (now - item.startedAt) > 24 * 60 * 60 * 1000);
+            
+            for (const item of staleItems) {
+                const confirmReset = confirm(`Timer for "${item.name || 'Item'}" was left running for > 24 hours. Do you want to reset this session?`);
+                if (confirmReset && window.storageAdapter) {
+                    await window.storageAdapter.stopItemTimer(item.id, item.accumulatedSeconds || 0);
                 }
-            });
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -1258,19 +1284,6 @@
                 }
             });
         }
-                if (item.isRunning && item.startedAt) {
-                    const elapsed = Math.floor((now - item.startedAt) / 1000);
-                    const localLiveSec = item.accumulatedSeconds + elapsed;
-                    
-                    const counterNode = document.getElementById(`live-timer-${item.id}`);
-                    if(counterNode) counterNode.innerText = formatTimeHMS(localLiveSec);
-                    
-                    if (window.state.selectedItemId === item.id) {
-                        document.getElementById('timerDisplay').innerText = formatTimeHMS(localLiveSec);
-                    }
-                }
-            });
-        }
 
         function getActiveSeason() {
             return window.state.seasons.find(s => s.isActive && !s.isCompleted) || null;
@@ -1489,6 +1502,13 @@
                             <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">App Guidance</label>
                             <button onclick="closeAppSettingsModal(); replayTutorialTour();" class="w-full py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-semibold text-zinc-800 dark:text-zinc-200 rounded-xl transition flex items-center justify-center gap-2">
                                 <i data-lucide="compass" class="w-4 h-4"></i> Replay Onboarding Tutorial
+                            </button>
+                        </div>
+
+                        <div class="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3">
+                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Updates</label>
+                            <button onclick="checkForUpdates()" class="w-full py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-semibold text-zinc-800 dark:text-zinc-200 rounded-xl transition flex items-center justify-center gap-2">
+                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Check for Updates
                             </button>
                         </div>
                     </div>
