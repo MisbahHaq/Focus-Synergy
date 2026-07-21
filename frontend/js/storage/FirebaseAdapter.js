@@ -16,15 +16,28 @@ export class FirebaseAdapter extends StorageAdapter {
     }
 
     async init() {
-        if (this.db) {
+        if (this.db && !this._persistenceAttempted) {
+            this._persistenceAttempted = true;
             try {
-                await enableIndexedDbPersistence(this.db);
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('persistence-timeout')), 4000)
+                );
+                Promise.race([
+                    enableIndexedDbPersistence(this.db),
+                    timeoutPromise
+                ]).catch((err) => {
+                    if (err.message !== 'persistence-timeout') {
+                        if (err.code === 'failed-precondition') {
+                            console.warn('Firestore offline persistence failed: Multiple tabs open');
+                        } else if (err.code === 'unimplemented') {
+                            console.warn('Firestore offline persistence is not supported by this browser');
+                        } else {
+                            console.warn('Firestore offline persistence failed:', err.message || err.code);
+                        }
+                    }
+                });
             } catch (err) {
-                if (err.code === 'failed-precondition') {
-                    console.warn('Firestore offline persistence failed: Multiple tabs open');
-                } else if (err.code === 'unimplemented') {
-                    console.warn('Firestore offline persistence is not supported by this browser');
-                }
+                console.warn('Firestore offline persistence setup error:', err);
             }
         }
         return true;

@@ -16,7 +16,7 @@ export async function requestNotificationPermission() {
 
     if (isTauriEnv()) {
         try {
-            const { isPermissionGranted, requestPermission } = window.__TAURI__.notification || {};
+            const { isPermissionGranted, requestPermission } = window.__TAURI__?.notification || {};
             if (isPermissionGranted && requestPermission) {
                 let granted = await isPermissionGranted();
                 if (!granted) {

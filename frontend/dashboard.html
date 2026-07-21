@@ -34,6 +34,31 @@
         }
         .tab-enter { animation: tabFadeIn 0.25s ease-out; }
         
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        .dark .spinner {
+            border-color: rgba(0,0,0,0.2);
+            border-top-color: currentColor;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.97); }
+        }
+        .screen-enter { animation: fadeIn 0.4s ease-out; }
+        .screen-exit { animation: fadeOut 0.25s ease-in forwards; }
+        
         .heatmap-cell, .calendar-cell { position: relative; }
         .heatmap-cell:hover::after, .calendar-cell:hover::after {
             content: attr(data-tooltip);
@@ -315,8 +340,9 @@
             </div>
 
             <div id="localLoginOption" class="hidden mb-4">
-                <button onclick="enterLocalMode()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition shadow-sm">
-                    <i data-lucide="play" class="w-4 h-4"></i> Enter Workspace (Local Mode)
+                <button onclick="enterLocalMode()" id="btn-local" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition shadow-sm">
+                    <span id="local-spinner" class="spinner hidden"></span>
+                    <span id="local-text">Enter Workspace (Local Mode)</span>
                 </button>
             </div>
 
@@ -330,8 +356,9 @@
                         <label class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Password</label>
                         <input type="password" id="loginPassword" class="w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100" placeholder="••••••••">
                     </div>
-                    <button onclick="login()" class="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition">
-                        <i data-lucide="log-in" class="w-4 h-4"></i> Sign In
+                    <button onclick="login()" id="btn-login" class="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition">
+                        <span id="login-spinner" class="spinner hidden"></span>
+                        <span id="login-text">Sign In</span>
                     </button>
                     <div class="relative my-2">
                         <div class="absolute inset-0 flex items-center">
@@ -341,9 +368,9 @@
                             <span class="px-2 bg-white dark:bg-zinc-900 text-zinc-400 dark:text-zinc-500">or</span>
                         </div>
                     </div>
-                    <button onclick="googleLogin()" class="w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition hover:bg-zinc-50 dark:hover:bg-zinc-700">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                        Continue with Google
+                    <button onclick="googleLogin()" id="btn-google" class="w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition hover:bg-zinc-50 dark:hover:bg-zinc-700">
+                        <span id="google-spinner" class="spinner hidden"></span>
+                        <span id="google-text">Continue with Google</span>
                     </button>
                 </div>
                 <div id="loginError" class="text-red-500 dark:text-red-400 text-xs mt-3 text-center"></div>
@@ -363,8 +390,9 @@
                         <label class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Password</label>
                         <input type="password" id="registerPassword" class="w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100" placeholder="Min 6 characters">
                     </div>
-                    <button onclick="register()" class="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition">
-                        <i data-lucide="user-plus" class="w-4 h-4"></i> Create Account
+                    <button onclick="register()" id="btn-register" class="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition">
+                        <span id="register-spinner" class="spinner hidden"></span>
+                        <span id="register-text">Create Account</span>
                     </button>
                 </div>
                 <div id="registerError" class="text-red-500 dark:text-red-400 text-xs mt-3 text-center"></div>
@@ -878,21 +906,20 @@
         };
 
         window.enterLocalMode = async function() {
+            setAuthLoading(true);
+            window._pendingLoginAnimation = true;
             setStorageMode('local');
             window.state.storageMode = 'local';
             const dummyUser = { uid: 'local_user', displayName: 'Local Device User', email: 'local@device' };
             await bootWorkspaceForUser(dummyUser);
         };
 
-        async function bootWorkspaceForUser(user) {
+        async function bootWorkspaceForUser(user, animate = false) {
             window.state.user = user;
             const loginScreen = document.getElementById('loginScreen');
             const mainApp = document.getElementById('mainApp');
             const userDisplay = document.getElementById('userDisplay');
 
-            loginScreen.classList.add('hidden');
-            mainApp.classList.remove('hidden');
-            
             const isLocal = window.state.storageMode === 'local';
             userDisplay.innerHTML = `<span class="text-xs font-semibold">${user.displayName || user.email} ${isLocal ? '(Local)' : ''}</span> <button onclick="logout()" class="ml-2 text-red-400 dark:text-red-500 hover:text-red-300 text-xs underline">Exit</button>`;
 
@@ -907,6 +934,17 @@
             unsubscribers.forEach(u => typeof u === 'function' && u());
             unsubscribers = [];
 
+            // Throttle expensive renders so multiple subscription callbacks don't
+            // hammer the DOM during the initial boot sync.
+            const renderTimers = {};
+            function scheduleRender(key, fn, delay = 80) {
+                if (renderTimers[key]) clearTimeout(renderTimers[key]);
+                renderTimers[key] = setTimeout(() => {
+                    renderTimers[key] = null;
+                    fn();
+                }, delay);
+            }
+
             // 1. Subscribe to Items
             const unsubItems = window.storageAdapter.subscribe('items', (data) => {
                 const userItems = isLocal ? data : data.filter(item => item.userId === user.uid);
@@ -916,56 +954,55 @@
                     accumulatedSeconds: item.accumulatedSeconds || 0
                 }));
                 
-                // Reconcile stale timers (> 24h)
                 checkStaleTimersOnLoad().catch(e => console.error('Stale timer check failed:', e));
 
-                renderDashboard();
-                renderAnalyticsViews();
-                renderCalendarViews();
+                scheduleRender('dashboard', renderDashboard);
+                scheduleRender('analytics', renderAnalyticsViews);
+                scheduleRender('calendar', renderCalendarViews);
             });
             unsubscribers.push(unsubItems);
 
             // 2. Subscribe to Logs
             const unsubLogs = window.storageAdapter.subscribe('logs', (data) => {
                 window.state.logs = isLocal ? data : data.filter(log => log.userId === user.uid);
-                renderDashboard();
-                renderAnalyticsViews();
-                renderCalendarViews();
+                scheduleRender('dashboard', renderDashboard);
+                scheduleRender('analytics', renderAnalyticsViews);
+                scheduleRender('calendar', renderCalendarViews);
             });
             unsubscribers.push(unsubLogs);
 
             // 3. Subscribe to Notes
             const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
                 window.state.notes = isLocal ? data : data.filter(n => n.userId === user.uid);
-                renderNotesList();
+                scheduleRender('notes', renderNotesList);
             });
             unsubscribers.push(unsubNotes);
 
             // 4. Subscribe to Seasons
             const unsubSeasons = window.storageAdapter.subscribe('seasons', (data) => {
                 window.state.seasons = isLocal ? data : data.filter(s => s.userId === user.uid);
-                renderSeasonsView();
+                scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubSeasons);
 
             // 5. Subscribe to Backlog
             const unsubBacklog = window.storageAdapter.subscribe('backlog', (data) => {
                 window.state.backlog = isLocal ? data : data.filter(b => b.userId === user.uid);
-                renderSeasonsView();
+                scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubBacklog);
 
             // 6. Subscribe to Daily Logs
             const unsubDaily = window.storageAdapter.subscribe('dailyLogs', (data) => {
                 window.state.dailyLogs = isLocal ? data : data.filter(d => d.userId === user.uid);
-                renderSeasonsView();
+                scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubDaily);
 
             // 7. Subscribe to Habit Logs
             const unsubHabit = window.storageAdapter.subscribe('habitLogs', (data) => {
                 window.state.habitLogs = isLocal ? data : data.filter(h => h.userId === user.uid);
-                renderSeasonsView();
+                scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubHabit);
 
@@ -974,7 +1011,6 @@
                 if (window.state.storageMode !== 'cloud' || !activeTimerDoc) return;
                 const localRunningItem = window.state.items.find(i => i.isRunning);
                 if (localRunningItem && activeTimerDoc.itemId && activeTimerDoc.itemId !== localRunningItem.id) {
-                    // Another device took over timer
                     localRunningItem.isRunning = false;
                     renderDashboard();
                     window.showToast("Timer moved to another device.", "warning");
@@ -984,6 +1020,29 @@
 
             if (coreGlobalLoop) clearInterval(coreGlobalLoop);
             coreGlobalLoop = setInterval(processingEngineCycle, 200);
+
+            // Show main app immediately — don't block on animation.
+            // Kick off a quick non-blocking cross-fade so the transition feels smooth
+            // without delaying data binding or subscriptions.
+            loginScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+
+            if (animate) {
+                loginScreen.classList.remove('screen-exit');
+                loginScreen.style.opacity = '';
+                mainApp.classList.remove('screen-enter');
+                mainApp.style.opacity = '0';
+                requestAnimationFrame(() => {
+                    mainApp.style.transition = 'opacity 150ms ease-out';
+                    mainApp.style.opacity = '';
+                    setTimeout(() => {
+                        mainApp.style.transition = '';
+                    }, 200);
+                });
+            } else {
+                loginScreen.classList.remove('screen-exit');
+                mainApp.classList.remove('screen-enter');
+            }
 
             // Silent startup update check for desktop app
             if (isTauriEnv() && window.__TAURI__?.updater?.checkUpdate) {
@@ -1019,6 +1078,7 @@
             lucide.createIcons();
             applySavedTheme();
             showTab('loginTab');
+            saveButtonOriginals();
             updateOnlineStatus(navigator.onLine);
 
             const initialMode = getStorageMode();
@@ -1027,7 +1087,10 @@
             if (auth) {
                 onAuthStateChanged(auth, async (user) => {
                     if (user && window.state.storageMode === 'cloud') {
-                        await bootWorkspaceForUser(user);
+                        const animate = !!window._pendingLoginAnimation;
+                        window._pendingLoginAnimation = false;
+                        setAuthLoading(false);
+                        await bootWorkspaceForUser(user, animate);
                     } else if (window.state.storageMode !== 'local') {
                         document.getElementById('loginScreen').classList.remove('hidden');
                         document.getElementById('mainApp').classList.add('hidden');
@@ -1042,6 +1105,8 @@
             const password = document.getElementById('registerPassword').value;
             
             try {
+                setAuthLoading(true);
+                window._pendingLoginAnimation = true;
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(cred.user, { displayName: name });
                 await setDoc(doc(db, 'users', cred.user.uid), { name: name, email: email });
@@ -1051,20 +1116,57 @@
                 document.getElementById('registerError').innerText = '';
             } catch (e) {
                 document.getElementById('registerError').innerText = e.message;
+                window._pendingLoginAnimation = false;
+                setAuthLoading(false);
             }
         };
+
+        function setAuthLoading(loading) {
+            const map = [
+                ['btn-login', 'login-spinner', 'login-text', 'Signing in...'],
+                ['btn-register', 'register-spinner', 'register-text', 'Creating account...'],
+                ['btn-google', 'google-spinner', 'google-text', 'Connecting...'],
+                ['btn-local', 'local-spinner', 'local-text', 'Loading workspace...']
+            ];
+            map.forEach(([btnId, spinnerId, textId, loadingText]) => {
+                const btn = document.getElementById(btnId);
+                const spinner = document.getElementById(spinnerId);
+                const text = document.getElementById(textId);
+                if (!btn || !spinner || !text) return;
+                btn.disabled = loading;
+                spinner.classList.toggle('hidden', !loading);
+                text.textContent = loading ? loadingText : text.dataset.original || text.textContent;
+            });
+        }
+
+        function saveButtonOriginals() {
+            const map = [
+                ['login-text', 'Sign In'],
+                ['register-text', 'Create Account'],
+                ['google-text', 'Continue with Google'],
+                ['local-text', 'Enter Workspace (Local Mode)']
+            ];
+            map.forEach(([id, original]) => {
+                const el = document.getElementById(id);
+                if (el) el.dataset.original = original;
+            });
+        }
 
         window.login = async function() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
             try {
+                setAuthLoading(true);
+                window._pendingLoginAnimation = true;
                 await signInWithEmailAndPassword(auth, email, password);
                 document.getElementById('loginEmail').value = '';
                 document.getElementById('loginPassword').value = '';
                 document.getElementById('loginError').innerText = '';
             } catch (e) {
                 document.getElementById('loginError').innerText = e.message;
+                window._pendingLoginAnimation = false;
+                setAuthLoading(false);
             }
         };
 
@@ -1101,6 +1203,8 @@
         window.googleLogin = async function() {
             const provider = new GoogleAuthProvider();
             try {
+                setAuthLoading(true);
+                window._pendingLoginAnimation = true;
                 if (GOOGLE_USE_REDIRECT) {
                     await signInWithRedirect(auth, provider);
                 } else {
@@ -1108,6 +1212,8 @@
                 }
             } catch (e) {
                 document.getElementById('loginError').innerText = e.message;
+                window._pendingLoginAnimation = false;
+                setAuthLoading(false);
             }
         };
 
