@@ -36,9 +36,7 @@
       "icons/icon.icns"
     ],
     "windows": {
-      "certificateThumbprint": "TODO_WINDOWS_SIGNING_THUMBPRINT",
-      "digestAlgorithm": "sha256",
-      "timestampUrl": "http://timestamp.digicert.com",
+      "certificateThumbprint": null,
       "nsis": {
         "installerIcon": "icons/icon.ico"
       }
