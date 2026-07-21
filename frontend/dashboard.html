@@ -715,6 +715,10 @@
         </main>
     </div>
 
+    <script>
+        window.__FIREBASE_CONFIG__ = window.__FIREBASE_CONFIG__ || {};
+        window.__CLOUDINARY_CONFIG__ = window.__CLOUDINARY_CONFIG__ || {};
+    </script>
     <script src="env.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -2396,6 +2400,10 @@
             const loginIcons = document.querySelectorAll('#loginScreen [data-lucide]');
             loginIcons.forEach(icon => lucide.createIcons({node: icon}));
         });
+
+        if (typeof window.login !== 'function') {
+            console.error('Focus Synergy: Module script failed to load. Ensure you are serving via HTTP (npm run static-server) and that env.js exists.');
+        }
     </script>
 </body>
 </html>
