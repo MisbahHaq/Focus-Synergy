@@ -15,11 +15,8 @@ It's built around one truth: **tracking only works if it's frictionless.**
 Sign in with email or Google for real-time cloud sync via Firebase, or choose **Local Mode** to keep data entirely on your device. It runs as a website or a native desktop app powered by Tauri.
 
 ## Screenshots
+<img width="720" height="450" alt="Scene" src="https://github.com/user-attachments/assets/5025512d-946f-4432-8680-3f0631b7c4a9" />
 
-![Dashboard Timer](docs/screenshots/dashboard.svg)
-![Activity Heatmap](docs/screenshots/heatmap.svg)
-![Seasons Planner](docs/screenshots/seasons.svg)
-![Notes Workspace](docs/screenshots/notes.svg)
 
 ## Features
 
