@@ -12,7 +12,14 @@ Focus Synergy is a productivity dashboard that helps you log deep work sessions,
 
 It's built around one truth: **tracking only works if it's frictionless.**
 
-Sign in with email or Google and your data syncs in real time via Firebase. It runs as a website or as a tiny native desktop app powered by Tauri.
+Sign in with email or Google for real-time cloud sync via Firebase, or choose **Local Mode** to keep data entirely on your device. It runs as a website or a native desktop app powered by Tauri.
+
+## Screenshots
+
+![Dashboard Timer](docs/screenshots/dashboard.svg)
+![Activity Heatmap](docs/screenshots/heatmap.svg)
+![Seasons Planner](docs/screenshots/seasons.svg)
+![Notes Workspace](docs/screenshots/notes.svg)
 
 ## Features
 

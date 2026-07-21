@@ -36,12 +36,29 @@
       "icons/icon.icns"
     ],
     "windows": {
+      "certificateThumbprint": "TODO_WINDOWS_SIGNING_THUMBPRINT",
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "http://timestamp.digicert.com",
       "nsis": {
         "installerIcon": "icons/icon.ico"
       }
     },
+    "macOS": {
+      "signingIdentity": "TODO_APPLE_DEVELOPMENT_IDENTITY",
+      "entitlements": null,
+      "exceptionDomain": null,
+      "providerShortName": null
+    },
     "category": "Productivity",
     "shortDescription": "Track focus loops and build lasting habits",
     "longDescription": "Focus Synergy is a lightweight desktop workspace to log deep work sessions, maintain consistency streaks, and audit productivity metrics."
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "TODO_TAURI_UPDATER_PUBLIC_KEY",
+      "endpoints": [
+        "https://github.com/MisbahHaq/Focus-Synergy/releases/latest/download/latest.json"
+      ]
+    }
   }
 }
