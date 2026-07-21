@@ -18,6 +18,7 @@ export class FirebaseAdapter extends StorageAdapter {
     async init() {
         if (this.db && !this._persistenceAttempted) {
             this._persistenceAttempted = true;
+            console.log('[FB-ADAPTER] init() starting, attempting IndexedDB persistence');
             try {
                 const timeoutPromise = new Promise((_, reject) =>
                     setTimeout(() => reject(new Error('persistence-timeout')), 4000)
@@ -25,21 +26,26 @@ export class FirebaseAdapter extends StorageAdapter {
                 Promise.race([
                     enableIndexedDbPersistence(this.db),
                     timeoutPromise
-                ]).catch((err) => {
+                ]).then(() => {
+                    console.log('[FB-ADAPTER] IndexedDB persistence enabled successfully');
+                }).catch((err) => {
                     if (err.message !== 'persistence-timeout') {
                         if (err.code === 'failed-precondition') {
-                            console.warn('Firestore offline persistence failed: Multiple tabs open');
+                            console.warn('[FB-ADAPTER] Firestore offline persistence failed: Multiple tabs open');
                         } else if (err.code === 'unimplemented') {
-                            console.warn('Firestore offline persistence is not supported by this browser');
+                            console.warn('[FB-ADAPTER] Firestore offline persistence is not supported by this browser');
                         } else {
-                            console.warn('Firestore offline persistence failed:', err.message || err.code);
+                            console.warn('[FB-ADAPTER] Firestore offline persistence failed:', err.message || err.code);
                         }
+                    } else {
+                        console.warn('[FB-ADAPTER] persistence setup timed out after 4s, continuing without it');
                     }
                 });
             } catch (err) {
-                console.warn('Firestore offline persistence setup error:', err);
+                console.warn('[FB-ADAPTER] Firestore offline persistence setup error:', err);
             }
         }
+        console.log('[FB-ADAPTER] init() returning true');
         return true;
     }
 
@@ -242,16 +248,25 @@ export class FirebaseAdapter extends StorageAdapter {
             ref = this._getUserColRef(colName);
         }
 
+        console.log(`[FB-ADAPTER] subscribe('${colName}') setting up onSnapshot, uid:`, this.uid);
+        const startTime = Date.now();
         const unsub = onSnapshot(ref, (snapshot) => {
+            const elapsed = Date.now() - startTime;
             if (snapshot.docs) {
                 const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                console.log(`[FB-ADAPTER] subscribe('${colName}') snapshot received after ${elapsed}ms, docs: ${data.length}`);
                 callback(data);
             } else if (snapshot.exists) {
+                console.log(`[FB-ADAPTER] subscribe('${colName}') single doc snapshot received after ${elapsed}ms, exists:`, snapshot.exists);
                 callback({ id: snapshot.id, ...snapshot.data() });
             } else {
+                console.log(`[FB-ADAPTER] subscribe('${colName}') empty snapshot received after ${elapsed}ms`);
                 callback(null);
             }
+        }, (error) => {
+            console.error(`[FB-ADAPTER] subscribe('${colName}') onSnapshot ERROR:`, error);
         });
+        console.log(`[FB-ADAPTER] subscribe('${colName}') onSnapshot listener registered`);
         return unsub;
     }
 }
