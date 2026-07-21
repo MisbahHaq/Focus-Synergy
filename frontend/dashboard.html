@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -291,9 +291,33 @@
                 <h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Focus Synergy</h1>
             </div>
             
+            <div class="mb-4 bg-zinc-100 dark:bg-zinc-800/80 p-2.5 rounded-xl text-xs space-y-2 border border-zinc-200 dark:border-zinc-700">
+                <div class="font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 text-[10px] flex justify-between items-center">
+                    <span>Data Storage Mode</span>
+                    <span id="currentStorageModeBadge" class="bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 px-1.5 py-0.5 rounded font-mono">Cloud</span>
+                </div>
+                <div class="flex gap-2">
+                    <button id="mode-btn-cloud" onclick="selectStorageMode('cloud')" class="flex-1 py-1.5 px-2 rounded-lg font-semibold border flex items-center justify-center gap-1.5 transition bg-white dark:bg-zinc-700 border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 shadow-xs">
+                        <i data-lucide="cloud" class="w-3.5 h-3.5"></i> Cloud Sync
+                    </button>
+                    <button id="mode-btn-local" onclick="selectStorageMode('local')" class="flex-1 py-1.5 px-2 rounded-lg font-semibold border flex items-center justify-center gap-1.5 transition bg-transparent border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
+                        <i data-lucide="hard-drive" class="w-3.5 h-3.5"></i> Local Only
+                    </button>
+                </div>
+                <div id="local-mode-warning" class="hidden text-[11px] text-amber-600 dark:text-amber-400 leading-tight pt-1 border-t border-zinc-200 dark:border-zinc-700/60">
+                    Local mode keeps data on this device only. It is not encrypted at rest beyond your OS's disk protections, and is not backed up automatically — use Export for backups.
+                </div>
+            </div>
+
             <div class="flex gap-2 mb-6 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg">
                 <button onclick="showTab('loginTab')" id="btn-login-tab" class="flex-1 py-2 rounded-md bg-white dark:bg-zinc-700 font-semibold text-sm text-zinc-900 dark:text-zinc-100">Login</button>
                 <button onclick="showTab('registerTab')" id="btn-register-tab" class="flex-1 py-2 rounded-md text-zinc-500 dark:text-zinc-400 font-semibold text-sm">Register</button>
+            </div>
+
+            <div id="localLoginOption" class="hidden mb-4">
+                <button onclick="enterLocalMode()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition shadow-sm">
+                    <i data-lucide="play" class="w-4 h-4"></i> Enter Workspace (Local Mode)
+                </button>
             </div>
 
             <div id="loginTab">
@@ -382,20 +406,25 @@
                 <div class="flex items-center gap-3 pl-2">
                     <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Habits & Topics Explorer</h1>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div id="syncStatusIndicator" class="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-semibold" title="Data Sync Status">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="syncStatusText">Online</span>
+                    </div>
+
+                    <button onclick="handleExportData()" class="p-2.5 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl text-gray-600 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-semibold" title="Export Data (JSON/CSV)">
+                        <i data-lucide="download" class="w-4 h-4"></i> Export
+                    </button>
+
+                    <button onclick="openAppSettingsModal()" class="p-2.5 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl text-gray-600 dark:text-zinc-300 transition" title="Settings">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                    </button>
+
                     <button onclick="toggleTheme()" id="themeToggle" class="p-2.5 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl text-gray-600 dark:text-zinc-300 transition relative" title="Cycle theme">
                         <i data-lucide="sun" class="w-4 h-4 dark-icon hidden"></i>
                         <i data-lucide="music" class="w-4 h-4 midnight-icon hidden"></i>
                         <i data-lucide="moon" class="w-4 h-4 light-icon"></i>
                     </button>
-                    <!-- <div class="relative hidden sm:block">
-                        <i data-lucide="search" class="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                        <input type="text" placeholder="Search insights..." class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-gray-400 dark:focus:border-zinc-500 w-48 transition text-zinc-900 dark:text-zinc-100">
-                    </div> -->
-                    <!-- <button class="p-2.5 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl text-gray-600 dark:text-zinc-300 transition relative">
-                        <i data-lucide="bell" class="w-4 h-4"></i>
-                        <span class="w-1.5 h-1.5 bg-rose-500 rounded-full absolute top-2 right-2"></span>
-                    </button> -->
                     <div class="flex items-center gap-2 border-l border-gray-200 dark:border-zinc-600 pl-4">
                          <div id="userDisplay" class="flex items-center gap-2 text-zinc-900 dark:text-zinc-100"></div>
                      </div>
@@ -688,10 +717,6 @@
 
     <script src="env.js"></script>
     <script type="module">
-        if (!window.__FIREBASE_CONFIG__) {
-            throw new Error("Firebase config missing. Run `npm run build:env` and ensure .env is populated (see .env.example).");
-        }
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
             getFirestore, collection, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy
@@ -700,13 +725,24 @@
             getAuth, getRedirectResult, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithRedirect, updateProfile 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+        import { createStorageAdapter, getStorageMode, setStorageMode, migrateStorageData } from './js/storage/index.js';
+        import { exportAllData } from './js/modules/export.js';
+        import { checkBreakReminder, resetTimerNotificationState } from './js/modules/notifications.js';
+        import { calculateSeasonRetrospective, renderRetrospectiveModal } from './js/modules/retrospective.js';
+        import { startOnboardingTour } from './js/modules/onboarding.js';
+
         const GOOGLE_USE_REDIRECT = typeof window !== "undefined" && !!window.__TAURI_INTERNALS__;
+        const firebaseConfig = window.__FIREBASE_CONFIG__ || {};
 
-        const firebaseConfig = window.__FIREBASE_CONFIG__;
+        let app = null;
+        let db = null;
+        let auth = null;
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        if (firebaseConfig.apiKey) {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        }
 
         window.state = {
             user: null,
@@ -722,8 +758,14 @@
             selectedSeasonId: null,
             currentCalendarDate: new Date(),
             dailyEnergyMode: 'production',
-            backlogOpen: false
+            backlogOpen: false,
+            breakNotificationsEnabled: true,
+            breakThresholdMinutes: 50,
+            storageMode: getStorageMode()
         };
+
+        window.storageAdapter = null;
+        let unsubscribers = [];
 
         const soundFiles = {
             'nav tap': 'sounds/nav-tap.mp3',
@@ -738,72 +780,230 @@
             audio.play().catch(() => {});
         }
 
+        window.showToast = function(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl shadow-xl border text-xs font-bold transition-all transform translate-y-0 opacity-100 flex items-center gap-2 ${type === 'warning' ? 'bg-amber-900 text-amber-100 border-amber-700' : 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-700'}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
         let coreGlobalLoop = null;
+
+        // Immediately force recalculation on visibility change & window focus to eliminate timer drift
+        window.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                processingEngineCycle();
+            }
+        });
+        window.addEventListener('focus', () => {
+            processingEngineCycle();
+        });
+
+        // Online / Offline network status listener
+        window.addEventListener('online', () => updateOnlineStatus(true));
+        window.addEventListener('offline', () => updateOnlineStatus(false));
+
+        function updateOnlineStatus(isOnline) {
+            const statusDot = document.getElementById('syncStatusIndicator');
+            const statusText = document.getElementById('syncStatusText');
+            if (statusDot && statusText) {
+                if (isOnline) {
+                    statusDot.className = 'flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-semibold';
+                    statusText.innerText = 'Online';
+                } else {
+                    statusDot.className = 'flex items-center gap-1.5 px-2.5 py-1 bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 rounded-full text-xs font-semibold';
+                    statusText.innerText = 'Offline';
+                }
+            }
+        }
+
+        window.selectStorageMode = function(mode) {
+            window.state.storageMode = mode;
+            setStorageMode(mode);
+            
+            const badge = document.getElementById('currentStorageModeBadge');
+            const warning = document.getElementById('local-mode-warning');
+            const localLogin = document.getElementById('localLoginOption');
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const cloudBtn = document.getElementById('mode-btn-cloud');
+            const localBtn = document.getElementById('mode-btn-local');
+
+            if (mode === 'local') {
+                if (badge) badge.innerText = 'Local';
+                if (warning) warning.classList.remove('hidden');
+                if (localLogin) localLogin.classList.remove('hidden');
+                if (loginTab) loginTab.classList.add('hidden');
+                if (registerTab) registerTab.classList.add('hidden');
+
+                if (cloudBtn) cloudBtn.className = 'flex-1 py-1.5 px-2 rounded-lg font-semibold border flex items-center justify-center gap-1.5 transition bg-transparent border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100';
+                if (localBtn) localBtn.className = 'flex-1 py-1.5 px-2 rounded-lg font-semibold border flex items-center justify-center gap-1.5 transition bg-white dark:bg-zinc-700 border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 shadow-xs';
+            } else {
+                if (badge) badge.innerText = 'Cloud';
+                if (warning) warning.classList.add('hidden');
+                if (localLogin) localLogin.classList.add('hidden');
+                if (loginTab) loginTab.classList.remove('hidden');
+
+                if (cloudBtn) cloudBtn.className = 'flex-1 py-1.5 px-2 rounded-lg font-semibold border flex items-center justify-center gap-1.5 transition bg-white dark:bg-zinc-700 border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 shadow-xs';
+                if (localBtn) localBtn.className = 'flex-1 py-1.5 px-2 rounded-lg font-semibold border flex items-center justify-center gap-1.5 transition bg-transparent border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100';
+            }
+        };
+
+        window.enterLocalMode = async function() {
+            setStorageMode('local');
+            window.state.storageMode = 'local';
+            const dummyUser = { uid: 'local_user', displayName: 'Local Device User', email: 'local@device' };
+            await bootWorkspaceForUser(dummyUser);
+        };
+
+        async function bootWorkspaceForUser(user) {
+            window.state.user = user;
+            const loginScreen = document.getElementById('loginScreen');
+            const mainApp = document.getElementById('mainApp');
+            const userDisplay = document.getElementById('userDisplay');
+
+            loginScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            
+            const isLocal = window.state.storageMode === 'local';
+            userDisplay.innerHTML = `<span class="text-xs font-semibold">${user.displayName || user.email} ${isLocal ? '(Local)' : ''}</span> <button onclick="logout()" class="ml-2 text-red-400 dark:text-red-500 hover:text-red-300 text-xs underline">Exit</button>`;
+
+            // Initialize StorageAdapter
+            window.storageAdapter = await createStorageAdapter(
+                window.state.storageMode,
+                db,
+                () => window.state.user?.uid
+            );
+
+            // Clean previous listeners
+            unsubscribers.forEach(u => typeof u === 'function' && u());
+            unsubscribers = [];
+
+            // 1. Subscribe to Items
+            const unsubItems = window.storageAdapter.subscribe('items', (data) => {
+                const userItems = isLocal ? data : data.filter(item => item.userId === user.uid);
+                window.state.items = userItems.map(item => ({
+                    ...item,
+                    isRunning: item.isRunning || false,
+                    accumulatedSeconds: item.accumulatedSeconds || 0
+                }));
+                
+                // Reconcile stale timers (> 24h)
+                checkStaleTimersOnLoad();
+
+                renderDashboard();
+                renderAnalyticsViews();
+                renderCalendarViews();
+            });
+            unsubscribers.push(unsubItems);
+
+            // 2. Subscribe to Logs
+            const unsubLogs = window.storageAdapter.subscribe('logs', (data) => {
+                window.state.logs = isLocal ? data : data.filter(log => log.userId === user.uid);
+                renderDashboard();
+                renderAnalyticsViews();
+                renderCalendarViews();
+            });
+            unsubscribers.push(unsubLogs);
+
+            // 3. Subscribe to Notes
+            const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
+                window.state.notes = isLocal ? data : data.filter(n => n.userId === user.uid);
+                renderNotesList();
+            });
+            unsubscribers.push(unsubNotes);
+
+            // 4. Subscribe to Seasons
+            const unsubSeasons = window.storageAdapter.subscribe('seasons', (data) => {
+                window.state.seasons = isLocal ? data : data.filter(s => s.userId === user.uid);
+                renderSeasonsView();
+            });
+            unsubscribers.push(unsubSeasons);
+
+            // 5. Subscribe to Backlog
+            const unsubBacklog = window.storageAdapter.subscribe('backlog', (data) => {
+                window.state.backlog = isLocal ? data : data.filter(b => b.userId === user.uid);
+                renderSeasonsView();
+            });
+            unsubscribers.push(unsubBacklog);
+
+            // 6. Subscribe to Daily Logs
+            const unsubDaily = window.storageAdapter.subscribe('dailyLogs', (data) => {
+                window.state.dailyLogs = isLocal ? data : data.filter(d => d.userId === user.uid);
+                renderSeasonsView();
+            });
+            unsubscribers.push(unsubDaily);
+
+            // 7. Subscribe to Habit Logs
+            const unsubHabit = window.storageAdapter.subscribe('habitLogs', (data) => {
+                window.state.habitLogs = isLocal ? data : data.filter(h => h.userId === user.uid);
+                renderSeasonsView();
+            });
+            unsubscribers.push(unsubHabit);
+
+            // 8. Subscribe to Meta ActiveTimer (Multi-Device Single Active Timer Invariant)
+            const unsubActiveTimer = window.storageAdapter.subscribe('meta/activeTimer', (activeTimerDoc) => {
+                if (window.state.storageMode !== 'cloud' || !activeTimerDoc) return;
+                const localRunningItem = window.state.items.find(i => i.isRunning);
+                if (localRunningItem && activeTimerDoc.itemId && activeTimerDoc.itemId !== localRunningItem.id) {
+                    // Another device took over timer
+                    localRunningItem.isRunning = false;
+                    renderDashboard();
+                    window.showToast("Timer moved to another device.", "warning");
+                }
+            });
+            unsubscribers.push(unsubActiveTimer);
+
+            if (coreGlobalLoop) clearInterval(coreGlobalLoop);
+            coreGlobalLoop = setInterval(processingEngineCycle, 200);
+
+            // Check onboarding tour flag
+            const hasSeen = localStorage.getItem(`onboarding_seen_${user.uid}`);
+            if (!hasSeen) {
+                startOnboardingTour(() => {
+                    localStorage.setItem(`onboarding_seen_${user.uid}`, 'true');
+                });
+            }
+        }
+
+        function checkStaleTimersOnLoad() {
+            const now = Date.now();
+            window.state.items.forEach(async (item) => {
+                if (item.isRunning && item.startedAt) {
+                    const elapsedMs = now - item.startedAt;
+                    if (elapsedMs > 24 * 60 * 60 * 1000) { // > 24 hours
+                        const confirmReset = confirm(`Timer for "${item.name || 'Item'}" was left running for > 24 hours. Do you want to reset this session?`);
+                        if (confirmReset && window.storageAdapter) {
+                            await window.storageAdapter.stopItemTimer(item.id, item.accumulatedSeconds || 0);
+                        }
+                    }
+                }
+            });
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             applySavedTheme();
             showTab('loginTab');
-            onAuthStateChanged(auth, (user) => {
-                window.state.user = user;
-                const loginScreen = document.getElementById('loginScreen');
-                const mainApp = document.getElementById('mainApp');
-                const userDisplay = document.getElementById('userDisplay');
-                
-                if (user) {
-                    loginScreen.classList.add('hidden');
-                    mainApp.classList.remove('hidden');
-                    userDisplay.innerHTML = `<span>${user.displayName || user.email}</span> <button onclick="logout()" class="ml-2 text-red-400 dark:text-red-500 hover:text-red-300 dark:hover:text-red-400 text-xs underline">Logout</button>`;
-                    
-                    syncCollection('items', 'createdAt', (data) => {
-                        window.state.items = data.filter(item => item.userId === user.uid).map(item => ({
-                            ...item,
-                            isRunning: item.isRunning || false,
-                            accumulatedSeconds: item.accumulatedSeconds || 0
-                        }));
-                        renderDashboard();
-                        renderAnalyticsViews();
-                        renderCalendarViews();
-                    });
+            updateOnlineStatus(navigator.onLine);
 
-                    syncCollection('logs', 'timestamp', (data) => {
-                        window.state.logs = data.filter(log => log.userId === user.uid);
-                        renderDashboard();
-                        renderAnalyticsViews();
-                        renderCalendarViews();
-                    });
+            const initialMode = getStorageMode();
+            window.selectStorageMode(initialMode);
 
-                    syncCollection('notes', 'updatedAt', (data) => {
-                        window.state.notes = data.filter(note => note.userId === user.uid);
-                        renderNotesList();
-                    });
-
-                    syncCollection('seasons', 'createdAt', (data) => {
-                        window.state.seasons = data.filter(s => s.userId === user.uid);
-                        renderSeasonsView();
-                    });
-
-                    syncCollection('backlog', 'createdAt', (data) => {
-                        window.state.backlog = data.filter(b => b.userId === user.uid);
-                        renderSeasonsView();
-                    });
-
-                    syncCollection('dailyLogs', 'timestamp', (data) => {
-                        window.state.dailyLogs = data.filter(log => log.userId === user.uid);
-                        renderSeasonsView();
-                    });
-
-                    syncCollection('habitLogs', 'date', (data) => {
-                        window.state.habitLogs = data.filter(h => h.userId === user.uid);
-                        renderSeasonsView();
-                    });
-
-                    coreGlobalLoop = setInterval(processingEngineCycle, 200);
-                } else {
-                    loginScreen.classList.remove('hidden');
-                    mainApp.classList.add('hidden');
-                }
-            });
+            if (auth) {
+                onAuthStateChanged(auth, async (user) => {
+                    if (user && window.state.storageMode === 'cloud') {
+                        await bootWorkspaceForUser(user);
+                    } else if (window.state.storageMode !== 'local') {
+                        document.getElementById('loginScreen').classList.remove('hidden');
+                        document.getElementById('mainApp').classList.add('hidden');
+                    }
+                });
+            }
         });
 
         window.register = async function() {
@@ -905,7 +1105,7 @@
             const nameInput = document.getElementById('newItemName');
             const typeInput = document.getElementById('newItemType');
             const name = nameInput.value.trim();
-            if (!name) return;
+            if (!name || !window.storageAdapter) return;
 
             const newItem = {
                 name: name,
@@ -918,60 +1118,48 @@
             };
 
             try {
-                await addDoc(collection(db, 'users', window.state.user.uid, 'items'), newItem);
+                await window.storageAdapter.createItem(newItem);
                 nameInput.value = '';
             } catch(e) {
-                console.error("Firestore error during item allocation", e);
+                console.error("Storage error creating item", e);
             }
         };
 
         window.deleteItem = async function(id, event) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             if (window.state.selectedItemId === id) {
                 window.state.selectedItemId = null;
                 syncActiveMonitorPanel();
             }
             try {
-                await deleteDoc(doc(db, 'users', window.state.user.uid, 'items', id));
+                await window.storageAdapter.deleteItem(id);
             } catch(e) {
-                console.error("Firestore cleanup error processing item extraction", e);
+                console.error("Storage error deleting item", e);
             }
         };
 
         window.toggleTimer = async function() {
             const activeItem = window.state.items.find(i => i.id === window.state.selectedItemId);
-            if (!activeItem) return;
+            if (!activeItem || !window.storageAdapter) return;
 
             const now = Date.now();
-            let updatePayload = {};
 
             if (activeItem.isRunning) {
                 const elapsed = Math.floor((now - activeItem.startedAt) / 1000);
-                updatePayload = {
-                    accumulatedSeconds: activeItem.accumulatedSeconds + elapsed,
-                    isRunning: false,
-                    startedAt: null
-                };
+                const newAccumulated = (activeItem.accumulatedSeconds || 0) + elapsed;
+                await window.storageAdapter.stopItemTimer(activeItem.id, newAccumulated);
+                resetTimerNotificationState(activeItem.id);
             } else {
                 playSound('timer start');
-                updatePayload = {
-                    isRunning: true,
-                    startedAt: now
-                };
-            }
-
-            try {
-                await updateDoc(doc(db, 'users', window.state.user.uid, 'items', activeItem.id), updatePayload);
-            } catch(e) {
-                console.error("Timer engine sync calculation failed to record", e);
+                await window.storageAdapter.startItemTimer(activeItem.id, now);
             }
         };
 
         window.logTimer = async function() {
             const activeItem = window.state.items.find(i => i.id === window.state.selectedItemId);
-            if (!activeItem) return;
+            if (!activeItem || !window.storageAdapter) return;
 
-            let totalLogged = activeItem.accumulatedSeconds;
+            let totalLogged = activeItem.accumulatedSeconds || 0;
             if (activeItem.isRunning && activeItem.startedAt) {
                 totalLogged += Math.floor((Date.now() - activeItem.startedAt) / 1000);
             }
@@ -981,24 +1169,22 @@
             playSound('nav tap');
 
             try {
-                await addDoc(collection(db, 'users', window.state.user.uid, 'logs'), {
+                await window.storageAdapter.createLog({
                     itemId: activeItem.id,
                     timestamp: new Date().toISOString(),
                     seconds: totalLogged,
                     userId: window.state.user.uid
                 });
 
-                await updateDoc(doc(db, 'users', window.state.user.uid, 'items', activeItem.id), {
-                    accumulatedSeconds: 0,
-                    isRunning: false,
-                    startedAt: null
-                });
+                await window.storageAdapter.stopItemTimer(activeItem.id, 0);
+                resetTimerNotificationState(activeItem.id);
             } catch(e) {
-                console.error("Execution cycle aborted during operational logging", e);
+                console.error("Error logging timer session", e);
             }
         };
 
         window.createNewNote = async function() {
+            if (!window.storageAdapter) return;
             const defaultNote = {
                 title: 'Untitled Concept',
                 body: '',
@@ -1006,48 +1192,72 @@
                 userId: window.state.user.uid
             };
             try {
-                const docRef = await addDoc(collection(db, 'users', window.state.user.uid, 'notes'), defaultNote);
-                window.state.selectedNoteId = docRef.id;
+                const created = await window.storageAdapter.upsertNote(defaultNote);
+                window.state.selectedNoteId = created.id;
                 renderNotesList();
-                openNoteEditor(docRef.id);
+                openNoteEditor(created.id);
             } catch(e) {
-                console.error("Failed structural construction of notes element", e);
+                console.error("Failed creating new note", e);
             }
         };
 
         window.saveCurrentNote = async function() {
-            if (!window.state.selectedNoteId) return;
+            if (!window.state.selectedNoteId || !window.storageAdapter) return;
             const titleInput = document.getElementById('noteTitleInput').value;
             const bodyInput = document.getElementById('noteBodyInput').innerHTML;
 
             try {
-                await updateDoc(doc(db, 'users', window.state.user.uid, 'notes', window.state.selectedNoteId), {
+                await window.storageAdapter.upsertNote({
+                    id: window.state.selectedNoteId,
                     title: titleInput,
                     body: bodyInput,
-                    updatedAt: new Date().toISOString()
+                    updatedAt: new Date().toISOString(),
+                    userId: window.state.user.uid
                 });
             } catch(e) {
-                console.error("Draft compilation dropped by backend handler", e);
+                console.error("Error saving note", e);
             }
         };
 
         window.deleteNote = async function(id, event) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             if (window.state.selectedNoteId === id) {
                 window.state.selectedNoteId = null;
                 document.getElementById('noteEditor').classList.add('hidden');
                 document.getElementById('noNotePlaceholder').classList.remove('hidden');
             }
             try {
-                await deleteDoc(doc(db, 'users', window.state.user.uid, 'notes', id));
+                await window.storageAdapter.deleteNote(id);
             } catch(e) {
-                console.error("Notes execution matrix dropped targeting document deletion", e);
+                console.error("Error deleting note", e);
             }
         };
 
         function processingEngineCycle() {
             const now = Date.now();
             window.state.items.forEach(item => {
+                if (item.isRunning && item.startedAt) {
+                    const elapsed = Math.floor((now - item.startedAt) / 1000);
+                    const localLiveSec = (item.accumulatedSeconds || 0) + elapsed;
+                    
+                    const counterNode = document.getElementById(`live-timer-${item.id}`);
+                    if (counterNode) counterNode.innerText = formatTimeHMS(localLiveSec);
+                    
+                    if (window.state.selectedItemId === item.id) {
+                        const mainTimer = document.getElementById('timerDisplay');
+                        if (mainTimer) mainTimer.innerText = formatTimeHMS(localLiveSec);
+                    }
+
+                    // Session break reminder check
+                    checkBreakReminder(
+                        item,
+                        localLiveSec,
+                        window.state.breakThresholdMinutes,
+                        window.state.breakNotificationsEnabled
+                    );
+                }
+            });
+        }
                 if (item.isRunning && item.startedAt) {
                     const elapsed = Math.floor((now - item.startedAt) / 1000);
                     const localLiveSec = item.accumulatedSeconds + elapsed;
@@ -1098,9 +1308,9 @@
 
             try {
                 if (getActiveSeason()) {
-                    await updateDoc(doc(db, 'users', window.state.user.uid, 'seasons', getActiveSeason().id), { isActive: false });
+                    await window.storageAdapter.updateSeason(getActiveSeason().id, { isActive: false });
                 }
-                await addDoc(collection(db, 'users', window.state.user.uid, 'seasons'), newSeason);
+                await window.storageAdapter.createSeason(newSeason);
             } catch(e) {
                 console.error("Season initialization failed:", e);
             }
@@ -1118,11 +1328,11 @@
 
         window.completeCurrentSeason = async function() {
             const active = getActiveSeason();
-            if (!active) return;
+            if (!active || !window.storageAdapter) return;
             if (!confirm('Mark this season as complete? This will finalize your current focus block.')) return;
 
             try {
-                await updateDoc(doc(db, 'users', window.state.user.uid, 'seasons', active.id), {
+                await window.storageAdapter.updateSeason(active.id, {
                     isActive: false,
                     isCompleted: true,
                     completedAt: new Date().toISOString()
@@ -1142,10 +1352,10 @@
         window.addBacklogItem = async function() {
             const input = document.getElementById('backlogInput');
             const title = input.value.trim();
-            if (!title) return;
+            if (!title || !window.storageAdapter) return;
 
             try {
-                await addDoc(collection(db, 'users', window.state.user.uid, 'backlog'), {
+                await window.storageAdapter.createBacklogEntry({
                     title,
                     userId: window.state.user.uid,
                     createdAt: new Date().toISOString(),
@@ -1158,9 +1368,10 @@
         };
 
         window.deleteBacklogItem = async function(id, event) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
+            if (!window.storageAdapter) return;
             try {
-                await deleteDoc(doc(db, 'users', window.state.user.uid, 'backlog', id));
+                await window.storageAdapter.deleteBacklogEntry(id);
             } catch(e) {
                 console.error("Backlog deletion failed:", e);
             }
@@ -1168,7 +1379,7 @@
 
         window.promoteBacklogToSeason = async function(backlogId, goalType) {
             const item = window.state.backlog.find(b => b.id === backlogId);
-            if (!item) return;
+            if (!item || !window.storageAdapter) return;
 
             const active = getActiveSeason();
             if (!active) {
@@ -1179,10 +1390,150 @@
             const field = goalType === 'dev' ? 'devGoal' : 'personalGoal';
 
             try {
-                await updateDoc(doc(db, 'users', window.state.user.uid, 'seasons', active.id), { [field]: item.title });
-                await deleteDoc(doc(db, 'users', window.state.user.uid, 'backlog', backlogId));
+                await window.storageAdapter.updateSeason(active.id, { [field]: item.title });
+                await window.storageAdapter.deleteBacklogEntry(backlogId);
             } catch(e) {
                 console.error("Promotion failed:", e);
+            }
+        };
+
+        // --- Retrospective Modal Handler ---
+        window.openSeasonRetrospective = function(seasonId) {
+            const season = window.state.seasons.find(s => s.id === seasonId) || getActiveSeason();
+            if (!season) {
+                alert("No season available to summarize.");
+                return;
+            }
+            const retroData = calculateSeasonRetrospective(
+                season,
+                window.state.logs,
+                window.state.dailyLogs,
+                window.state.habitLogs
+            );
+            const html = renderRetrospectiveModal(retroData);
+            const existing = document.getElementById('retroModalOverlay');
+            if (existing) existing.remove();
+            
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            document.body.appendChild(div.firstElementChild);
+            lucide.createIcons();
+        };
+
+        window.closeRetroModal = function() {
+            const overlay = document.getElementById('retroModalOverlay');
+            if (overlay) overlay.remove();
+        };
+
+        // --- Export Data Handler ---
+        window.handleExportData = async function() {
+            if (!window.storageAdapter) {
+                alert("Storage adapter not ready.");
+                return;
+            }
+            try {
+                await exportAllData(window.storageAdapter, window.state.items);
+                window.showToast("Data exported successfully!");
+            } catch(e) {
+                console.error("Export error:", e);
+                window.showToast("Data export failed", "warning");
+            }
+        };
+
+        // --- Settings Modal Handler ---
+        window.openAppSettingsModal = function() {
+            const existing = document.getElementById('appSettingsModalOverlay');
+            if (existing) existing.remove();
+
+            const isLocal = window.state.storageMode === 'local';
+            const modal = document.createElement('div');
+            modal.id = 'appSettingsModalOverlay';
+            modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 tab-enter';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-md w-full p-6 space-y-6 shadow-2xl relative">
+                    <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-3">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                            <i data-lucide="settings" class="w-5 h-5"></i> Workspace Settings
+                        </h3>
+                        <button onclick="closeAppSettingsModal()" class="p-1 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <div class="space-y-4 text-xs">
+                        <div class="space-y-1.5">
+                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Active Storage Mode</label>
+                            <div class="flex justify-between items-center bg-zinc-100 dark:bg-zinc-800 p-3 rounded-xl">
+                                <div>
+                                    <span class="font-bold text-sm text-zinc-900 dark:text-zinc-100">${isLocal ? 'Local Mode (This Device)' : 'Cloud Mode (Firebase)'}</span>
+                                    <p class="text-zinc-400 text-[11px]">${isLocal ? 'Data stored locally in IndexedDB' : 'Data synced across devices via Firestore'}</p>
+                                </div>
+                                <button onclick="switchStorageModeInSettings()" class="px-3 py-1.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold rounded-lg hover:opacity-90 transition">
+                                    Migrate Data
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3">
+                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Break Reminder Notifications</label>
+                            <div class="flex items-center justify-between bg-zinc-100 dark:bg-zinc-800 p-3 rounded-xl">
+                                <div>
+                                    <span class="font-bold text-zinc-900 dark:text-zinc-100">Session Threshold</span>
+                                    <p class="text-zinc-400 text-[11px]">Remind to stretch after ${window.state.breakThresholdMinutes} minutes</p>
+                                </div>
+                                <input type="checkbox" ${window.state.breakNotificationsEnabled ? 'checked' : ''} onchange="window.state.breakNotificationsEnabled = this.checked" class="w-4 h-4 accent-zinc-900">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3">
+                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">App Guidance</label>
+                            <button onclick="closeAppSettingsModal(); replayTutorialTour();" class="w-full py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-semibold text-zinc-800 dark:text-zinc-200 rounded-xl transition flex items-center justify-center gap-2">
+                                <i data-lucide="compass" class="w-4 h-4"></i> Replay Onboarding Tutorial
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                        <button onclick="closeAppSettingsModal()" class="px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-xs rounded-xl">
+                            Done
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            lucide.createIcons();
+        };
+
+        window.closeAppSettingsModal = function() {
+            const modal = document.getElementById('appSettingsModalOverlay');
+            if (modal) modal.remove();
+        };
+
+        window.replayTutorialTour = function() {
+            startOnboardingTour();
+        };
+
+        window.switchStorageModeInSettings = async function() {
+            const targetMode = window.state.storageMode === 'cloud' ? 'local' : 'cloud';
+            if (!confirm(`Switch storage mode to ${targetMode.toUpperCase()}? Your current data will be migrated to the target storage.`)) return;
+
+            try {
+                const targetAdapter = await createStorageAdapter(
+                    targetMode,
+                    db,
+                    () => window.state.user?.uid || 'local_user'
+                );
+
+                const report = await migrateStorageData(window.storageAdapter, targetAdapter);
+                setStorageMode(targetMode);
+                window.state.storageMode = targetMode;
+
+                window.closeAppSettingsModal();
+                window.showToast(`Migrated data to ${targetMode.toUpperCase()} mode! Reloading workspace...`);
+                setTimeout(() => location.reload(), 1500);
+            } catch(e) {
+                console.error("Migration error:", e);
+                window.showToast("Migration failed", "warning");
             }
         };
 
@@ -1194,14 +1545,14 @@
         window.addDailyLog = async function() {
             const input = document.getElementById('dailyLogInput');
             const task = input.value.trim();
-            if (!task) return;
+            if (!task || !window.storageAdapter) return;
 
             playSound('nav tap');
 
             const active = getActiveSeason();
 
             try {
-                await addDoc(collection(db, 'users', window.state.user.uid, 'dailyLogs'), {
+                await window.storageAdapter.upsertDailyLog({
                     task,
                     energyType: window.state.dailyEnergyMode,
                     seasonId: active ? active.id : 'general',
@@ -1216,32 +1567,37 @@
         };
 
         window.deleteDailyLog = async function(id, event) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
+            if (!window.storageAdapter) return;
             try {
-                await deleteDoc(doc(db, 'users', window.state.user.uid, 'dailyLogs', id));
+                await window.storageAdapter.upsertDailyLog({ id, deleted: true });
             } catch(e) {
                 console.error("Daily log deletion failed:", e);
             }
         };
 
         window.toggleMicroHabit = async function(type) {
+            if (!window.storageAdapter) return;
             playSound('nav tap');
             const active = getActiveSeason();
             if (!active) return;
 
             const today = new Date().toISOString().split('T')[0];
-            const existingLog = window.state.habitLogs.find(h => h.date === today && h.seasonId === active.id && h.userId === window.state.user.uid);
+            const existingLog = window.state.habitLogs.find(h => h.date === today && h.seasonId === active.id);
 
             if (existingLog) {
                 const field = type === 'dev' ? 'devCompleted' : 'personalCompleted';
                 try {
-                    await updateDoc(doc(db, 'users', window.state.user.uid, 'habitLogs', existingLog.id), { [field]: !existingLog[field] });
+                    await window.storageAdapter.upsertHabitLog({
+                        ...existingLog,
+                        [field]: !existingLog[field]
+                    });
                 } catch(e) {
                     console.error("Habit update failed:", e);
                 }
             } else {
                 try {
-                    await addDoc(collection(db, 'users', window.state.user.uid, 'habitLogs'), {
+                    await window.storageAdapter.upsertHabitLog({
                         date: today,
                         seasonId: active.id,
                         devCompleted: type === 'dev',
@@ -1257,9 +1613,9 @@
 
         window.deleteSeason = async function(id, event) {
             if (event) event.stopPropagation();
-            if (!confirm('Delete this season and all associated data?')) return;
+            if (!confirm('Delete this season and all associated data?') || !window.storageAdapter) return;
             try {
-                await deleteDoc(doc(db, 'users', window.state.user.uid, 'seasons', id));
+                await window.storageAdapter.deleteSeason(id);
                 if (window.state.selectedSeasonId === id) window.state.selectedSeasonId = null;
             } catch(e) {
                 console.error("Season deletion failed:", e);
@@ -1339,7 +1695,10 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-zinc-500 dark:text-zinc-400">${progress}%</span>
-                            <button onclick="event.stopPropagation(); deleteSeason('${season.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition">
+                            <button onclick="event.stopPropagation(); openSeasonRetrospective('${season.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Preview Retrospective">
+                                <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="event.stopPropagation(); deleteSeason('${season.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Delete Season">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
