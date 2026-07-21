@@ -23,7 +23,14 @@ const server = http.createServer((req, res) => {
   if (urlPath === "/") urlPath = "/dashboard.html";
 
   let filePath = path.join(ROOT, urlPath);
+  const ext = path.extname(urlPath);
+
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    if (ext === '.js') {
+      res.writeHead(404, { "Content-Type": "text/javascript; charset=utf-8" });
+      res.end("// File not found: " + urlPath);
+      return;
+    }
     filePath = path.join(ROOT, "dashboard.html");
   }
 
