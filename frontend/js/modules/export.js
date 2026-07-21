@@ -4,6 +4,10 @@
  * Supports web browser download blobs and Tauri native file dialogs.
  */
 
+export function isTauriEnv() {
+    return typeof window !== 'undefined' && Boolean(window.__TAURI_INTERNALS__ || window.__TAURI__);
+}
+
 export async function exportUserData(adapter) {
     const data = await adapter.getAllData();
     return data;
@@ -54,6 +58,26 @@ export function triggerBlobDownload(blob, filename) {
     URL.revokeObjectURL(url);
 }
 
+export async function saveFileWithTauri(content, filename, filters = []) {
+    if (!isTauriEnv() || !window.__TAURI__?.dialog?.save) {
+        return false;
+    }
+    try {
+        const filePath = await window.__TAURI__.dialog.save({
+            defaultPath: filename,
+            filters: filters.length > 0 ? filters : undefined
+        });
+        if (filePath) {
+            const { writeTextFile } = window.__TAURI__.fs;
+            await writeTextFile(filePath, content);
+            return true;
+        }
+    } catch (e) {
+        console.warn('Tauri save dialog error:', e);
+    }
+    return false;
+}
+
 export async function exportAllData(adapter, items = []) {
     const data = await adapter.getAllData();
     const itemsMap = (items || []).reduce((acc, item) => {
@@ -61,21 +85,45 @@ export async function exportAllData(adapter, items = []) {
         return acc;
     }, {});
 
-    // 1. Download JSON
     const dateStr = new Date().toISOString().split('T')[0];
-    downloadJsonFile(data, `focus_synergy_export_${dateStr}.json`);
 
-    // 2. Download CSV for logs
-    if (data.logs && data.logs.length > 0) {
-        const csvLogs = convertLogsToCsv(data.logs, itemsMap);
-        const blobLogs = new Blob([csvLogs], { type: 'text/csv' });
-        triggerBlobDownload(blobLogs, `focus_synergy_logs_${dateStr}.csv`);
+    // 1. JSON export
+    const jsonStr = JSON.stringify(data, null, 2);
+    const jsonFilename = `focus_synergy_export_${dateStr}.json`;
+    if (isTauriEnv()) {
+        const saved = await saveFileWithTauri(jsonStr, jsonFilename, [
+            { name: 'JSON', extensions: ['json'] }
+        ]);
+        if (!saved) triggerBlobDownload(new Blob([jsonStr], { type: 'application/json' }), jsonFilename);
+    } else {
+        triggerBlobDownload(new Blob([jsonStr], { type: 'application/json' }), jsonFilename);
     }
 
-    // 3. Download CSV for dailyLogs
+    // 2. CSV for logs
+    if (data.logs && data.logs.length > 0) {
+        const csvLogs = convertLogsToCsv(data.logs, itemsMap);
+        const logsFilename = `focus_synergy_logs_${dateStr}.csv`;
+        if (isTauriEnv()) {
+            const saved = await saveFileWithTauri(csvLogs, logsFilename, [
+                { name: 'CSV', extensions: ['csv'] }
+            ]);
+            if (!saved) triggerBlobDownload(new Blob([csvLogs], { type: 'text/csv' }), logsFilename);
+        } else {
+            triggerBlobDownload(new Blob([csvLogs], { type: 'text/csv' }), logsFilename);
+        }
+    }
+
+    // 3. CSV for dailyLogs
     if (data.dailyLogs && data.dailyLogs.length > 0) {
         const csvDaily = convertDailyLogsToCsv(data.dailyLogs);
-        const blobDaily = new Blob([csvDaily], { type: 'text/csv' });
-        triggerBlobDownload(blobDaily, `focus_synergy_daily_energy_${dateStr}.csv`);
+        const dailyFilename = `focus_synergy_daily_energy_${dateStr}.csv`;
+        if (isTauriEnv()) {
+            const saved = await saveFileWithTauri(csvDaily, dailyFilename, [
+                { name: 'CSV', extensions: ['csv'] }
+            ]);
+            if (!saved) triggerBlobDownload(new Blob([csvDaily], { type: 'text/csv' }), dailyFilename);
+        } else {
+            triggerBlobDownload(new Blob([csvDaily], { type: 'text/csv' }), dailyFilename);
+        }
     }
 }
