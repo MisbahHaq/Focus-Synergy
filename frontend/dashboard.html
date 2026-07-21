@@ -797,6 +797,21 @@
             storageMode: getStorageMode()
         };
 
+        console.log('[INIT] dashboard module loaded', { 
+            firebaseConfig: !!firebaseConfig.apiKey, 
+            storageMode: window.state.storageMode,
+            isTauri: isTauriEnv(),
+            GOOGLE_USE_REDIRECT 
+        });
+
+        window.addEventListener('error', (e) => {
+            console.error('[GLOBAL-ERROR]', e.message, 'at', e.filename, ':', e.lineno);
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('[UNHANDLED-REJECTION]', e.reason);
+        });
+
         window.checkForUpdates = async function() {
             if (!isTauriEnv() || !window.__TAURI__?.updater?.checkUpdate) {
                 window.showToast('Update check is only available in the desktop app.', 'warning');
@@ -818,6 +833,7 @@
 
         window.storageAdapter = null;
         let unsubscribers = [];
+        let bootInProgress = false;
 
         const soundFiles = {
             'nav tap': 'sounds/nav-tap.mp3',
@@ -915,22 +931,38 @@
         };
 
         async function bootWorkspaceForUser(user, animate = false) {
-            window.state.user = user;
-            const loginScreen = document.getElementById('loginScreen');
-            const mainApp = document.getElementById('mainApp');
-            const userDisplay = document.getElementById('userDisplay');
+            console.log('[BOOT] bootWorkspaceForUser start', { uid: user.uid, animate, storageMode: window.state.storageMode });
+            try {
+                window.state.user = user;
+                const loginScreen = document.getElementById('loginScreen');
+                const mainApp = document.getElementById('mainApp');
+                const userDisplay = document.getElementById('userDisplay');
+
+                console.log('[BOOT] DOM refs found:', { 
+                    loginScreen: !!loginScreen, 
+                    mainApp: !!mainApp, 
+                    userDisplay: !!userDisplay 
+                });
 
             const isLocal = window.state.storageMode === 'local';
             userDisplay.innerHTML = `<span class="text-xs font-semibold">${user.displayName || user.email} ${isLocal ? '(Local)' : ''}</span> <button onclick="logout()" class="ml-2 text-red-400 dark:text-red-500 hover:text-red-300 text-xs underline">Exit</button>`;
 
+            console.log('[BOOT] creating storage adapter...');
             // Initialize StorageAdapter
-            window.storageAdapter = await createStorageAdapter(
-                window.state.storageMode,
-                db,
-                () => window.state.user?.uid
-            );
+            try {
+                window.storageAdapter = await createStorageAdapter(
+                    window.state.storageMode,
+                    db,
+                    () => window.state.user?.uid
+                );
+            } catch (adapterErr) {
+                console.error('[BOOT] createStorageAdapter FAILED:', adapterErr);
+                throw adapterErr;
+            }
+            console.log('[BOOT] storage adapter created:', window.storageAdapter.getMode());
 
             // Clean previous listeners
+            console.log('[BOOT] cleaning previous listeners:', unsubscribers.length);
             unsubscribers.forEach(u => typeof u === 'function' && u());
             unsubscribers = [];
 
@@ -946,7 +978,9 @@
             }
 
             // 1. Subscribe to Items
+            console.log('[BOOT] subscribing to items...');
             const unsubItems = window.storageAdapter.subscribe('items', (data) => {
+                console.log('[BOOT/items] snapshot received, count:', data.length);
                 const userItems = isLocal ? data : data.filter(item => item.userId === user.uid);
                 window.state.items = userItems.map(item => ({
                     ...item,
@@ -961,53 +995,74 @@
                 scheduleRender('calendar', renderCalendarViews);
             });
             unsubscribers.push(unsubItems);
+            console.log('[BOOT] items subscribed');
 
             // 2. Subscribe to Logs
+            console.log('[BOOT] subscribing to logs...');
             const unsubLogs = window.storageAdapter.subscribe('logs', (data) => {
+                console.log('[BOOT/logs] snapshot received, count:', data.length);
                 window.state.logs = isLocal ? data : data.filter(log => log.userId === user.uid);
                 scheduleRender('dashboard', renderDashboard);
                 scheduleRender('analytics', renderAnalyticsViews);
                 scheduleRender('calendar', renderCalendarViews);
             });
             unsubscribers.push(unsubLogs);
+            console.log('[BOOT] logs subscribed');
 
             // 3. Subscribe to Notes
+            console.log('[BOOT] subscribing to notes...');
             const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
+                console.log('[BOOT/notes] snapshot received, count:', data.length);
                 window.state.notes = isLocal ? data : data.filter(n => n.userId === user.uid);
                 scheduleRender('notes', renderNotesList);
             });
             unsubscribers.push(unsubNotes);
+            console.log('[BOOT] notes subscribed');
 
             // 4. Subscribe to Seasons
+            console.log('[BOOT] subscribing to seasons...');
             const unsubSeasons = window.storageAdapter.subscribe('seasons', (data) => {
+                console.log('[BOOT/seasons] snapshot received, count:', data.length);
                 window.state.seasons = isLocal ? data : data.filter(s => s.userId === user.uid);
                 scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubSeasons);
+            console.log('[BOOT] seasons subscribed');
 
             // 5. Subscribe to Backlog
+            console.log('[BOOT] subscribing to backlog...');
             const unsubBacklog = window.storageAdapter.subscribe('backlog', (data) => {
+                console.log('[BOOT/backlog] snapshot received, count:', data.length);
                 window.state.backlog = isLocal ? data : data.filter(b => b.userId === user.uid);
                 scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubBacklog);
+            console.log('[BOOT] backlog subscribed');
 
             // 6. Subscribe to Daily Logs
+            console.log('[BOOT] subscribing to dailyLogs...');
             const unsubDaily = window.storageAdapter.subscribe('dailyLogs', (data) => {
+                console.log('[BOOT/dailyLogs] snapshot received, count:', data.length);
                 window.state.dailyLogs = isLocal ? data : data.filter(d => d.userId === user.uid);
                 scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubDaily);
+            console.log('[BOOT] dailyLogs subscribed');
 
             // 7. Subscribe to Habit Logs
+            console.log('[BOOT] subscribing to habitLogs...');
             const unsubHabit = window.storageAdapter.subscribe('habitLogs', (data) => {
+                console.log('[BOOT/habitLogs] snapshot received, count:', data.length);
                 window.state.habitLogs = isLocal ? data : data.filter(h => h.userId === user.uid);
                 scheduleRender('seasons', renderSeasonsView);
             });
             unsubscribers.push(unsubHabit);
+            console.log('[BOOT] habitLogs subscribed');
 
             // 8. Subscribe to Meta ActiveTimer (Multi-Device Single Active Timer Invariant)
+            console.log('[BOOT] subscribing to meta/activeTimer...');
             const unsubActiveTimer = window.storageAdapter.subscribe('meta/activeTimer', (activeTimerDoc) => {
+                console.log('[BOOT/activeTimer] snapshot received:', activeTimerDoc);
                 if (window.state.storageMode !== 'cloud' || !activeTimerDoc) return;
                 const localRunningItem = window.state.items.find(i => i.isRunning);
                 if (localRunningItem && activeTimerDoc.itemId && activeTimerDoc.itemId !== localRunningItem.id) {
@@ -1017,32 +1072,36 @@
                 }
             });
             unsubscribers.push(unsubActiveTimer);
+            console.log('[BOOT] activeTimer subscribed');
 
             if (coreGlobalLoop) clearInterval(coreGlobalLoop);
             coreGlobalLoop = setInterval(processingEngineCycle, 200);
+            console.log('[BOOT] coreGlobalLoop started, interval:', coreGlobalLoop);
 
             // Show main app immediately — don't block on animation.
             // Kick off a quick non-blocking cross-fade so the transition feels smooth
             // without delaying data binding or subscriptions.
-            loginScreen.classList.add('hidden');
-            mainApp.classList.remove('hidden');
-
             if (animate) {
-                loginScreen.classList.remove('screen-exit');
-                loginScreen.style.opacity = '';
-                mainApp.classList.remove('screen-enter');
-                mainApp.style.opacity = '0';
-                requestAnimationFrame(() => {
-                    mainApp.style.transition = 'opacity 150ms ease-out';
-                    mainApp.style.opacity = '';
-                    setTimeout(() => {
-                        mainApp.style.transition = '';
-                    }, 200);
+                console.log('[BOOT-ANIM] starting animated transition');
+                loginScreen.classList.add('screen-exit');
+                mainApp.classList.remove('hidden');
+                mainApp.classList.add('screen-enter');
+                loginScreen.addEventListener('animationend', function handler() {
+                    console.log('[BOOT-ANIM] loginScreen animationend fired');
+                    loginScreen.removeEventListener('animationend', handler);
+                    loginScreen.classList.add('hidden');
+                });
+                mainApp.addEventListener('animationend', function handler() {
+                    console.log('[BOOT-ANIM] mainApp animationend fired');
+                    mainApp.removeEventListener('animationend', handler);
+                    mainApp.classList.remove('screen-enter');
                 });
             } else {
-                loginScreen.classList.remove('screen-exit');
-                mainApp.classList.remove('screen-enter');
+                console.log('[BOOT-ANIM] instant transition (no animation)');
+                loginScreen.classList.add('hidden');
+                mainApp.classList.remove('hidden');
             }
+            console.log('[BOOT-ANIM] animation setup complete, mainApp hidden:', mainApp.classList.contains('hidden'), 'loginScreen hidden:', loginScreen.classList.contains('hidden'));
 
             // Silent startup update check for desktop app
             if (isTauriEnv() && window.__TAURI__?.updater?.checkUpdate) {
@@ -1055,12 +1114,40 @@
 
             // Check onboarding tour flag
             const hasSeen = localStorage.getItem(`onboarding_seen_${user.uid}`);
+            console.log('[BOOT] onboarding seen:', hasSeen);
             if (!hasSeen) {
-                startOnboardingTour(() => {
-                    localStorage.setItem(`onboarding_seen_${user.uid}`, 'true');
-                });
+                console.log('[BOOT] starting onboarding tour');
+                try {
+                    startOnboardingTour(() => {
+                        console.log('[BOOT] onboarding tour complete');
+                        localStorage.setItem(`onboarding_seen_${user.uid}`, 'true');
+                    });
+                } catch (tourErr) {
+                    console.error('[BOOT] onboarding tour FAILED:', tourErr);
+                }
+            } else {
+                console.log('[BOOT] skipping onboarding tour');
+            }
+            console.log('[BOOT] bootWorkspaceForUser complete');
+        } catch (err) {
+            console.error('Workspace boot failed:', err);
+            showToast('Failed to load workspace. Please try again.', 'error');
+            bootInProgress = false;
+            window._pendingLoginAnimation = false;
+            setAuthLoading(false);
+            const loginScreen = document.getElementById('loginScreen');
+            const mainApp = document.getElementById('mainApp');
+            if (loginScreen) {
+                loginScreen.classList.remove('hidden', 'screen-exit');
+                loginScreen.style.opacity = '';
+            }
+            if (mainApp) {
+                mainApp.classList.add('hidden', 'screen-enter');
+                mainApp.style.transition = '';
+                mainApp.style.opacity = '';
             }
         }
+    }
 
         async function checkStaleTimersOnLoad() {
             const now = Date.now();
@@ -1083,17 +1170,58 @@
 
             const initialMode = getStorageMode();
             window.selectStorageMode(initialMode);
+            console.log('[DOM] storageMode set to:', window.state.storageMode, 'from getStorageMode():', initialMode);
 
             if (auth) {
                 onAuthStateChanged(auth, async (user) => {
-                    if (user && window.state.storageMode === 'cloud') {
+                    const currentMode = window.state.storageMode || getStorageMode();
+                    window.state.storageMode = currentMode;
+                    console.log('[AUTH] onAuthStateChanged fired', { 
+                        hasUser: !!user, 
+                        uid: user?.uid, 
+                        email: user?.email,
+                        storageMode: window.state.storageMode,
+                        currentMode
+                    });
+                    if (user && currentMode === 'cloud') {
+                        console.log('[AUTH] cloud mode detected, booting workspace...');
+                        if (bootInProgress) {
+                            console.log('[AUTH] boot already in progress, skipping');
+                            return;
+                        }
+                        bootInProgress = true;
                         const animate = !!window._pendingLoginAnimation;
+                        console.log('[AUTH] animate flag:', animate);
                         window._pendingLoginAnimation = false;
                         setAuthLoading(false);
-                        await bootWorkspaceForUser(user, animate);
-                    } else if (window.state.storageMode !== 'local') {
+                        try {
+                            console.log('[AUTH] calling bootWorkspaceForUser...');
+                            await bootWorkspaceForUser(user, animate);
+                            console.log('[AUTH] bootWorkspaceForUser resolved');
+                        } catch (err) {
+                            console.error('[AUTH] bootWorkspaceForUser threw:', err);
+                        }
+                        bootInProgress = false;
+                        console.log('[AUTH] bootInProgress set to false');
+                    } else if (currentMode !== 'local') {
+                        console.log('[AUTH] showing login screen (no user or local mode), currentMode:', currentMode);
                         document.getElementById('loginScreen').classList.remove('hidden');
                         document.getElementById('mainApp').classList.add('hidden');
+                    } else {
+                        console.log('[AUTH] local mode, booting without cloud auth');
+                        if (bootInProgress) {
+                            console.log('[AUTH] boot already in progress, skipping');
+                            return;
+                        }
+                        bootInProgress = true;
+                        const dummyUser = { uid: 'local_user', displayName: 'Local Device User', email: 'local@device' };
+                        try {
+                            await bootWorkspaceForUser(dummyUser, false);
+                            console.log('[AUTH] local bootWorkspaceForUser resolved');
+                        } catch (err) {
+                            console.error('[AUTH] local bootWorkspaceForUser threw:', err);
+                        }
+                        bootInProgress = false;
                     }
                 });
             }
@@ -1107,13 +1235,14 @@
             try {
                 setAuthLoading(true);
                 window._pendingLoginAnimation = true;
-                const cred = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(cred.user, { displayName: name });
-                await setDoc(doc(db, 'users', cred.user.uid), { name: name, email: email });
+                const cred = await authWithTimeout(createUserWithEmailAndPassword(auth, email, password));
+                await authWithTimeout(updateProfile(cred.user, { displayName: name }));
+                await authWithTimeout(setDoc(doc(db, 'users', cred.user.uid), { name: name, email: email }));
                 document.getElementById('registerName').value = '';
                 document.getElementById('registerEmail').value = '';
                 document.getElementById('registerPassword').value = '';
                 document.getElementById('registerError').innerText = '';
+                setAuthLoading(false);
             } catch (e) {
                 document.getElementById('registerError').innerText = e.message;
                 window._pendingLoginAnimation = false;
@@ -1152,18 +1281,33 @@
             });
         }
 
+        function authWithTimeout(promise, timeoutMs = 10000) {
+            return Promise.race([
+                promise,
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Login timed out. Please check your internet connection and try again.')), timeoutMs)
+                )
+            ]);
+        }
+
         window.login = async function() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            console.log('[LOGIN] login() called', { email });
             
             try {
                 setAuthLoading(true);
                 window._pendingLoginAnimation = true;
-                await signInWithEmailAndPassword(auth, email, password);
+                console.log('[LOGIN] calling signInWithEmailAndPassword...');
+                await authWithTimeout(signInWithEmailAndPassword(auth, email, password));
+                console.log('[LOGIN] signInWithEmailAndPassword resolved');
                 document.getElementById('loginEmail').value = '';
                 document.getElementById('loginPassword').value = '';
                 document.getElementById('loginError').innerText = '';
+                setAuthLoading(false);
+                console.log('[LOGIN] setAuthLoading(false) done');
             } catch (e) {
+                console.error('[LOGIN] signInWithEmailAndPassword failed:', e);
                 document.getElementById('loginError').innerText = e.message;
                 window._pendingLoginAnimation = false;
                 setAuthLoading(false);
@@ -1189,7 +1333,8 @@
                 selectedSeasonId: null,
                 currentCalendarDate: new Date(),
                 dailyEnergyMode: 'production',
-                backlogOpen: false
+                backlogOpen: false,
+                storageMode: window.state.storageMode
             };
             await signOut(auth);
             document.getElementById('loginEmail').value = '';
@@ -1206,10 +1351,11 @@
                 setAuthLoading(true);
                 window._pendingLoginAnimation = true;
                 if (GOOGLE_USE_REDIRECT) {
-                    await signInWithRedirect(auth, provider);
+                    await authWithTimeout(signInWithRedirect(auth, provider));
                 } else {
-                    await signInWithPopup(auth, provider);
+                    await authWithTimeout(signInWithPopup(auth, provider));
                 }
+                setAuthLoading(false);
             } catch (e) {
                 document.getElementById('loginError').innerText = e.message;
                 window._pendingLoginAnimation = false;
