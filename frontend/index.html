@@ -4,26 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Synergy — Minimal Workspace</title>
+    <meta name="description" content="Focus Synergy helps you track habits, topics, and deep work sessions with timers, analytics, activity calendars, and notes.">
     <meta name="theme-color" content="#1a1a1a">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class'
-        }
-    </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-zinc-50 dark:bg-[#0a0a0a] antialiased selection:bg-zinc-200 dark:selection:bg-zinc-700 midnight:bg-[#111318] midnight:text-[#b8b5c0] midnight:selection:bg-[#2a2633]">
 
-    <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md">
         <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
             <div class="flex items-center gap-2.5 font-bold text-base tracking-tight text-zinc-900 dark:text-zinc-100">
                 <i data-lucide="layers" class="w-5 h-5"></i> Focus Synergy
             </div>
             <div class="flex items-center gap-4">
-                <button onclick="toggleTheme()" id="themeToggle" class="p-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg text-zinc-600 dark:text-zinc-300 transition relative" title="Cycle theme">
+                <button onclick="window.toggleTheme()" id="themeToggle" class="p-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg text-zinc-600 dark:text-zinc-300 transition relative" title="Cycle theme">
                     <i data-lucide="sun" class="w-4 h-4 dark-icon hidden"></i>
                     <i data-lucide="music" class="w-4 h-4 midnight-icon hidden"></i>
                     <i data-lucide="moon" class="w-4 h-4 light-icon"></i>
@@ -33,7 +26,6 @@
         </div>
     </nav>
 
-    <!-- Hero -->
     <header class="max-w-6xl mx-auto px-6 pt-28 pb-32">
         <h1 class="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.05] mb-6 text-zinc-900 dark:text-zinc-100 tick-motif">
             Track focus loops.<br>Build lasting habits.
@@ -47,7 +39,6 @@
         </div>
     </header>
 
-    <!-- Features Grid -->
     <main id="features" class="max-w-6xl mx-auto px-6 py-20 border-t border-zinc-200 dark:border-zinc-700">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12 text-base">
             <div>
@@ -73,7 +64,6 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="border-t border-zinc-200 dark:border-zinc-700 py-14 text-sm text-zinc-400 dark:text-zinc-500">
         <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between gap-6">
             <span class="font-medium text-zinc-500 dark:text-zinc-400">&copy; 2026 Focus Synergy Engine.</span>
@@ -84,12 +74,6 @@
         </div>
     </footer>
 
-    <script type="module">
-        import { toggleTheme, applySavedTheme } from './js/utils/theme.js';
-
-        lucide.createIcons();
-        window.toggleTheme = toggleTheme;
-        applySavedTheme();
-    </script>
+    <script type="module" src="js/main-index.js"></script>
 </body>
 </html>
