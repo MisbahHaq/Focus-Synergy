@@ -1,14 +1,13 @@
 export function applyTheme(theme) {
     const html = document.documentElement;
-    html.classList.remove('dark', 'midnight');
+    html.classList.remove('dark');
     if (theme === 'dark') html.classList.add('dark');
-    if (theme === 'midnight') html.classList.add('midnight');
     localStorage.setItem('theme', theme);
 }
 
 export function toggleTheme() {
     const current = localStorage.getItem('theme') || 'light';
-    const next = current === 'light' ? 'midnight' : current === 'midnight' ? 'dark' : 'light';
+    const next = current === 'light' ? 'dark' : 'light';
     applyTheme(next);
     updateThemeIcon(next);
 }
@@ -16,12 +15,10 @@ export function toggleTheme() {
 export function updateThemeIcon(theme) {
     const darkIcon = document.querySelector('#themeToggle .dark-icon');
     const lightIcon = document.querySelector('#themeToggle .light-icon');
-    const midnightIcon = document.querySelector('#themeToggle .midnight-icon');
-    if (!darkIcon || !lightIcon || !midnightIcon) return;
+    if (!darkIcon || !lightIcon) return;
 
     darkIcon.classList.toggle('hidden', theme !== 'dark');
-    lightIcon.classList.toggle('hidden', theme === 'midnight' || theme === 'dark');
-    midnightIcon.classList.toggle('hidden', theme !== 'midnight');
+    lightIcon.classList.toggle('hidden', theme === 'dark');
 }
 
 export function applySavedTheme() {
