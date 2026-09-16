@@ -139,7 +139,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  window.state.user = user;
  const userDisplay = document.getElementById('userDisplay');
 
- userDisplay.innerHTML = `<span class="text-xs font-extrabold uppercase tracking-wider">${escapeHtml(user.displayName || user.email)}</span> <button onclick="logout()" class="ml-2 text-red-500 dark:text-red-400 hover:text-red-300 text-xs underline font-bold">Exit</button>`;
+  userDisplay.innerHTML = `<span class="truncate max-w-[120px]">${escapeHtml(user.displayName || user.email)}</span> <button onclick="logout()" class="shrink-0 text-red-500 dark:text-red-400 hover:text-red-300 text-xs underline font-bold">Exit</button>`;
  // Initialize StorageAdapter
  try {
  window.storageAdapter = await createStorageAdapter(
