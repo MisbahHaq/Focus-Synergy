@@ -31,6 +31,11 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[redirects]]
+  from = "/__/auth/*"
+  to = "https://timetable-a3aa5.firebaseapp.com/__/auth/:splat"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
