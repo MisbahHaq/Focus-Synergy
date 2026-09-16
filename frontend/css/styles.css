@@ -1,22 +1,97 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body { font-family: 'Plus Jakarta Sans', sans-serif; }
-@tailwind components;
-@tailwind utilities;
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #faf7f2;
+    color: #171717;
+}
 
-body { font-family: 'Plus Jakarta Sans', sans-serif; }
+/* ===== NEO-BRUTALIST BASE RESETS ===== */
+* {
+    border-color: #000000;
+}
 
+@layer components {
+    .nb-card {
+        @apply bg-white border-2 border-black rounded-none shadow-brutal;
+    }
+    .nb-card-sm {
+        @apply bg-white border-2 border-black rounded-none shadow-brutal-sm;
+    }
+    .nb-card-lg {
+        @apply bg-white border-2 border-black rounded-none shadow-brutal-lg;
+    }
+    .nb-btn-primary {
+        @apply bg-canary border-2 border-black rounded-none shadow-brutal-sm font-extrabold uppercase text-xs tracking-wider px-4 py-2.5 transition-all;
+    }
+    .nb-btn-primary:hover {
+        @apply shadow-brutal bg-canary-light;
+    }
+    .nb-btn-primary:active {
+        @apply translate-x-[2px] translate-y-[2px] shadow-brutal-none;
+    }
+    .nb-btn-secondary {
+        @apply bg-white border-2 border-black rounded-none shadow-brutal-sm font-bold text-xs px-4 py-2.5 transition-all;
+    }
+    .nb-btn-secondary:hover {
+        @apply bg-zinc-100;
+    }
+    .nb-btn-secondary:active {
+        @apply translate-x-[2px] translate-y-[2px] shadow-brutal-none;
+    }
+    .nb-btn-danger {
+        @apply bg-red-500 text-white border-2 border-black rounded-none shadow-brutal-sm font-extrabold uppercase text-xs px-4 py-2.5 transition-all;
+    }
+    .nb-btn-danger:hover {
+        @apply bg-red-600;
+    }
+    .nb-btn-danger:active {
+        @apply translate-x-[2px] translate-y-[2px] shadow-brutal-none;
+    }
+    .nb-input {
+        @apply w-full bg-white border-2 border-black rounded-none px-4 py-2.5 text-sm font-medium focus:outline-none focus:shadow-brutal transition-shadow;
+    }
+    .nb-select {
+        @apply bg-white border-2 border-black rounded-none px-3 py-2.5 text-sm font-bold focus:outline-none focus:shadow-brutal appearance-none cursor-pointer;
+    }
+    .nb-badge {
+        @apply inline-flex items-center px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider border-2 border-black;
+    }
+    .nb-badge-yellow {
+        @apply nb-badge bg-canary text-black;
+    }
+    .nb-badge-lavender {
+        @apply nb-badge bg-lavender text-black;
+    }
+    .nb-badge-mint {
+        @apply nb-badge bg-mint text-black;
+    }
+    .nb-badge-coral {
+        @apply nb-badge bg-coral text-black;
+    }
+    .nb-badge-sky {
+        @apply nb-badge bg-skybadge text-black;
+    }
+    .nb-heading {
+        @apply font-extrabold uppercase tracking-wider text-black;
+    }
+    .nb-mono {
+        @apply font-mono font-bold tabular-nums;
+    }
+}
+
+/* ===== TOOLTIPS ===== */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 [contenteditable]:empty:before { content: attr(placeholder); color: #9ca3af; pointer-events: none; }
 [contenteditable] ul, [contenteditable] ol { margin-left: 1.25rem; margin: 0.5rem 0; }
 [contenteditable] li { margin-bottom: 0.25rem; }
-[contenteditable] strong { font-weight: 600; }
+[contenteditable] strong { font-weight: 700; }
 
 @keyframes tabFadeIn {
     from { opacity: 0; transform: translateY(6px); }
@@ -29,14 +104,10 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 }
 .spinner {
     width: 18px; height: 18px;
-    border: 2px solid rgba(255,255,255,0.3);
+    border: 3px solid rgba(0,0,0,0.2);
     border-top-color: currentColor;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
-}
-.dark .spinner {
-    border-color: rgba(0,0,0,0.2);
-    border-top-color: currentColor;
 }
 
 @keyframes fadeIn {
@@ -54,123 +125,203 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 .heatmap-cell:hover::after, .calendar-cell:hover::after {
     content: attr(data-tooltip);
     position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
-    background: #1e1e1e; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 10px;
-    z-index: 50;
+    background: #000; color: #fff; padding: 6px 10px; border: 2px solid #000;
+    font-size: 10px; font-weight: 600; z-index: 50;
+    box-shadow: 2px 2px 0px 0px #000;
+    white-space: pre-line;
 }
+
+/* ===== DARK MODE OVERRIDES ===== */
+.dark body,
+body.dark {
+    background-color: #171717;
+    color: #faf7f2;
+}
+
+.dark .nb-card,
+.dark .nb-card-sm,
+.dark .nb-card-lg {
+    background-color: #262626;
+    border-color: #faf7f2;
+    box-shadow: 3px 3px 0px 0px #555;
+}
+
+.dark .nb-card-sm { box-shadow: 2px 2px 0px 0px #555; }
+.dark .nb-card-lg { box-shadow: 4px 4px 0px 0px #555; }
+
+.dark .nb-btn-primary {
+    background-color: #fde047;
+    border-color: #faf7f2;
+    box-shadow: 2px 2px 0px 0px #555;
+    color: #000;
+}
+.dark .nb-btn-primary:active {
+    box-shadow: 0px 0px 0px 0px #555;
+}
+
+.dark .nb-btn-secondary {
+    background-color: #262626;
+    border-color: #faf7f2;
+    box-shadow: 2px 2px 0px 0px #555;
+    color: #faf7f2;
+}
+.dark .nb-btn-secondary:hover { background-color: #333; }
+.dark .nb-btn-secondary:active { box-shadow: 0px 0px 0px 0px #555; }
+
+.dark .nb-btn-danger {
+    background-color: #dc2626;
+    border-color: #faf7f2;
+    box-shadow: 2px 2px 0px 0px #555;
+}
+.dark .nb-btn-danger:active { box-shadow: 0px 0px 0px 0px #555; }
+
+.dark .nb-input, .dark .nb-select {
+    background-color: #1a1a1a;
+    border-color: #faf7f2;
+    color: #faf7f2;
+}
+.dark .nb-input:focus, .dark .nb-select:focus {
+    box-shadow: 2px 2px 0px 0px #555;
+}
+
+.dark .nb-badge-yellow,
+.dark .nb-badge-lavender,
+.dark .nb-badge-mint,
+.dark .nb-badge-coral,
+.dark .nb-badge-sky {
+    border-color: #faf7f2;
+}
+
+.dark .nb-heading { color: #faf7f2; }
+
+.dark .spinner {
+    border-color: rgba(250,247,242,0.2);
+    border-top-color: currentColor;
+}
+
 .dark .heatmap-cell:hover::after, .dark .calendar-cell:hover::after {
-    background: #0a0a0a; color: #fff; border: 1px solid #333;
+    background: #faf7f2;
+    color: #000;
+    border-color: #000;
+    box-shadow: 2px 2px 0px 0px #555;
 }
 
-/* ===== Midnight Theme ===== */
+/* ===== MIDNIGHT THEME ===== */
 html.midnight {
-    --midnight-bg: #161820;
-    --midnight-bg-raised: #1c1f28;
-    --midnight-bg-surface: #222633;
-    --midnight-text: #cdd1dc;
-    --midnight-text-mid: #a3a5b8;
-    --midnight-text-dim: #6e7086;
-    --midnight-border: #31354a;
-    --midnight-border-subtle: #282b3d;
-    --midnight-accent: #3a3550;
-    --midnight-accent-glow: rgba(58,53,80,0.35);
-    --midnight-font: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    --midnight-bg: #0f172a;
+    --midnight-surface: #1e293b;
+    --midnight-accent: #334155;
+    --midnight-border: #475569;
+    --midnight-text: #e2e8f0;
+    --midnight-text-mid: #94a3b8;
+    --midnight-text-dim: #64748b;
+    --midnight-font: 'JetBrains Mono', 'Fira Code', monospace;
+    --midnight-yellow: #fbbf24;
+    --midnight-lavender: #c4b5fd;
+    --midnight-mint: #6ee7b7;
+    --midnight-coral: #fda4af;
+    --midnight-sky: #7dd3fc;
 }
 
-html.midnight body {
+html.midnight body, body.midnight {
     background-color: var(--midnight-bg);
     color: var(--midnight-text);
-    font-family: var(--midnight-font);
 }
 
-html.midnight h1, html.midnight h2, html.midnight h3,
-html.midnight h4, html.midnight h5, html.midnight h6 {
-    font-family: var(--midnight-font) !important;
-    letter-spacing: -0.02em;
+html.midnight .nb-card,
+html.midnight .nb-card-sm,
+html.midnight .nb-card-lg {
+    background-color: var(--midnight-surface);
+    border-color: var(--midnight-border);
+    box-shadow: 3px 3px 0px 0px var(--midnight-accent);
 }
-html.midnight .font-sans { font-family: var(--midnight-font) !important; }
+html.midnight .nb-card-sm { box-shadow: 2px 2px 0px 0px var(--midnight-accent); }
+html.midnight .nb-card-lg { box-shadow: 4px 4px 0px 0px var(--midnight-accent); }
 
-html.midnight input, html.midnight select, html.midnight [contenteditable] {
-    background-color: var(--midnight-bg-raised) !important;
-    border-color: var(--midnight-border) !important;
-    color: var(--midnight-text) !important;
-    font-family: var(--midnight-font) !important;
+html.midnight .nb-btn-primary {
+    background-color: var(--midnight-yellow);
+    border-color: var(--midnight-border);
+    color: #000;
+    box-shadow: 2px 2px 0px 0px var(--midnight-accent);
+}
+html.midnight .nb-btn-primary:active { box-shadow: 0px 0px 0px 0px var(--midnight-accent); }
+
+html.midnight .nb-btn-secondary {
+    background-color: var(--midnight-surface);
+    border-color: var(--midnight-border);
+    color: var(--midnight-text);
+    box-shadow: 2px 2px 0px 0px var(--midnight-accent);
+}
+html.midnight .nb-btn-secondary:active { box-shadow: 0px 0px 0px 0px var(--midnight-accent); }
+
+html.midnight .nb-btn-danger {
+    background-color: #991b1b;
+    border-color: var(--midnight-border);
+    color: #fafafa;
+    box-shadow: 2px 2px 0px 0px var(--midnight-accent);
 }
 
-/* Midnight — Backgrounds */
+html.midnight .nb-input, html.midnight .nb-select {
+    background-color: var(--midnight-surface);
+    border-color: var(--midnight-border);
+    color: var(--midnight-text);
+}
+html.midnight .nb-input:focus, html.midnight .nb-select:focus {
+    box-shadow: 2px 2px 0px 0px var(--midnight-accent);
+}
+
+html.midnight .nb-heading { color: var(--midnight-text); }
+html.midnight .nb-mono { font-family: var(--midnight-font); }
+
+html.midnight .spinner {
+    border-color: rgba(226,232,240,0.2);
+    border-top-color: currentColor;
+}
+
+html.midnight .heatmap-cell:hover::after, html.midnight .calendar-cell:hover::after {
+    background: var(--midnight-text);
+    color: var(--midnight-bg);
+    border-color: var(--midnight-border);
+    box-shadow: 2px 2px 0px 0px var(--midnight-accent);
+}
+
+/* Midnight background overrides for Tailwind utility classes */
+html.midnight .bg-white { background-color: var(--midnight-surface) !important; }
 html.midnight .bg-zinc-50 { background-color: var(--midnight-bg) !important; }
-html.midnight .bg-white { background-color: var(--midnight-bg-raised) !important; }
-html.midnight .bg-zinc-100 { background-color: var(--midnight-bg-surface) !important; }
-html.midnight .bg-zinc-200 { background-color: var(--midnight-border) !important; }
-html.midnight .bg-zinc-300 { background-color: var(--midnight-border) !important; }
-html.midnight .bg-zinc-400 { background-color: var(--midnight-border) !important; }
-html.midnight .bg-zinc-600 { background-color: var(--midnight-border) !important; }
-html.midnight .bg-zinc-900 { background-color: var(--midnight-accent) !important; }
+html.midnight .bg-zinc-100 { background-color: var(--midnight-surface) !important; }
+html.midnight .bg-zinc-200 { background-color: var(--midnight-accent) !important; }
+html.midnight .bg-zinc-800 { background-color: var(--midnight-accent) !important; }
+html.midnight .bg-zinc-900 { background-color: var(--midnight-surface) !important; }
 html.midnight .bg-zinc-950 { background-color: var(--midnight-bg) !important; }
-html.midnight .bg-rose-500 { background-color: #7a3a3a !important; }
-html.midnight .bg-\[\#1e1e1e\] { background-color: var(--midnight-bg-raised) !important; }
 
-/* Midnight — Backgrounds with opacity */
-html.midnight .bg-zinc-50\/40 { background-color: rgba(17,19,24,0.45) !important; }
-html.midnight .bg-zinc-50\/50 { background-color: rgba(17,19,24,0.5) !important; }
-html.midnight .bg-zinc-50\/80 { background-color: rgba(17,19,24,0.8) !important; }
-html.midnight .bg-zinc-50\/90 { background-color: rgba(17,19,24,0.9) !important; }
-html.midnight .bg-zinc-100\/80 { background-color: rgba(28,31,36,0.75) !important; }
-html.midnight .bg-zinc-200\/70 { background-color: rgba(42,38,51,0.35) !important; }
-html.midnight .bg-zinc-800\/40 { background-color: rgba(28,31,36,0.35) !important; }
-html.midnight .bg-zinc-800\/60 { background-color: rgba(28,31,36,0.55) !important; }
-html.midnight .bg-zinc-900\/10 { background-color: rgba(58,53,80,0.1) !important; }
-html.midnight .bg-zinc-900\/40 { background-color: rgba(58,53,80,0.4) !important; }
-html.midnight .bg-zinc-900\/60 { background-color: rgba(58,53,80,0.55) !important; }
-html.midnight .bg-zinc-900\/80 { background-color: rgba(58,53,80,0.8) !important; }
-html.midnight .bg-white\/5 { background-color: rgba(184,181,192,0.08) !important; }
-html.midnight .bg-white\/10 { background-color: rgba(184,181,192,0.14) !important; }
-html.midnight .bg-white\/60 { background-color: rgba(24,26,30,0.65) !important; }
-html.midnight .bg-white\/80 { background-color: rgba(24,26,30,0.8) !important; }
-
-/* Midnight — Dark-variant backgrounds */
-html.midnight .dark\:bg-zinc-50 { background-color: var(--midnight-bg) !important; }
-html.midnight .dark\:bg-zinc-100 { background-color: var(--midnight-accent) !important; }
-html.midnight .dark\:bg-zinc-200 { background-color: var(--midnight-border) !important; }
-html.midnight .dark\:bg-zinc-300 { background-color: var(--midnight-border) !important; }
-html.midnight .dark\:bg-zinc-400 { background-color: var(--midnight-text-dim) !important; }
-html.midnight .dark\:bg-zinc-500 { background-color: var(--midnight-text-dim) !important; }
-html.midnight .dark\:bg-zinc-600 { background-color: var(--midnight-border) !important; }
-html.midnight .dark\:bg-zinc-700 { background-color: var(--midnight-bg-surface) !important; }
-html.midnight .dark\:bg-zinc-800 { background-color: var(--midnight-bg-surface) !important; }
-html.midnight .dark\:bg-zinc-900 { background-color: var(--midnight-bg-raised) !important; }
+html.midnight .dark\:bg-zinc-700 { background-color: var(--midnight-surface) !important; }
+html.midnight .dark\:bg-zinc-800 { background-color: var(--midnight-accent) !important; }
+html.midnight .dark\:bg-zinc-900 { background-color: var(--midnight-surface) !important; }
 html.midnight .dark\:bg-zinc-950 { background-color: var(--midnight-bg) !important; }
-html.midnight .dark\:bg-zinc-800\/40 { background-color: rgba(28,31,36,0.45) !important; }
-html.midnight .dark\:bg-zinc-800\/50 { background-color: rgba(28,31,36,0.5) !important; }
-html.midnight .dark\:bg-zinc-800\/60 { background-color: rgba(28,31,36,0.55) !important; }
-html.midnight .dark\:bg-zinc-700\/40 { background-color: rgba(28,31,36,0.45) !important; }
-html.midnight .dark\:bg-zinc-700\/55 { background-color: rgba(28,31,36,0.55) !important; }
-html.midnight .dark\:bg-zinc-900\/60 { background-color: rgba(58,53,80,0.55) !important; }
-html.midnight .dark\:bg-zinc-900\/80 { background-color: rgba(58,53,80,0.75) !important; }
 
-/* Midnight — Text colors */
-html.midnight .text-zinc-200 { color: var(--midnight-text-mid) !important; }
-html.midnight .text-zinc-300 { color: var(--midnight-text-dim) !important; }
+html.midnight .border-black { border-color: var(--midnight-border) !important; }
+html.midnight .border-zinc-200 { border-color: var(--midnight-border) !important; }
+html.midnight .border-zinc-700 { border-color: var(--midnight-border) !important; }
+html.midnight .dark\:border-zinc-600 { border-color: var(--midnight-border) !important; }
+html.midnight .dark\:border-zinc-700 { border-color: var(--midnight-border) !important; }
+html.midnight .dark\:border-zinc-800 { border-color: var(--midnight-border) !important; }
+html.midnight .dark\:border-zinc-900 { border-color: var(--midnight-border) !important; }
+
+html.midnight .text-zinc-900 { color: var(--midnight-text) !important; }
+html.midnight .text-zinc-100 { color: var(--midnight-text) !important; }
 html.midnight .text-zinc-400 { color: var(--midnight-text-dim) !important; }
 html.midnight .text-zinc-500 { color: var(--midnight-text-dim) !important; }
 html.midnight .text-zinc-600 { color: var(--midnight-text-mid) !important; }
 html.midnight .text-zinc-700 { color: var(--midnight-text-mid) !important; }
 html.midnight .text-zinc-800 { color: var(--midnight-text) !important; }
-html.midnight .text-zinc-900 { color: var(--midnight-text) !important; }
-html.midnight .text-zinc-100 { color: var(--midnight-text) !important; }
-html.midnight .text-zinc-900\/80 { color: rgba(184,181,192,0.8) !important; }
-html.midnight .text-white { color: var(--midnight-text) !important; }
-html.midnight .text-white\/40 { color: rgba(184,181,192,0.45) !important; }
+html.midnight .text-zinc-300 { color: var(--midnight-text-dim) !important; }
 html.midnight .text-gray-400 { color: var(--midnight-text-dim) !important; }
 html.midnight .text-gray-500 { color: var(--midnight-text-dim) !important; }
-html.midnight .text-gray-600 { color: var(--midnight-text-mid) !important; }
-html.midnight .text-gray-700 { color: var(--midnight-text-mid) !important; }
 html.midnight .text-gray-900 { color: var(--midnight-text) !important; }
-html.midnight .text-red-500 { color: #7a3a3a !important; }
-html.midnight .text-rose-500 { color: #7a3a3a !important; }
+html.midnight .text-white { color: var(--midnight-text) !important; }
+html.midnight .text-black { color: var(--midnight-text) !important; }
 
-/* Midnight — Dark-variant text */
 html.midnight .dark\:text-zinc-100 { color: var(--midnight-text) !important; }
-html.midnight .dark\:text-zinc-200 { color: var(--midnight-text-mid) !important; }
 html.midnight .dark\:text-zinc-300 { color: var(--midnight-text-dim) !important; }
 html.midnight .dark\:text-zinc-400 { color: var(--midnight-text-dim) !important; }
 html.midnight .dark\:text-zinc-500 { color: var(--midnight-text-dim) !important; }
@@ -178,76 +329,52 @@ html.midnight .dark\:text-zinc-600 { color: var(--midnight-text-mid) !important;
 html.midnight .dark\:text-zinc-700 { color: var(--midnight-text-mid) !important; }
 html.midnight .dark\:text-zinc-800 { color: var(--midnight-text) !important; }
 html.midnight .dark\:text-zinc-900 { color: var(--midnight-text) !important; }
-html.midnight .dark\:text-red-400 { color: #7a3a3a !important; }
-html.midnight .dark\:text-red-500 { color: #7a3a3a !important; }
 
-/* Midnight — Borders */
-html.midnight .border-zinc-100 { border-color: var(--midnight-border) !important; }
-html.midnight .border-zinc-200 { border-color: var(--midnight-border) !important; }
-html.midnight .border-zinc-300 { border-color: var(--midnight-border) !important; }
-html.midnight .border-zinc-600 { border-color: var(--midnight-border) !important; }
-html.midnight .border-zinc-700 { border-color: var(--midnight-border) !important; }
-html.midnight .border-zinc-800 { border-color: var(--midnight-border) !important; }
-html.midnight .border-white { border-color: var(--midnight-text-dim) !important; }
-html.midnight .border-white\/5 { border-color: rgba(184,181,192,0.1) !important; }
-html.midnight .border-white\/10 { border-color: rgba(184,181,192,0.18) !important; }
-html.midnight .border-white\/70 { border-color: rgba(184,181,192,0.6) !important; }
-html.midnight .border-zinc-200\/50 { border-color: rgba(42,38,51,0.55) !important; }
-html.midnight .border-zinc-200\/70 { border-color: rgba(42,38,51,0.65) !important; }
-html.midnight .border-zinc-100\/40 { border-color: rgba(42,38,51,0.4) !important; }
-html.midnight .border-zinc-700\/50 { border-color: rgba(42,38,51,0.55) !important; }
+html.midnight .bg-canary { background-color: var(--midnight-yellow) !important; }
+html.midnight .bg-canary-light { background-color: var(--midnight-yellow) !important; }
+html.midnight .bg-lavender { background-color: var(--midnight-lavender) !important; }
+html.midnight .bg-mint { background-color: var(--midnight-mint) !important; }
+html.midnight .bg-coral { background-color: var(--midnight-coral) !important; }
+html.midnight .bg-skybadge { background-color: var(--midnight-sky) !important; }
 
-/* Midnight — Dark-variant borders */
-html.midnight .dark\:border-zinc-400 { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:border-zinc-500 { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:border-zinc-600 { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:border-zinc-700 { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:border-zinc-800 { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:border-zinc-900 { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:border-zinc-700\/40 { border-color: rgba(42,38,51,0.4) !important; }
-html.midnight .dark\:border-zinc-700\/50 { border-color: rgba(42,38,51,0.55) !important; }
+html.midnight .shadow-brutal { box-shadow: 3px 3px 0px 0px var(--midnight-accent) !important; }
+html.midnight .shadow-brutal-sm { box-shadow: 2px 2px 0px 0px var(--midnight-accent) !important; }
+html.midnight .shadow-brutal-lg { box-shadow: 4px 4px 0px 0px var(--midnight-accent) !important; }
 
-/* Midnight — Dividers */
-html.midnight .divide-zinc-50 > div { border-color: var(--midnight-border) !important; }
-html.midnight .divide-zinc-100 > div { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:divide-zinc-700 > div { border-color: var(--midnight-border) !important; }
-html.midnight .dark\:divide-zinc-800 > div { border-color: var(--midnight-border) !important; }
+html.midnight .hover\:bg-zinc-50:hover { background-color: var(--midnight-accent) !important; }
+html.midnight .hover\:bg-zinc-100:hover { background-color: var(--midnight-accent) !important; }
+html.midnight .hover\:bg-zinc-200:hover { background-color: var(--midnight-accent) !important; }
+html.midnight .dark\:hover\:bg-zinc-700:hover { background-color: var(--midnight-accent) !important; }
+html.midnight .dark\:hover\:bg-zinc-800:hover { background-color: var(--midnight-accent) !important; }
 
-/* Midnight — Hover states */
-html.midnight .hover\:bg-zinc-50:hover { background-color: var(--midnight-bg-surface) !important; }
-html.midnight .hover\:bg-zinc-100:hover { background-color: var(--midnight-bg-surface) !important; }
-html.midnight .hover\:bg-zinc-800:hover { background-color: var(--midnight-accent) !important; }
-html.midnight .hover\:bg-white:hover { background-color: var(--midnight-bg-raised) !important; }
-html.midnight .hover\:bg-zinc-50\/80:hover { background-color: rgba(28,31,36,0.7) !important; }
-html.midnight .hover\:text-zinc-600:hover { color: var(--midnight-text-mid) !important; }
-html.midnight .hover\:text-zinc-700:hover { color: var(--midnight-text-mid) !important; }
-html.midnight .hover\:text-zinc-900:hover { color: var(--midnight-text) !important; }
-html.midnight .hover\:text-zinc-900\/70:hover { color: rgba(184,181,192,0.7) !important; }
-html.midnight .dark\:hover\:bg-zinc-100:hover { background-color: var(--midnight-accent) !important; }
-html.midnight .dark\:hover\:bg-zinc-200:hover { background-color: var(--midnight-accent) !important; }
-html.midnight .dark\:hover\:bg-zinc-700:hover { background-color: var(--midnight-bg-surface) !important; }
-html.midnight .dark\:hover\:bg-zinc-800:hover { background-color: var(--midnight-bg-surface) !important; }
-html.midnight .dark\:hover\:bg-zinc-800\/50:hover { background-color: rgba(28,31,36,0.5) !important; }
-html.midnight .dark\:hover\:text-zinc-100:hover { color: var(--midnight-text) !important; }
-html.midnight .dark\:hover\:text-zinc-200:hover { color: var(--midnight-text-mid) !important; }
-html.midnight .dark\:hover\:text-zinc-300:hover { color: var(--midnight-text-dim) !important; }
+html.midnight .bg-white\/80 { background-color: rgba(30,41,59,0.8) !important; }
+html.midnight .bg-white\/60 { background-color: rgba(30,41,59,0.6) !important; }
 
-/* Midnight — Selection */
-html.midnight .selection\:bg-zinc-200::selection { background-color: var(--midnight-border) !important; }
-html.midnight .dark\:selection\:bg-zinc-700::selection { background-color: var(--midnight-border) !important; }
+html.midnight .selection\:bg-zinc-200::selection { background-color: var(--midnight-accent) !important; }
 
-/* Midnight — Nav buttons */
-html.midnight .nav-btn.text-gray-500 { color: var(--midnight-text-dim) !important; }
 html.midnight .nav-btn.text-white { color: var(--midnight-text) !important; }
-html.midnight .nav-btn.bg-white\/10 { background-color: rgba(184,181,192,0.14) !important; }
+html.midnight .nav-btn.bg-white\/10 { background-color: rgba(226,232,240,0.14) !important; }
+html.midnight .nav-btn.text-gray-500 { color: var(--midnight-text-dim) !important; }
 html.midnight .nav-btn.hover\:text-gray-300:hover { color: var(--midnight-text-mid) !important; }
-html.midnight .nav-btn.hover\:bg-white\/5:hover { background-color: rgba(184,181,192,0.1) !important; }
+html.midnight .nav-btn.hover\:bg-white\/5:hover { background-color: rgba(226,232,240,0.08) !important; }
 
-/* Midnight — Motif decorators */
-html.midnight .tick-motif::before { content: ''; display: inline-block; width: 1px; background: var(--midnight-accent); margin-right: 8px; vertical-align: middle; opacity: 0.6; }
-html.midnight .tick-motif-sm::before { content: ''; display: inline-block; width: 1px; height: 0.6em; background: var(--midnight-accent); margin-right: 6px; vertical-align: middle; opacity: 0.5; }
-html.midnight .tick-motif-lg::before { content: ''; display: inline-block; width: 1px; height: 1.2em; background: var(--midnight-accent); margin-right: 10px; vertical-align: middle; opacity: 0.4; }
+html.midnight [contenteditable] {
+    background-color: var(--midnight-surface) !important;
+    border-color: var(--midnight-border) !important;
+    color: var(--midnight-text) !important;
+}
 
-/* Midnight — Misc */
-html.midnight .animate-none { animation: none !important; }
-html.midnight .tab-enter { animation: tabFadeIn 0.4s ease-out; }
+html.midnight input, html.midnight select {
+    background-color: var(--midnight-surface) !important;
+    border-color: var(--midnight-border) !important;
+    color: var(--midnight-text) !important;
+}
+
+/* ===== UTILITY ANIMATIONS ===== */
+@keyframes pulse-border {
+    0%, 100% { border-color: #000; }
+    50% { border-color: #fde047; }
+}
+.animate-pulse-border {
+    animation: pulse-border 2s ease-in-out infinite;
+}

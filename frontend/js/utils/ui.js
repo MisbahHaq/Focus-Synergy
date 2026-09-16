@@ -3,7 +3,7 @@ import { createIcons, icons } from 'lucide';
 
 export function showToast(message, type = 'info') {
     const toast = document.createElement('div');
-    toast.className = `fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl shadow-xl border text-xs font-bold transition-all transform translate-y-0 opacity-100 flex items-center gap-2 ${type === 'warning' ? 'bg-amber-900 text-amber-100 border-amber-700' : 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-700'}`;
+    toast.className = `fixed bottom-6 right-6 z-50 px-4 py-3 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal text-xs font-extrabold uppercase tracking-wider transition-all transform translate-y-0 opacity-100 flex items-center gap-2 ${type === 'warning' ? 'bg-coral dark:bg-coral midnight:bg-[#fda4af] text-black' : 'bg-black dark:bg-white midnight:bg-[#1e293b] text-white dark:text-black midnight:text-[#e2e8f0]'}`;
     toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
     document.body.appendChild(toast);
     setTimeout(() => {

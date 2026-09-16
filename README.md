@@ -12,7 +12,7 @@ Focus Synergy is a productivity dashboard that helps you log deep work sessions,
 
 It's built around one truth: **tracking only works if it's frictionless.**
 
-Sign in with email or Google for real-time cloud sync via Firebase, or choose **Local Mode** to keep data entirely on your device. It runs as a website or a native desktop app powered by Tauri.
+Sign in with email or Google for real-time cloud sync via Firebase, with offline persistence for when you're on the move. It runs as a website or a native desktop app powered by Tauri.
 
 ## Screenshots
 <img width="720" height="450" alt="Scene" src="https://github.com/user-attachments/assets/5025512d-946f-4432-8680-3f0631b7c4a9" />
@@ -20,14 +20,20 @@ Sign in with email or Google for real-time cloud sync via Firebase, or choose **
 
 ## Features
 
-- **Deep Work Timer** — create *Topics* or *Habits*, then start, pause, and log focused sessions with a live counter and per-item timers.
+- **Deep Work Timer** — create *Topics* or *Habits*, then start, pause, and log focused sessions with a live counter and per-item timers. Pinned items stay at the top of your dashboard.
 - **Analytics & Highlights** — see time allocation and top focus metrics across your tracked items at a glance.
 - **Activity Calendar** — a year-long focus heatmap plus a navigable month calendar showing daily intensity.
-- **Seasons Planner** — structured 4–6 week focus blocks with a professional/personal goal, a daily "non-negotiable minimum" micro-habit, and a daily energy log (high-energy production vs. low-energy consumption).
-- **Not-Right-Now Backlog** — park ideas, frameworks, and hobbies so they don't distract your current season.
-- **Notes Workspace** — a rich-text notes editor (bold, italic, lists) that auto-saves as you type.
-- **Multi-provider Auth** — Email/Password and Google Sign-In.
-- **Live Sync** — every change is mirrored to Firestore in real time via snapshot listeners.
+- **Seasons Planner** — structured 4–6 week focus blocks with a professional/personal goal, a daily "non-negotiable minimum" micro-habit, a daily energy log (high-energy production vs. low-energy consumption), and an end-of-season retrospective with focus totals and completion stats.
+- **Not-Right-Now Backlog** — park ideas, frameworks, and hobbies so they don't distract your current season; promote them into a season in one click.
+- **Notes Workspace** — a rich-text notes editor (bold, italic, lists) that auto-saves as you type, with full-text search and a quick-notes sidebar on the dashboard.
+- **Data Import / Export** — full JSON backup and per-domain CSV exports via the native Tauri save dialog.
+- **Onboarding Tour** — a step-through coachmark tour on first login (replayable from settings) so new users find their way around.
+- **Break Reminders** — native desktop + web notifications after a configurable focus threshold.
+- **Multi-provider Auth** — Email/Password and Google Sign-In, with an automatic redirect flow inside the Tauri webview.
+- **Live Sync** — every change is mirrored to Firestore in real time via snapshot listeners, with offline IndexedDB persistence and a multi-device single-active-timer guarantee.
+- **Three-Way Theme** — Light, Dark, and Midnight palettes.
+- **Sound Feedback** — subtle audio cues for timer, log, and habit actions.
+- **In-App Updates** — silent auto-update checks via the Tauri updater, plus a manual check in Settings.
 - **Tiny desktop shell** — Tauri wraps the web app in a native window (~10 MB), far lighter than Electron.
 - **Responsive UI** — Tailwind CSS, looks good on phone and desktop.
 
@@ -36,34 +42,49 @@ Sign in with email or Google for real-time cloud sync via Firebase, or choose **
 | Layer | Technology |
 | --- | --- |
 | Shell | Tauri 2 — native window, OS integrations |
-| Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+ modules) |
-| Styling | Tailwind CSS (CDN), Lucide Icons (CDN), Plus Jakarta Sans (Google Fonts) |
-| Backend-as-a-Service | Firebase Auth + Cloud Firestore (loaded via ESM CDN) |
+| Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+ modules), Vite build pipeline |
+| Styling | Tailwind CSS (compiled via PostCSS), Lucide Icons, Plus Jakarta Sans (Google Fonts) |
+| Backend-as-a-Service | Firebase Auth + Cloud Firestore (npm packages) |
 | Realtime | Firestore `onSnapshot` listeners per collection |
-| Core | Rust — Tauri runtime, IPC, window management |
-| Build Tooling | Node.js, `@tauri-apps/cli`, Cargo (Rust toolchain) |
+| Core | Rust — Tauri runtime, IPC, window management, updater, dialog, fs plugins |
+| Build Tooling | Node.js, Vite, `@tauri-apps/cli`, Cargo (Rust toolchain) |
+| Testing | Vitest (unit), `@firebase/rules-unit-testing` (Firestore rules) |
+| CI / Release | GitHub Actions — lint, format, build, cross-platform installers |
 | Packaging | MSI + NSIS (Windows) · DMG (macOS) · .deb + AppImage (Linux) |
 
 ## Project Structure
 
 ```
 Focus Synergy/
-├── frontend/                # Static web app (vanilla JS)
+├── frontend/                # Web app source (Vite root)
 │   ├── index.html           # Marketing / landing page
 │   ├── dashboard.html       # Authenticated app shell (login, tracker, calendar, notes, seasons)
-│   ├── env.js               # Injected Firebase + Cloudinary config (generated; see .env.example)
-│   └── fav.png
+│   ├── env.js               # Injected Firebase config (generated from .env)
+│   ├── css/styles.css       # Compiled Tailwind + theme palettes
+│   ├── js/
+│   │   ├── app.js           # Core dashboard logic
+│   │   ├── main-index.js    # Landing page logic
+│   │   ├── modules/         # onboarding, export, retrospective, notifications
+│   │   ├── storage/         # FirebaseAdapter, storage factory
+│   │   └── utils/           # theme, format, sanitize, state, tauri helpers (+ tests)
+│   └── dist/                # Built output (committed; served by the Tauri shell)
 ├── src-tauri/               # Rust desktop shell
 │   ├── src/
 │   │   ├── main.rs          # Entry point, calls the library run()
-│   │   └── lib.rs           # Tauri builder, plugins, context
-│   ├── tauri.conf.json      # App config (product name, identifier, window, bundling)
+│   │   └── lib.rs           # Tauri builder, plugins (updater, dialog, fs, opener, process)
+│   ├── tauri.conf.json      # App config (product name, identifier, window, bundling, updater)
 │   ├── Cargo.toml           # Rust package manifest
 │   └── Cargo.lock
-├── scripts/
-│   ├── static-server.js     # Local dev server on :5173
-│   └── build-frontend.js    # Copies/generates frontend/env.js from .env
-├── package.json             # npm scripts (dev, build, tauri)
+├── scripts/                 # Node build tooling (all .cjs)
+│   ├── build-runner.cjs     # Orchestrates env generation + vite build
+│   ├── build-frontend.cjs   # Generates frontend/env.js from .env
+│   ├── static-server.cjs    # Local dev server on :5173
+│   ├── build-favicon.cjs    # Favicon generation
+│   ├── convert-ico.cjs      # ICO conversion
+│   ├── generate-screenshots.cjs # Screenshot tooling
+│   └── test-rules.cjs       # Firestore rules test suite
+├── .github/workflows/       # ci.yml + release.yml (cross-platform builds & releases)
+├── package.json             # npm scripts (dev, build, tauri, test, lint, format)
 └── README.md
 ```
 
@@ -88,7 +109,7 @@ Data is stored per-user under `users/{uid}/` in Firestore, one collection per fe
 | macOS | Intel | `FocusSynergy_0.1.0_x64.dmg` |
 | Linux | x86_64 | `FocusSynergy_0.1.0_amd64.deb` · `FocusSynergy_0.1.0_x86_64.AppImage` |
 
-> Build installers yourself with `npm run tauri build` — artifacts land in `src-tauri/target/release/bundle/`.
+> Build installers yourself with `npm run build:tauri` — artifacts land in `src-tauri/target/release/bundle/`.
 >
 > Releases are not code-signed on Windows/macOS by default — you may see a SmartScreen/ Gatekeeper warning.
 
@@ -98,23 +119,28 @@ Data is stored per-user under `users/{uid}/` in Firestore, one collection per fe
 
 ```bash
 # 1. Configure Firebase credentials
-cp .env.example .env
-#    Edit .env with your Firebase project values. .env is git-ignored and is
-#    the ONLY place secrets live — frontend/env.js is generated from it and
-#    is also git-ignored, so no credentials are ever committed.
+#    Create a .env file at the repo root with your Firebase project values
+#    (see scripts/build-frontend.cjs for the expected FIREBASE_* keys).
+#    .env is git-ignored and is the ONLY place secrets live — frontend/env.js
+#    is generated from it and is also git-ignored, so no credentials are
+#    ever committed.
 
-# 2. Install JS dependencies (Tauri CLI)
+# 2. Install JS dependencies (Tauri CLI + Vite + Firebase)
 npm install
 
 # 3. Generate frontend/env.js from .env
 npm run build:env
 
-# 4. Run in dev mode (hot-reload UI + Rust backend)
+# 4. Run in dev mode (Vite hot-reload UI + Rust backend)
 npm run dev
+# or run the Tauri shell with:
+npm run dev:tauri
 # or double-click dev.bat on Windows
 
 # 5. Build a release binary + installer for your platform
 npm run build
+# then package the desktop app with:
+npm run build:tauri
 ```
 
 Built artifacts land in `src-tauri/target/release/bundle/`.
@@ -122,11 +148,11 @@ Built artifacts land in `src-tauri/target/release/bundle/`.
 ### Run the web app only
 
 ```bash
-# Generate env.js and serve the static frontend
-npm run build:env
-npx serve frontend
-# or
-python -m http.server 3000 frontend
+# Build the frontend, then serve the compiled output
+npm run build
+npm run preview
+# or run the static dev server directly:
+npm run static-server
 ```
 
 ### Desktop-only step (Google Sign-In)

@@ -5,73 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Synergy — Minimal Workspace</title>
     <meta name="description" content="Focus Synergy helps you track habits, topics, and deep work sessions with timers, analytics, activity calendars, and notes.">
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="theme-color" content="#171717">
     <link rel="icon" href="favicon.ico" type="image/x-icon" sizes="16x16 32x32">
     <link rel="icon" href="fav.png" type="image/png">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-zinc-50 dark:bg-[#0a0a0a] antialiased selection:bg-zinc-200 dark:selection:bg-zinc-700 midnight:bg-[#111318] midnight:text-[#b8b5c0] midnight:selection:bg-[#2a2633]">
+<body class="bg-canvas dark:bg-[#171717] midnight:bg-[#0f172a] antialiased selection:bg-canary dark:selection:bg-canary midnight:selection:bg-[#fbbf24]">
 
-    <nav class="sticky top-0 z-50 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md">
+    <nav class="sticky top-0 z-50 bg-canvas/90 dark:bg-[#171717]/90 midnight:bg-[#0f172a]/90 backdrop-blur-sm border-b-2 border-black dark:border-white midnight:border-[#475569]">
         <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-2.5 font-bold text-base tracking-tight text-zinc-900 dark:text-zinc-100">
-                <i data-lucide="layers" class="w-5 h-5"></i> Focus Synergy
+            <div class="flex items-center gap-3 font-extrabold text-base uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">
+                <div class="w-8 h-8 bg-canary dark:bg-canary midnight:bg-[#fbbf24] flex items-center justify-center border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
+                    <i data-lucide="layers" class="w-4 h-4 text-black"></i>
+                </div>
+                Focus Synergy
             </div>
             <div class="flex items-center gap-4">
-                <button onclick="window.toggleTheme()" id="themeToggle" class="p-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg text-zinc-600 dark:text-zinc-300 transition relative" title="Cycle theme">
+                <button onclick="window.toggleTheme()" id="themeToggle" class="p-2 bg-zinc-100 dark:bg-[#262626] midnight:bg-[#1e293b] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none relative" title="Cycle theme">
                     <i data-lucide="sun" class="w-4 h-4 dark-icon hidden"></i>
                     <i data-lucide="music" class="w-4 h-4 midnight-icon hidden"></i>
                     <i data-lucide="moon" class="w-4 h-4 light-icon"></i>
                 </button>
-                <a href="dashboard.html" class="text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition">Login</a>
+                <a href="dashboard.html" class="text-sm font-extrabold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border-b-2 border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569] pb-0.5">Login</a>
             </div>
         </div>
     </nav>
 
     <header class="max-w-6xl mx-auto px-6 pt-28 pb-32">
-        <h1 class="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.05] mb-6 text-zinc-900 dark:text-zinc-100 tick-motif">
+        <h1 class="text-5xl sm:text-7xl font-black uppercase tracking-wider leading-[1.05] mb-6 text-black dark:text-white midnight:text-[#e2e8f0]">
             Track focus loops.<br>Build lasting habits.
         </h1>
-        <p class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-2xl leading-relaxed mb-10 max-w-3xl">
+        <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-lg sm:text-2xl leading-relaxed mb-10 max-w-3xl font-medium">
             A lightweight browser workspace designed to log deep work sessions, maintain consistency streaks, and audit productivity metrics without context switching.
         </p>
-        <div class="flex items-center gap-6 text-sm font-semibold">
-            <a href="dashboard.html" class="px-6 py-3 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded-xl transition shadow-sm">Open Dashboard</a>
-            <a href="#features" class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition">Features &rarr;</a>
+        <div class="flex items-center gap-6 text-sm font-extrabold uppercase tracking-wider">
+            <a href="dashboard.html" class="px-6 py-3 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">Open Dashboard</a>
+            <a href="#features" class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border-b-2 border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569] pb-0.5">Features &rarr;</a>
         </div>
     </header>
 
-    <main id="features" class="max-w-6xl mx-auto px-6 py-20 border-t border-zinc-200 dark:border-zinc-700">
+    <main id="features" class="max-w-6xl mx-auto px-6 py-20 border-t-2 border-black dark:border-white midnight:border-[#475569]">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12 text-base">
-            <div>
-                <i data-lucide="timer" class="w-5 h-5 mb-4 text-zinc-400 dark:text-zinc-500"></i>
-                <h3 class="font-bold text-zinc-900 dark:text-zinc-100 mb-2 tick-motif-sm">Smart Timers</h3>
-                <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed text-sm">Spin up counters for tasks or habits with instant start, pause, and ledger entry mechanics.</p>
+            <div class="p-5 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal transition-shadow">
+                <div class="w-10 h-10 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] flex items-center justify-center mb-4">
+                    <i data-lucide="timer" class="w-5 h-5 text-black"></i>
+                </div>
+                <h3 class="font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] mb-2">Smart Timers</h3>
+                <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] leading-relaxed text-sm font-medium">Spin up counters for tasks or habits with instant start, pause, and ledger entry mechanics.</p>
             </div>
-            <div>
-                <i data-lucide="bar-chart-3" class="w-5 h-5 mb-4 text-zinc-400 dark:text-zinc-500"></i>
-                <h3 class="font-bold text-zinc-900 dark:text-zinc-100 mb-2 tick-motif-sm">Deep Analytics</h3>
-                <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed text-sm">Review total logged attention allocations through clean weekly performance trends.</p>
+            <div class="p-5 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal transition-shadow">
+                <div class="w-10 h-10 bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd] border-2 border-black dark:border-white midnight:border-[#475569] flex items-center justify-center mb-4">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-black"></i>
+                </div>
+                <h3 class="font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] mb-2">Deep Analytics</h3>
+                <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] leading-relaxed text-sm font-medium">Review total logged attention allocations through clean weekly performance trends.</p>
             </div>
-            <div>
-                <i data-lucide="calendar" class="w-5 h-5 mb-4 text-zinc-400 dark:text-zinc-500"></i>
-                <h3 class="font-bold text-zinc-900 dark:text-zinc-100 mb-2 tick-motif-sm">Activity Maps</h3>
-                <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed text-sm">Visualize long-term habit streaks using a modular visual focus intensity heatmap.</p>
+            <div class="p-5 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal transition-shadow">
+                <div class="w-10 h-10 bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] flex items-center justify-center mb-4">
+                    <i data-lucide="calendar" class="w-5 h-5 text-black"></i>
+                </div>
+                <h3 class="font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] mb-2">Activity Maps</h3>
+                <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] leading-relaxed text-sm font-medium">Visualize long-term habit streaks using a modular visual focus intensity heatmap.</p>
             </div>
-            <div>
-                <i data-lucide="cloud" class="w-5 h-5 mb-4 text-zinc-400 dark:text-zinc-500"></i>
-                <h3 class="font-bold text-zinc-900 dark:text-zinc-100 mb-2 tick-motif-sm">Live Sync</h3>
-                <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed text-sm">Secure data storage backed by seamless cross-device Firestore engine synchronization.</p>
+            <div class="p-5 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal transition-shadow">
+                <div class="w-10 h-10 bg-skybadge dark:bg-skybadge midnight:bg-[#7dd3fc] border-2 border-black dark:border-white midnight:border-[#475569] flex items-center justify-center mb-4">
+                    <i data-lucide="cloud" class="w-5 h-5 text-black"></i>
+                </div>
+                <h3 class="font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] mb-2">Live Sync</h3>
+                <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] leading-relaxed text-sm font-medium">Secure data storage backed by seamless cross-device Firestore engine synchronization.</p>
             </div>
         </div>
     </main>
 
-    <footer class="border-t border-zinc-200 dark:border-zinc-700 py-14 text-sm text-zinc-400 dark:text-zinc-500">
+    <footer class="border-t-2 border-black dark:border-white midnight:border-[#475569] py-14 text-sm text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]">
         <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between gap-6">
-            <span class="font-medium text-zinc-500 dark:text-zinc-400">&copy; 2026 Focus Synergy Engine.</span>
+            <span class="font-extrabold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">&copy; 2026 Focus Synergy Engine.</span>
             <div class="flex gap-6">
-                <a href="dashboard.html" class="hover:text-zinc-600 dark:hover:text-zinc-300 transition">Email Auth</a>
-                <a href="dashboard.html" class="hover:text-zinc-600 dark:hover:text-zinc-300 transition">Google Sign-In</a>
+                <a href="dashboard.html" class="hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition font-bold uppercase tracking-wider text-xs">Email Auth</a>
+                <a href="dashboard.html" class="hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition font-bold uppercase tracking-wider text-xs">Google Sign-In</a>
             </div>
         </div>
     </footer>
