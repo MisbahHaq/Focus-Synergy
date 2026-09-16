@@ -239,7 +239,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  unsubscribers.push(unsubActiveTimer);
  if (coreGlobalLoop) clearInterval(coreGlobalLoop);
  coreGlobalLoop = setInterval(processingEngineCycle, 1000);
- // Show main app immediately � don't block on animation.
+ // Show main app immediately - don't block on animation.
  // Kick off a quick non-blocking cross-fade so the transition feels smooth
  // without delaying data binding or subscriptions.
  if (animate) {
@@ -1232,7 +1232,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
  const progress = getSeasonProgress(season);
  document.getElementById('detailSeasonTitle').innerText = season.title;
- document.getElementById('detailSeasonDates').innerText = `${formatDateRange(season.startDate, season.endDate)} � ${season.durationWeeks} weeks`;
+ document.getElementById('detailSeasonDates').innerText = `${formatDateRange(season.startDate, season.endDate)} - ${season.durationWeeks} weeks`;
  document.getElementById('detailSeasonProgress').innerText = `${progress}%`;
  document.getElementById('detailSeasonProgressBar').style.width = `${progress}%`;
  document.getElementById('detailSeasonStart').innerText = new Date(season.startDate).toLocaleDateString();
