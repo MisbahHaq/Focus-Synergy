@@ -416,11 +416,31 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  setAuthLoading(false);
  } catch (e) {
  console.error('[LOGIN] signInWithEmailAndPassword failed:', e);
- document.getElementById('loginError').innerText = e.message;
+ document.getElementById('loginError').innerText = friendlyEmailAuthError(e);
  window._pendingLoginAnimation = false;
  setAuthLoading(false);
  }
  };
+
+ function friendlyEmailAuthError(e) {
+ const code = e.code || '';
+ if (code === 'auth/too-many-requests') {
+ return 'Too many sign-in attempts from this device. Firebase has temporarily blocked logins — wait 15-30 minutes, then try again.';
+ }
+ if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
+ return 'Invalid email or password.';
+ }
+ if (code === 'auth/invalid-email') {
+ return 'Please enter a valid email address.';
+ }
+ if (code === 'auth/user-disabled') {
+ return 'This account has been disabled.';
+ }
+ if (code === 'auth/network-request-failed') {
+ return 'Network error while signing in. Check your connection and try again.';
+ }
+ return e.message || 'Sign-in failed. Please try again.';
+ }
 
  window.logout = async function() {
  if (coreGlobalLoop) {
