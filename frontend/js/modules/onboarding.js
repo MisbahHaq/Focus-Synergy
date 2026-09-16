@@ -55,24 +55,24 @@ function renderTourStep(onComplete) {
 
     const overlay = document.createElement('div');
     overlay.id = 'tourCoachmarkOverlay';
-    overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 tab-enter';
+    overlay.className = 'fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 tab-enter';
 
     overlay.innerHTML = `
-        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
-            <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-400">
+        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg max-w-md w-full p-6 relative space-y-4">
+            <div class="flex items-center justify-between text-xs font-extrabold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">
                 <span>Step ${currentStepIndex + 1} of ${TOUR_STEPS.length}</span>
-                <button onclick="window.skipOnboardingTour()" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Skip</button>
+                <button onclick="window.skipOnboardingTour()" class="hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition font-extrabold uppercase tracking-wider">Skip</button>
             </div>
-            
-            <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100">${step.title}</h3>
-            <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">${step.content}</p>
 
-            <div class="flex justify-between items-center pt-4 border-t border-zinc-100 dark:border-zinc-800">
-                <button onclick="window.prevOnboardingStep()" ${isFirst ? 'disabled class="opacity-40 text-sm font-semibold text-zinc-400 cursor-not-allowed"' : 'class="text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100"'}>
+            <h3 class="text-xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">${step.title}</h3>
+            <p class="text-sm text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] leading-relaxed font-medium">${step.content}</p>
+
+            <div class="flex justify-between items-center pt-4 border-t-2 border-black dark:border-white midnight:border-[#475569]">
+                <button onclick="window.prevOnboardingStep()" ${isFirst ? 'disabled class="opacity-40 text-sm font-extrabold uppercase tracking-wider text-zinc-400 cursor-not-allowed"' : 'class="text-sm font-extrabold uppercase tracking-wider text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0]"'}>
                     &larr; Back
                 </button>
                 <div class="flex gap-2">
-                    <button onclick="window.nextOnboardingStep()" class="px-5 py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-semibold text-sm hover:opacity-90 transition">
+                    <button onclick="window.nextOnboardingStep()" class="px-5 py-2.5 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                         ${isLast ? 'Get Started' : 'Next &rarr;'}
                     </button>
                 </div>

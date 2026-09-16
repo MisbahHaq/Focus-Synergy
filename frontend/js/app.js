@@ -140,7 +140,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                 window.state.user = user;
                 const userDisplay = document.getElementById('userDisplay');
 
-                userDisplay.innerHTML = `<span class="text-xs font-semibold">${escapeHtml(user.displayName || user.email)}</span> <button onclick="logout()" class="ml-2 text-red-400 dark:text-red-500 hover:text-red-300 text-xs underline">Exit</button>`;
+                userDisplay.innerHTML = `<span class="text-xs font-extrabold uppercase tracking-wider">${escapeHtml(user.displayName || user.email)}</span> <button onclick="logout()" class="ml-2 text-red-500 dark:text-red-400 midnight:text-[#fda4af] hover:text-red-300 text-xs underline font-bold">Exit</button>`;
             // Initialize StorageAdapter
             try {
                 window.storageAdapter = await createStorageAdapter(
@@ -676,27 +676,28 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
             const modal = document.createElement('div');
             modal.id = 'newSeasonModalOverlay';
-            modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 tab-enter';
+            modal.className = 'fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 tab-enter';
             modal.innerHTML = `
-                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-                    <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-3">
-                        <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                            <i data-lucide="sprout" class="w-5 h-5"></i> New Season
+                <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg max-w-lg w-full p-6 space-y-5 relative max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center border-b-2 border-black dark:border-white midnight:border-[#475569] pb-3">
+                        <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] flex items-center gap-2">
+                            <span class="w-8 h-8 bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] flex items-center justify-center"><i data-lucide="sprout" class="w-4 h-4 text-black"></i></span>
+                            New Season
                         </h3>
-                        <button onclick="closeNewSeasonModal()" class="p-1 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded">
+                        <button onclick="closeNewSeasonModal()" class="p-1 text-zinc-400 hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] border-2 border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]">
                             <i data-lucide="x" class="w-5 h-5"></i>
                         </button>
                     </div>
 
                     <div class="space-y-4 text-sm">
                         <div class="space-y-1.5">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-xs">Season Title</label>
-                            <input type="text" id="newSeasonTitle" placeholder='e.g., "Foundations Q3"' class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest text-xs">Season Title</label>
+                            <input type="text" id="newSeasonTitle" placeholder='e.g., "Foundations Q3"' class="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] text-sm focus:outline-none focus:shadow-brutal font-medium">
                         </div>
 
                         <div class="space-y-1.5">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-xs">Duration (weeks)</label>
-                            <select id="newSeasonWeeks" class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest text-xs">Duration (weeks)</label>
+                            <select id="newSeasonWeeks" class="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] text-sm focus:outline-none focus:shadow-brutal font-bold">
                                 <option value="4">4 weeks</option>
                                 <option value="5" selected>5 weeks</option>
                                 <option value="6">6 weeks</option>
@@ -704,31 +705,31 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                         </div>
 
                         <div class="space-y-1.5">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-xs">Professional / Developer Goal</label>
-                            <input type="text" id="newSeasonDevGoal" placeholder="What do you want to build or learn?" class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest text-xs">Professional / Developer Goal</label>
+                            <input type="text" id="newSeasonDevGoal" placeholder="What do you want to build or learn?" class="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] text-sm focus:outline-none focus:shadow-brutal font-medium">
                         </div>
 
                         <div class="space-y-1.5">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-xs">Personal / Spiritual / Hobby Goal</label>
-                            <input type="text" id="newSeasonPersonalGoal" placeholder="What personal growth area matters?" class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest text-xs">Personal / Spiritual / Hobby Goal</label>
+                            <input type="text" id="newSeasonPersonalGoal" placeholder="What personal growth area matters?" class="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] text-sm focus:outline-none focus:shadow-brutal font-medium">
                         </div>
 
                         <div class="space-y-1.5">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-xs">Dev / Professional Micro-Habit (daily minimum)</label>
-                            <input type="text" id="newSeasonDevMicro" placeholder='e.g., "30 min coding practice"' class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest text-xs">Dev / Professional Micro-Habit (daily minimum)</label>
+                            <input type="text" id="newSeasonDevMicro" placeholder='e.g., "30 min coding practice"' class="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] text-sm focus:outline-none focus:shadow-brutal font-medium">
                         </div>
 
                         <div class="space-y-1.5">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-xs">Personal Micro-Habit (daily minimum)</label>
-                            <input type="text" id="newSeasonPersonalMicro" placeholder='e.g., "10 min meditation"' class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest text-xs">Personal Micro-Habit (daily minimum)</label>
+                            <input type="text" id="newSeasonPersonalMicro" placeholder='e.g., "10 min meditation"' class="w-full px-3 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] text-sm focus:outline-none focus:shadow-brutal font-medium">
                         </div>
                     </div>
 
-                    <div class="flex justify-end gap-2 pt-3 border-t border-zinc-200 dark:border-zinc-800">
-                        <button onclick="closeNewSeasonModal()" class="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold text-xs rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">
+                    <div class="flex justify-end gap-2 pt-3 border-t-2 border-black dark:border-white midnight:border-[#475569]">
+                        <button onclick="closeNewSeasonModal()" class="px-4 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                             Cancel
                         </button>
-                        <button onclick="submitNewSeason()" class="px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-xs rounded-xl hover:opacity-90 transition">
+                        <button onclick="submitNewSeason()" class="px-4 py-2 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                             Create Season
                         </button>
                     </div>
@@ -809,14 +810,14 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
             const modal = document.createElement('div');
             modal.id = 'confirmModalOverlay';
-            modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 tab-enter';
+            modal.className = 'fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 tab-enter';
             modal.innerHTML = `
-                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
-                    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Complete Season?</h3>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">This will finalize your current focus block and mark the season as complete.</p>
+                <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg max-w-sm w-full p-6 space-y-4">
+                    <h3 class="text-base font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Complete Season?</h3>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-medium">This will finalize your current focus block and mark the season as complete.</p>
                     <div class="flex justify-end gap-2 pt-2">
-                        <button onclick="closeConfirmModal()" class="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold text-xs rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">Cancel</button>
-                        <button onclick="confirmCompleteSeason()" class="px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-xs rounded-xl hover:opacity-90 transition">Complete</button>
+                        <button onclick="closeConfirmModal()" class="px-4 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Cancel</button>
+                        <button onclick="confirmCompleteSeason()" class="px-4 py-2 bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Complete</button>
                     </div>
                 </div>
             `;
@@ -995,47 +996,48 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
             const modal = document.createElement('div');
             modal.id = 'appSettingsModalOverlay';
-            modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 tab-enter';
+            modal.className = 'fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 tab-enter';
             modal.innerHTML = `
-                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-md w-full p-6 space-y-6 shadow-2xl relative">
-                    <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-3">
-                        <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                            <i data-lucide="settings" class="w-5 h-5"></i> Workspace Settings
+                <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg max-w-md w-full p-6 space-y-6 relative">
+                    <div class="flex justify-between items-center border-b-2 border-black dark:border-white midnight:border-[#475569] pb-3">
+                        <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] flex items-center gap-2">
+                            <span class="w-8 h-8 bg-skybadge dark:bg-skybadge midnight:bg-[#7dd3fc] border-2 border-black dark:border-white midnight:border-[#475569] flex items-center justify-center"><i data-lucide="settings" class="w-4 h-4 text-black"></i></span>
+                            Workspace Settings
                         </h3>
-                        <button onclick="closeAppSettingsModal()" class="p-1 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded">
+                        <button onclick="closeAppSettingsModal()" class="p-1 text-zinc-400 hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] border-2 border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]">
                             <i data-lucide="x" class="w-5 h-5"></i>
                         </button>
                     </div>
 
                     <div class="space-y-4 text-xs">
-                        <div class="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Break Reminder Notifications</label>
-                            <div class="flex items-center justify-between bg-zinc-100 dark:bg-zinc-800 p-3 rounded-xl">
+                        <div class="space-y-1.5 border-t-2 border-black dark:border-white midnight:border-[#475569] pt-3">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Break Reminder Notifications</label>
+                            <div class="flex items-center justify-between bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] p-3">
                                 <div>
-                                    <span class="font-bold text-zinc-900 dark:text-zinc-100">Session Threshold</span>
-                                    <p class="text-zinc-400 text-[11px]">Remind to stretch after ${window.state.breakThresholdMinutes} minutes</p>
+                                    <span class="font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Session Threshold</span>
+                                    <p class="text-zinc-400 text-[11px] font-mono mt-0.5">Remind to stretch after <span class="font-bold">${window.state.breakThresholdMinutes}</span> min</p>
                                 </div>
-                                <input type="checkbox" ${window.state.breakNotificationsEnabled ? 'checked' : ''} onchange="window.state.breakNotificationsEnabled = this.checked" class="w-4 h-4 accent-zinc-900">
+                                <input type="checkbox" ${window.state.breakNotificationsEnabled ? 'checked' : ''} onchange="window.state.breakNotificationsEnabled = this.checked" class="w-4 h-4 accent-black dark:accent-white midnight:accent-[#fbbf24]">
                             </div>
                         </div>
 
-                        <div class="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">App Guidance</label>
-                            <button onclick="closeAppSettingsModal(); replayTutorialTour();" class="w-full py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-semibold text-zinc-800 dark:text-zinc-200 rounded-xl transition flex items-center justify-center gap-2">
+                        <div class="space-y-1.5 border-t-2 border-black dark:border-white midnight:border-[#475569] pt-3">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">App Guidance</label>
+                            <button onclick="closeAppSettingsModal(); replayTutorialTour();" class="w-full py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal font-extrabold uppercase tracking-wider text-xs text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-2">
                                 <i data-lucide="compass" class="w-4 h-4"></i> Replay Onboarding Tutorial
                             </button>
                         </div>
 
-                        <div class="space-y-1.5 border-t border-zinc-100 dark:border-zinc-800 pt-3">
-                            <label class="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Updates</label>
-                            <button onclick="checkForUpdates()" class="w-full py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-semibold text-zinc-800 dark:text-zinc-200 rounded-xl transition flex items-center justify-center gap-2">
+                        <div class="space-y-1.5 border-t-2 border-black dark:border-white midnight:border-[#475569] pt-3">
+                            <label class="font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Updates</label>
+                            <button onclick="checkForUpdates()" class="w-full py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal font-extrabold uppercase tracking-wider text-xs text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-2">
                                 <i data-lucide="refresh-cw" class="w-4 h-4"></i> Check for Updates
                             </button>
                         </div>
                     </div>
 
-                    <div class="flex justify-end pt-2 border-t border-zinc-100 dark:border-zinc-800">
-                        <button onclick="closeAppSettingsModal()" class="px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-xs rounded-xl">
+                    <div class="flex justify-end pt-2 border-t-2 border-black dark:border-white midnight:border-[#475569]">
+                        <button onclick="closeAppSettingsModal()" class="px-4 py-2 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                             Done
                         </button>
                     </div>
@@ -1137,14 +1139,14 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
             const modal = document.createElement('div');
             modal.id = 'deleteConfirmModalOverlay';
-            modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 tab-enter';
+            modal.className = 'fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 tab-enter';
             modal.innerHTML = `
-                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
-                    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Delete Season?</h3>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">This will delete "${season.title}" and all associated data. This action cannot be undone.</p>
+                <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg max-w-sm w-full p-6 space-y-4">
+                    <h3 class="text-base font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Delete Season?</h3>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-medium">This will delete "${season.title}" and all associated data. This action cannot be undone.</p>
                     <div class="flex justify-end gap-2 pt-2">
-                        <button onclick="closeDeleteConfirmModal()" class="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold text-xs rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">Cancel</button>
-                        <button onclick="confirmDeleteSeason('${id}')" class="px-4 py-2 bg-red-600 text-white font-semibold text-xs rounded-xl hover:bg-red-700 transition">Delete</button>
+                        <button onclick="closeDeleteConfirmModal()" class="px-4 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Cancel</button>
+                        <button onclick="confirmDeleteSeason('${id}')" class="px-4 py-2 bg-coral dark:bg-coral midnight:bg-[#fda4af] border-2 border-black dark:border-white midnight:border-[#475569] text-black font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Delete</button>
                     </div>
                 </div>
             `;
@@ -1213,41 +1215,41 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             if (!listContainer) return;
 
             if (window.state.seasons.length === 0) {
-                listContainer.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500 italic bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">No seasons yet. Create one above.</div>';
+                listContainer.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">No seasons yet. Create one above.</div>';
                 return;
             }
 
             listContainer.innerHTML = window.state.seasons.map(season => {
                 const progress = getSeasonProgress(season);
                 const statusBadge = season.isCompleted
-                    ? '<span class="bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[10px] px-2 py-1 rounded-full font-bold">Completed</span>'
+                    ? '<span class="inline-flex items-center px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider border-2 border-black dark:border-white midnight:border-[#475569] bg-zinc-300 dark:bg-zinc-600 midnight:bg-[#334155] text-black dark:text-white midnight:text-[#e2e8f0]">Completed</span>'
                     : season.isActive
-                        ? '<span class="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] px-2 py-1 rounded-full font-bold">Active</span>'
-                        : '<span class="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 text-[10px] px-2 py-1 rounded-full font-bold">Upcoming</span>';
+                        ? '<span class="inline-flex items-center px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider border-2 border-black dark:border-white midnight:border-[#475569] bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black">Active</span>'
+                        : '<span class="inline-flex items-center px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider border-2 border-black dark:border-white midnight:border-[#475569] bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Upcoming</span>';
 
                 return `
-                    <div onclick="selectSeason('${season.id}')" class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-5 flex justify-between items-center cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-600 transition">
+                    <div onclick="selectSeason('${season.id}')" class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal p-5 flex justify-between items-center cursor-pointer transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
-                                <i data-lucide="sprout" class="w-5 h-5 text-zinc-600 dark:text-zinc-400"></i>
+                            <div class="w-12 h-12 bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd] flex items-center justify-center border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
+                                <i data-lucide="sprout" class="w-5 h-5 text-black"></i>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h4 class="text-base font-bold text-zinc-900 dark:text-zinc-100">${escapeHtml(season.title)}</h4>
+                                    <h4 class="text-base font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">${escapeHtml(season.title)}</h4>
                                     ${statusBadge}
                                 </div>
-                                <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-1">${formatDateRange(season.startDate, season.endDate)} • ${season.durationWeeks} weeks</p>
-                                <div class="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div class="bg-zinc-900 dark:bg-zinc-100 h-full rounded-full" style="width: ${progress}%"></div>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-mono font-medium">${formatDateRange(season.startDate, season.endDate)} &bull; ${season.durationWeeks} weeks</p>
+                                <div class="w-full bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] h-2.5 border border-black dark:border-white midnight:border-[#475569] mt-2 overflow-hidden">
+                                    <div class="bg-black dark:bg-white midnight:bg-[#fbbf24] h-full" style="width: ${progress}%"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-zinc-500 dark:text-zinc-400">${progress}%</span>
-                            <button onclick="event.stopPropagation(); openSeasonRetrospective('${season.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Preview Retrospective">
+                            <span class="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">${progress}%</span>
+                            <button onclick="event.stopPropagation(); openSeasonRetrospective('${season.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569] text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition" title="Preview Retrospective">
                                 <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="event.stopPropagation(); deleteSeason('${season.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Delete Season">
+                            <button onclick="event.stopPropagation(); deleteSeason('${season.id}')" class="p-2 hover:bg-red-100 dark:hover:bg-red-900/30 midnight:hover:bg-red-900/30 border-2 border-transparent hover:border-red-500 text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] hover:text-red-600 dark:hover:text-red-400 midnight:hover:text-[#fda4af] transition" title="Delete Season">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -1278,12 +1280,12 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             const personalHabit = getHabitStatus('personal');
 
             const btnDev = document.getElementById('btnMicroDev');
-            btnDev.innerText = devHabit.done ? 'âœ“ Completed Today' : 'Mark Complete Today';
-            btnDev.className = devHabit.done ? 'mt-3 w-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-bold py-2 rounded-lg opacity-60' : 'mt-3 w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-bold py-2 rounded-lg transition';
+            btnDev.innerText = devHabit.done ? '✓ Completed Today' : 'Mark Complete Today';
+            btnDev.className = devHabit.done ? 'mt-3 w-full bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 opacity-60' : 'mt-3 w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none';
 
             const btnPersonal = document.getElementById('btnMicroPersonal');
-            btnPersonal.innerText = personalHabit.done ? 'âœ“ Completed Today' : 'Mark Complete Today';
-            btnPersonal.className = personalHabit.done ? 'mt-3 w-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-bold py-2 rounded-lg opacity-60' : 'mt-3 w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-bold py-2 rounded-lg transition';
+            btnPersonal.innerText = personalHabit.done ? '✓ Completed Today' : 'Mark Complete Today';
+            btnPersonal.className = personalHabit.done ? 'mt-3 w-full bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 opacity-60' : 'mt-3 w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none';
 
             renderBacklog();
             renderDailyLogs();
@@ -1311,16 +1313,16 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             }
 
             if (unpromoted.length === 0) {
-                container.innerHTML = '<div class="text-xs text-zinc-400 dark:text-zinc-500 italic text-center py-6">Nothing parked here.</div>';
+                container.innerHTML = '<div class="text-xs text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider text-center py-6">Nothing parked here.</div>';
             } else {
                 container.innerHTML = unpromoted.map(item => {
                     return `
-                        <div class="flex items-center justify-between bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-3">
-                            <span class="text-sm text-zinc-700 dark:text-zinc-300 font-medium flex-1">${escapeHtml(item.title)}</span>
+                        <div class="flex items-center justify-between bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm p-3">
+                            <span class="text-sm text-black dark:text-white midnight:text-[#e2e8f0] font-bold flex-1">${escapeHtml(item.title)}</span>
                             <div class="flex items-center gap-1 ml-2">
-                                <button onclick="promoteBacklogToSeason('${item.id}', 'dev')" class="px-2 py-1 bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[10px] font-bold rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-600 transition">Dev</button>
-                                <button onclick="promoteBacklogToSeason('${item.id}', 'personal')" class="px-2 py-1 bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[10px] font-bold rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-600 transition">Personal</button>
-                                <button onclick="deleteBacklogItem('${item.id}', event)" class="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition">
+                                <button onclick="promoteBacklogToSeason('${item.id}', 'dev')" class="px-2 py-1 bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd] border border-black dark:border-white midnight:border-[#475569] text-black text-[10px] font-extrabold uppercase hover:shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all">Dev</button>
+                                <button onclick="promoteBacklogToSeason('${item.id}', 'personal')" class="px-2 py-1 bg-skybadge dark:bg-skybadge midnight:bg-[#7dd3fc] border border-black dark:border-white midnight:border-[#475569] text-black text-[10px] font-extrabold uppercase hover:shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all">Personal</button>
+                                <button onclick="deleteBacklogItem('${item.id}', event)" class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 midnight:hover:bg-red-900/30 border border-transparent hover:border-red-500 text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] hover:text-red-600 dark:hover:text-red-400 midnight:hover:text-[#fda4af] transition">
                                     <i data-lucide="x" class="w-3.5 h-3.5"></i>
                                 </button>
                             </div>
@@ -1355,18 +1357,18 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
             if (logs.length === 0) {
-                container.innerHTML = '<div class="text-xs text-zinc-400 dark:text-zinc-500 italic text-center py-4">No entries logged yet.</div>';
+                container.innerHTML = '<div class="text-xs text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider text-center py-4">No entries logged yet.</div>';
             } else {
                 container.innerHTML = logs.map(log => {
                     const isProduction = log.energyType === 'production';
                     return `
-                        <div class="flex items-center justify-between ${isProduction ? 'bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700' : 'bg-zinc-100 dark:bg-zinc-700 border-zinc-300 dark:border-zinc-600'} border rounded-lg p-3">
+                        <div class="flex items-center justify-between ${isProduction ? 'bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a]' : 'bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd]'} border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm p-3">
                             <div class="flex items-center gap-3">
-                                <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400">${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                                <span class="text-xs font-bold ${isProduction ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900' : 'bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-200'} px-2 py-0.5 rounded-full">${isProduction ? 'Production' : 'Consumption'}</span>
-                                <span class="text-sm text-zinc-700 dark:text-zinc-300 font-medium">${escapeHtml(log.task)}</span>
+                                <span class="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider ${isProduction ? 'bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black' : 'bg-white dark:bg-white midnight:bg-[#e2e8f0] text-black'} px-2 py-0.5 border border-black dark:border-white midnight:border-[#475569]">${isProduction ? 'Production' : 'Consumption'}</span>
+                                <span class="text-sm text-black dark:text-white midnight:text-[#e2e8f0] font-bold">${escapeHtml(log.task)}</span>
                             </div>
-                            <button onclick="deleteDailyLog('${log.id}', event)" class="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-600 rounded text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition">
+                            <button onclick="deleteDailyLog('${log.id}', event)" class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 midnight:hover:bg-red-900/30 border border-transparent hover:border-red-500 text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] hover:text-red-600 dark:hover:text-red-400 midnight:hover:text-[#fda4af] transition">
                                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
@@ -1397,14 +1399,14 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             target.classList.add('tab-enter');
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-white/10', 'text-white');
-                btn.classList.add('text-gray-500', 'hover:bg-white/5', 'hover:text-gray-300');
+                btn.classList.remove('bg-white/10', 'text-canary', 'border-canary');
+                btn.classList.add('text-gray-500', 'hover:bg-white/5', 'hover:text-gray-300', 'border-transparent');
                 btn.setAttribute('aria-selected', 'false');
             });
             const activeBtn = document.getElementById(`btn-${tabId}`);
             if(activeBtn) {
-                activeBtn.classList.add('bg-white/10', 'text-white');
-                activeBtn.classList.remove('text-gray-500', 'hover:bg-white/5', 'hover:text-gray-300');
+                activeBtn.classList.add('bg-white/10', 'text-canary', 'border-canary');
+                activeBtn.classList.remove('text-gray-500', 'hover:bg-white/5', 'hover:text-gray-300', 'border-transparent');
                 activeBtn.setAttribute('aria-selected', 'true');
             }
             if(tabId === 'calendar') {
@@ -1421,8 +1423,8 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             document.getElementById('loginTab').classList.toggle('hidden', tabId !== 'loginTab');
             document.getElementById('registerTab').classList.toggle('hidden', tabId !== 'registerTab');
             
-            document.getElementById('btn-login-tab').className = `flex-1 py-2 rounded-md ${tabId === 'loginTab' ? 'bg-white dark:bg-zinc-700 font-semibold' : 'text-zinc-500 dark:text-zinc-400 font-semibold'} text-sm text-zinc-900 dark:text-zinc-100`;
-            document.getElementById('btn-register-tab').className = `flex-1 py-2 rounded-md ${tabId === 'registerTab' ? 'bg-white dark:bg-zinc-700 font-semibold' : 'text-zinc-500 dark:text-zinc-400 font-semibold'} text-sm text-zinc-900 dark:text-zinc-100`;
+            document.getElementById('btn-login-tab').className = `flex-1 py-2.5 ${tabId === 'loginTab' ? 'bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black' : 'bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]'} font-extrabold uppercase text-xs tracking-wider`;
+            document.getElementById('btn-register-tab').className = `flex-1 py-2.5 ${tabId === 'registerTab' ? 'bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black' : 'bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]'} font-extrabold uppercase text-xs tracking-wider`;
             
             document.getElementById('loginError').innerText = '';
             document.getElementById('registerError').innerText = '';
@@ -1445,8 +1447,8 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                 displayTime.innerText = "00:00:00";
                 toggleBtn.disabled = true;
                 logBtn.disabled = true;
-                toggleBtn.className = "flex-1 bg-white dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-600 text-zinc-400 dark:text-zinc-500 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed transition";
-                logBtn.className = "bg-zinc-900 dark:bg-zinc-700 text-white/40 dark:text-zinc-500 font-semibold px-5 rounded-lg flex items-center justify-center cursor-not-allowed";
+                toggleBtn.className = "flex-1 bg-zinc-800 dark:bg-zinc-700 midnight:bg-[#334155] border-2 border-zinc-600 dark:border-zinc-500 midnight:border-[#475569] text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 cursor-not-allowed";
+                logBtn.className = "bg-zinc-800 dark:bg-zinc-700 midnight:bg-[#334155] border-2 border-zinc-600 dark:border-zinc-500 midnight:border-[#475569] text-white/40 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase text-xs px-5 py-3 flex items-center justify-center cursor-not-allowed";
                 return;
             }
 
@@ -1461,19 +1463,19 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
             if (activeItem.isRunning) {
                 toggleBtn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Pause Monitor`;
-                toggleBtn.className = "flex-1 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition";
+                toggleBtn.className = "flex-1 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none";
                 logBtn.disabled = false;
-                logBtn.className = "bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold px-5 rounded-lg flex items-center justify-center transition";
+                logBtn.className = "bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs px-5 py-3 flex items-center justify-center transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none";
             } else {
                 toggleBtn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Start Session`;
-                toggleBtn.className = "flex-1 bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-600 text-zinc-900 dark:text-zinc-100 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition";
+                toggleBtn.className = "flex-1 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none";
                 
                 if (activeItem.accumulatedSeconds > 0) {
                     logBtn.disabled = false;
-                    logBtn.className = "bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold px-5 rounded-lg flex items-center justify-center transition";
+                    logBtn.className = "bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs px-5 py-3 flex items-center justify-center transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none";
                 } else {
                     logBtn.disabled = true;
-                    logBtn.className = "bg-zinc-900 dark:bg-zinc-700 text-white/40 dark:text-zinc-500 font-semibold px-5 rounded-lg flex items-center justify-center cursor-not-allowed";
+                    logBtn.className = "bg-zinc-800 dark:bg-zinc-700 midnight:bg-[#334155] border-2 border-zinc-600 dark:border-zinc-500 midnight:border-[#475569] text-white/40 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase text-xs px-5 py-3 flex items-center justify-center cursor-not-allowed";
                 }
             }
             createIcons({icons});
@@ -1510,32 +1512,32 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             const metricsGrid = document.getElementById('highlightsGrid');
             if(metricsGrid) {
                 metricsGrid.innerHTML = `
-                    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4 flex flex-col justify-between">
+                    <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm p-4 flex flex-col justify-between">
                         <div>
-                            <span class="text-[10px] uppercase tracking-wider font-bold text-zinc-400 dark:text-zinc-500">Topics This Month</span>
-                            <h5 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">${formatHoursAndMins(totalTopicSec)}</h5>
+                            <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Topics This Month</span>
+                            <h5 class="text-xl font-mono font-bold text-black dark:text-white midnight:text-[#e2e8f0] mt-1 tabular-nums">${formatHoursAndMins(totalTopicSec)}</h5>
                         </div>
-                        <div class="w-7 h-7 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 flex items-center justify-center mt-3"><i data-lucide="code-2" class="w-4 h-4"></i></div>
+                        <div class="w-7 h-7 bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd] border-2 border-black dark:border-white midnight:border-[#475569] text-black flex items-center justify-center mt-3"><i data-lucide="code-2" class="w-4 h-4"></i></div>
                     </div>
-                    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4 flex flex-col justify-between">
+                    <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm p-4 flex flex-col justify-between">
                         <div>
-                            <span class="text-[10px] uppercase tracking-wider font-bold text-zinc-400 dark:text-zinc-500">Habits This Month</span>
-                            <h5 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">${formatHoursAndMins(totalHabitSec)}</h5>
+                            <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Habits This Month</span>
+                            <h5 class="text-xl font-mono font-bold text-black dark:text-white midnight:text-[#e2e8f0] mt-1 tabular-nums">${formatHoursAndMins(totalHabitSec)}</h5>
                         </div>
-                        <div class="w-7 h-7 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 flex items-center justify-center mt-3"><i data-lucide="activity" class="w-4 h-4"></i></div>
+                        <div class="w-7 h-7 bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] text-black flex items-center justify-center mt-3"><i data-lucide="activity" class="w-4 h-4"></i></div>
                     </div>
-                    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4 flex flex-col justify-between">
+                    <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm p-4 flex flex-col justify-between">
                         <div>
-                            <span class="text-[10px] uppercase tracking-wider font-bold text-zinc-400 dark:text-zinc-500">This Month Total</span>
-                            <h5 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">${formatHoursAndMins(totalTopicSec + totalHabitSec)}</h5>
+                            <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">This Month Total</span>
+                            <h5 class="text-xl font-mono font-bold text-black dark:text-white midnight:text-[#e2e8f0] mt-1 tabular-nums">${formatHoursAndMins(totalTopicSec + totalHabitSec)}</h5>
                         </div>
-                        <div class="w-7 h-7 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 flex items-center justify-center mt-3"><i data-lucide="globe" class="w-4 h-4"></i></div>
+                        <div class="w-7 h-7 bg-skybadge dark:bg-skybadge midnight:bg-[#7dd3fc] border-2 border-black dark:border-white midnight:border-[#475569] text-black flex items-center justify-center mt-3"><i data-lucide="globe" class="w-4 h-4"></i></div>
                     </div>
                 `;
             }
 
             if (window.state.items.length === 0) {
-                container.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500 italic">No items yet. Add one above.</div>';
+                container.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider">No items yet. Add one above.</div>';
                 document.getElementById('statsSubHeader').innerText = "No items tracked.";
                 syncActiveMonitorPanel();
                 createIcons({icons});
@@ -1549,27 +1551,27 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                 const isSelected = window.state.selectedItemId === item.id;
                 
                 const elementRow = document.createElement('div');
-                elementRow.className = `grid grid-cols-12 items-center py-3 px-2 rounded-lg text-xs font-medium cursor-pointer transition ${isSelected ? 'bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50'}`;
+                elementRow.className = `grid grid-cols-12 items-center py-3 px-2 text-xs font-bold cursor-pointer transition ${isSelected ? 'bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm' : 'hover:bg-zinc-100 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-transparent'}`;
                 elementRow.onclick = () => selectItemForTimer(item.id);
 
                 elementRow.innerHTML = `
                     <div class="col-span-5 flex items-center gap-2">
-                        <button onclick="event.stopPropagation(); togglePin('${item.id}')" class="p-1 rounded text-zinc-300 dark:text-zinc-600 hover:text-amber-500 dark:hover:text-amber-400 transition ${item.pinned ? 'text-amber-500 dark:text-amber-400' : ''}">
+                        <button onclick="event.stopPropagation(); togglePin('${item.id}')" class="p-1 text-zinc-300 dark:text-zinc-600 midnight:text-[#64748b] hover:text-amber-500 dark:hover:text-amber-400 transition ${item.pinned ? 'text-amber-500 dark:text-amber-400' : ''}">
                             <i data-lucide="pin" class="w-3 h-3 ${item.pinned ? 'fill-current' : ''}"></i>
                         </button>
-                        <div class="w-2 h-2 rounded-full ${item.type === 'topic' ? 'bg-zinc-400 dark:bg-zinc-500' : 'bg-zinc-700 dark:bg-zinc-300'}"></div>
+                        <div class="w-2.5 h-2.5 border-2 border-black dark:border-white midnight:border-[#475569] ${item.type === 'topic' ? 'bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd]' : 'bg-mint dark:bg-mint midnight:bg-[#6ee7b7]'}"></div>
                         <div>
-                            <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">${escapeHtml(item.name)}</div>
-                            <div class="text-[10px] text-zinc-400 dark:text-zinc-500 capitalize">${item.type}</div>
+                            <div class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">${escapeHtml(item.name)}</div>
+                            <div class="text-[10px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase font-bold">${item.type}</div>
                         </div>
                     </div>
-                    <div class="col-span-4 text-center font-mono text-zinc-500 dark:text-zinc-400">
+                    <div class="col-span-4 text-center font-mono font-bold text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] tabular-nums">
                         <span id="live-timer-${item.id}">${formatTimeHMS(item.accumulatedSeconds)}</span>
-                        ${item.isRunning ? '<span class="ml-1.5 px-1.5 py-0.5 bg-zinc-900 text-white text-[9px] rounded-full font-sans font-bold">LIVE</span>' : ''}
+                        ${item.isRunning ? '<span class="ml-1.5 px-1.5 py-0.5 bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black text-[9px] font-extrabold uppercase border border-black dark:border-white midnight:border-[#475569]">LIVE</span>' : ''}
                     </div>
-                    <div class="col-span-2 text-right font-semibold text-zinc-700 dark:text-zinc-300">${formatHoursAndMins(historicalSeconds)}</div>
+                    <div class="col-span-2 text-right font-mono font-bold text-black dark:text-white midnight:text-[#e2e8f0] tabular-nums">${formatHoursAndMins(historicalSeconds)}</div>
                     <div class="col-span-1 text-right">
-                        <button onclick="deleteItem('${item.id}', event)" class="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition">
+                        <button onclick="deleteItem('${item.id}', event)" class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 midnight:hover:bg-red-900/30 rounded text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] hover:text-red-600 dark:hover:text-red-400 midnight:hover:text-[#fda4af] transition">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                         </button>
                     </div>
@@ -1597,7 +1599,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                 preview.classList.remove('hidden');
                 subtext.innerText = `${window.state.notes.length} note${window.state.notes.length !== 1 ? 's' : ''} saved.`;
                 preview.innerHTML = recent.map(n =>
-                    `<p class="text-sm font-medium text-zinc-200 truncate">${escapeHtml(n.title || 'Untitled')}</p>`
+                    `<p class="text-sm font-bold text-white dark:text-white midnight:text-[#e2e8f0] truncate uppercase tracking-wider border-b-2 border-dashed border-white/10 dark:border-zinc-700 midnight:border-[#334155] pb-2">${escapeHtml(n.title || 'Untitled')}</p>`
                 ).join('');
             }
         }
@@ -1631,18 +1633,18 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
             const generateHTMLBars = (dataMap) => {
                 const total = Object.values(dataMap).reduce((a, b) => a + b, 0);
-                if(total === 0) return `<div class="text-xs text-gray-400 dark:text-zinc-500 italic py-4 text-center">No structural log records verified in range context.</div>`;
+                if(total === 0) return `<div class="text-xs text-gray-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider py-4 text-center">No structural log records in range.</div>`;
 
                 return Object.entries(dataMap).map(([name, sec]) => {
                     const pct = total > 0 ? Math.min(100, Math.round((sec / total) * 100)) : 0;
                     return `
                         <div>
-                            <div class="flex justify-between text-xs font-semibold mb-1">
-                                <span class="text-gray-700 dark:text-zinc-300">${name}</span>
-                                <span class="text-gray-400 dark:text-zinc-500">${formatHoursAndMins(sec)} (${pct}%)</span>
+                            <div class="flex justify-between text-xs font-bold mb-1 uppercase tracking-wider">
+                                <span class="text-black dark:text-white midnight:text-[#e2e8f0]">${name}</span>
+                                <span class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-mono">${formatHoursAndMins(sec)} (${pct}%)</span>
                             </div>
-                            <div class="w-full bg-zinc-100 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
-                                <div class="bg-zinc-900 dark:bg-zinc-100 h-full rounded-full" style="width: ${pct}%"></div>
+                            <div class="w-full bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] h-3.5 border-2 border-black dark:border-white midnight:border-[#475569] overflow-hidden">
+                                <div class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] h-full" style="width: ${pct}%"></div>
                             </div>
                         </div>
                     `;
@@ -1684,7 +1686,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
             // Padding blocks for off-grid initial offsets
             for(let i=0; i<firstDayIndex; i++) {
                 const pad = document.createElement('div');
-                pad.className = "bg-zinc-50/40 dark:bg-zinc-800/40 min-h-[76px] rounded-lg border border-zinc-100/40 dark:border-zinc-700/40";
+                pad.className = "bg-zinc-50/40 dark:bg-[#1a1a1a]/40 midnight:bg-[#0f172a]/40 min-h-[76px] border-2 border-dashed border-zinc-200 dark:border-zinc-700 midnight:border-[#475569]";
                 grid.appendChild(pad);
             }
 
@@ -1714,7 +1716,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                 const totalSecToday = habitSecToday + topicSecToday;
 
                 const dayCard = document.createElement('div');
-                dayCard.className = `min-h-[76px] p-2 rounded-lg border flex flex-col justify-between text-xs transition relative calendar-cell ${totalSecToday > 0 ? 'bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700' : 'bg-white dark:bg-zinc-900 border-zinc-200/70 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800'}`;
+                dayCard.className = `min-h-[76px] p-2 border-2 flex flex-col justify-between text-xs transition relative calendar-cell ${totalSecToday > 0 ? 'bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm' : 'bg-zinc-50/50 dark:bg-[#1a1a1a]/50 midnight:bg-[#0f172a]/50 border-zinc-200 dark:border-zinc-700 midnight:border-[#475569] hover:border-black dark:hover:border-white midnight:hover:border-[#94a3b8]'}`;
                 
                 let tooltipContent = '';
                 if (totalSecToday > 0) {
@@ -1724,19 +1726,19 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                 }
                 
                 dayCard.innerHTML = `
-                    <span class="font-bold text-zinc-400 dark:text-zinc-500">${day}</span>
+                    <span class="font-extrabold text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]">${day}</span>
                     ${totalSecToday > 0 ? `
                         <div class="flex flex-col gap-1">
                             <div class="flex items-center gap-1">
-                                <span class="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-md w-fit">${formatHoursAndMins(habitSecToday)}</span>
-                                <span class="text-[8px] text-zinc-500 dark:text-zinc-400 font-semibold">habits</span>
+                                <span class="bg-mint dark:bg-mint midnight:bg-[#6ee7b7] text-black font-mono font-bold text-[9px] px-1.5 py-0.5 border border-black dark:border-white midnight:border-[#475569] w-fit">${formatHoursAndMins(habitSecToday)}</span>
+                                <span class="text-[8px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider">habits</span>
                             </div>
                             <div class="flex items-center gap-1">
-                                <span class="bg-zinc-300 dark:bg-zinc-600 text-zinc-800 dark:text-zinc-100 font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-md w-fit">${formatHoursAndMins(topicSecToday)}</span>
-                                <span class="text-[8px] text-zinc-500 dark:text-zinc-400 font-semibold">topics</span>
+                                <span class="bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd] text-black font-mono font-bold text-[9px] px-1.5 py-0.5 border border-black dark:border-white midnight:border-[#475569] w-fit">${formatHoursAndMins(topicSecToday)}</span>
+                                <span class="text-[8px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider">topics</span>
                             </div>
                         </div>
-                    ` : '<span class="text-[9px] text-zinc-300 dark:text-zinc-600 italic">No entry</span>'}
+                    ` : '<span class="text-[9px] text-zinc-300 dark:text-zinc-600 midnight:text-[#475569] italic font-bold">No entry</span>'}
                 `;
                 dayCard.setAttribute('data-tooltip', tooltipContent);
                 grid.appendChild(dayCard);
@@ -1802,19 +1804,19 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
                 }
 
                 const cell = document.createElement('div');
-                cell.className = 'w-3 h-3 rounded-[2px] transition heatmap-cell ';
+                cell.className = 'w-3 h-3 border transition heatmap-cell ';
                 
                 // Set native styling based on hours logged
                 if (hoursLogged === 0) {
-                    cell.className += 'bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/50 dark:border-zinc-700/50';
+                    cell.className += 'bg-zinc-100 dark:bg-zinc-800 midnight:bg-[#1e293b] border-zinc-200/50 dark:border-zinc-700/50 midnight:border-[#334155]';
                 } else if (hoursLogged < 1) {
-                    cell.className += 'bg-zinc-300 dark:bg-zinc-600 border border-zinc-400 dark:border-zinc-500';
+                    cell.className += 'bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd] border-black dark:border-white midnight:border-[#475569]';
                 } else if (hoursLogged < 3) {
-                    cell.className += 'bg-zinc-400 dark:bg-zinc-500 border border-zinc-500 dark:border-zinc-400';
+                    cell.className += 'bg-skybadge dark:bg-skybadge midnight:bg-[#7dd3fc] border-black dark:border-white midnight:border-[#475569]';
                 } else if (hoursLogged < 5) {
-                    cell.className += 'bg-zinc-600 dark:bg-zinc-400 border border-zinc-700 dark:border-zinc-500';
+                    cell.className += 'bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-black dark:border-white midnight:border-[#475569]';
                 } else {
-                    cell.className += 'bg-zinc-800 dark:bg-zinc-300 border border-zinc-900 dark:border-zinc-400';
+                    cell.className += 'bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-black dark:border-white midnight:border-[#475569]';
                 }
 
                 const readableDate = workingDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -1870,22 +1872,22 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
             if(filteredNotes.length === 0) {
                 const msg = query ? `No notes matching "${query}".` : 'No notes yet.';
-                container.innerHTML = `<div class="text-xs text-zinc-400 dark:text-zinc-500 italic text-center py-8">${msg}</div>`;
+                container.innerHTML = `<div class="text-xs text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider text-center py-8">${msg}</div>`;
                 return;
             }
 
             filteredNotes.forEach(note => {
                 const isSelected = window.state.selectedNoteId === note.id;
                 const card = document.createElement('div');
-                card.className = `p-4 rounded-lg border text-left cursor-pointer transition relative ${isSelected ? 'bg-zinc-100 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600' : 'bg-zinc-50/50 dark:bg-zinc-800/50 border-zinc-200/70 dark:border-zinc-700 hover:bg-white dark:hover:bg-zinc-700'}`;
+                card.className = `p-4 border-2 text-left cursor-pointer transition relative ${isSelected ? 'bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm' : 'bg-zinc-50/50 dark:bg-[#1a1a1a]/50 midnight:bg-[#0f172a]/50 border-zinc-200 dark:border-white midnight:border-[#475569] hover:border-black dark:hover:border-zinc-300 midnight:hover:border-[#94a3b8]'}`;
                 card.onclick = () => openNoteEditor(note.id);
 
                 card.innerHTML = `
                     <div class="pr-6">
-                        <h4 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">${escapeHtml(note.title) || 'Untitled Concept'}</h4>
-                        <p class="text-xs text-zinc-400 dark:text-zinc-500 line-clamp-2 mt-1 font-normal">${note.body ? escapeHtml(note.body.replace(/<[^>]*>/g, '')) : 'Empty note content...'}</p>
+                        <h4 class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] truncate">${escapeHtml(note.title) || 'Untitled Concept'}</h4>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] line-clamp-2 mt-1 font-medium">${note.body ? escapeHtml(note.body.replace(/<[^>]*>/g, '')) : 'Empty note content...'}</p>
                     </div>
-                    <button onclick="deleteNote('${note.id}', event)" class="absolute top-4 right-4 p-1 hover:bg-zinc-200/60 dark:hover:bg-zinc-700 text-zinc-300 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 rounded transition">
+                    <button onclick="deleteNote('${note.id}', event)" class="absolute top-4 right-4 p-1 hover:bg-red-100 dark:hover:bg-red-900/30 midnight:hover:bg-red-900/30 border border-transparent hover:border-red-500 text-zinc-300 dark:text-zinc-500 midnight:text-[#64748b] hover:text-red-600 dark:hover:text-red-400 midnight:hover:text-[#fda4af] rounded transition">
                         <i data-lucide="x" class="w-3.5 h-3.5"></i>
                     </button>
                 `;

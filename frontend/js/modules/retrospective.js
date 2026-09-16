@@ -92,48 +92,48 @@ export function renderRetrospectiveModal(retroData) {
     const { season, totalHours, habitCompletionRate, completedDaysCount, totalDays, highEnergyDays, lowEnergyDays, dayStrip } = retroData;
 
     return `
-        <div id="retroModalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-2xl w-full p-6 space-y-6 shadow-2xl tab-enter">
-                <div class="flex justify-between items-start border-b border-zinc-200 dark:border-zinc-800 pb-4">
+        <div id="retroModalOverlay" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg max-w-2xl w-full p-6 space-y-6 tab-enter">
+                <div class="flex justify-between items-start border-b-2 border-black dark:border-white midnight:border-[#475569] pb-4">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-zinc-400">Season Retrospective</span>
-                        <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">${escapeHtml(season.title) || 'Season Overview'}</h2>
-                        <p class="text-xs text-zinc-500 mt-1">${new Date(season.startDate).toLocaleDateString()} — ${new Date(season.endDate).toLocaleDateString()}</p>
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Season Retrospective</span>
+                        <h2 class="text-2xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">${escapeHtml(season.title) || 'Season Overview'}</h2>
+                        <p class="text-xs text-zinc-500 mt-1 font-mono font-bold">${new Date(season.startDate).toLocaleDateString()} — ${new Date(season.endDate).toLocaleDateString()}</p>
                     </div>
-                    <button onclick="closeRetroModal()" class="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+                    <button onclick="closeRetroModal()" class="p-2 text-zinc-400 hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] border-2 border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569] transition">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
 
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-3 gap-4">
-                    <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-200/60 dark:border-zinc-700/60">
-                        <div class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">${totalHours}h</div>
-                        <div class="text-xs text-zinc-500 font-medium mt-1">Total Focused Time</div>
+                    <div class="bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
+                        <div class="text-2xl font-mono font-bold text-black dark:text-white midnight:text-[#e2e8f0] tabular-nums">${totalHours}h</div>
+                        <div class="text-xs text-zinc-500 font-extrabold uppercase tracking-wider mt-1">Total Focused Time</div>
                     </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-200/60 dark:border-zinc-700/60">
-                        <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">${habitCompletionRate}%</div>
-                        <div class="text-xs text-zinc-500 font-medium mt-1">Habit Rate (${completedDaysCount}/${totalDays} days)</div>
+                    <div class="bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
+                        <div class="text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400 midnight:text-[#6ee7b7] tabular-nums">${habitCompletionRate}%</div>
+                        <div class="text-xs text-zinc-500 font-extrabold uppercase tracking-wider mt-1">Habit Rate (${completedDaysCount}/${totalDays} days)</div>
                     </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-200/60 dark:border-zinc-700/60">
-                        <div class="text-2xl font-bold text-amber-600 dark:text-amber-400">${highEnergyDays}:${lowEnergyDays}</div>
-                        <div class="text-xs text-zinc-500 font-medium mt-1">High vs Low Energy Days</div>
+                    <div class="bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
+                        <div class="text-2xl font-mono font-bold text-amber-600 dark:text-amber-400 midnight:text-[#fbbf24] tabular-nums">${highEnergyDays}:${lowEnergyDays}</div>
+                        <div class="text-xs text-zinc-500 font-extrabold uppercase tracking-wider mt-1">High vs Low Energy Days</div>
                     </div>
                 </div>
 
                 <!-- Day-by-Day Strip Visualization -->
                 <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3">Daily Progress Strip</h4>
+                    <h4 class="text-xs font-extrabold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mb-3">Daily Progress Strip</h4>
                     <div class="flex gap-1 overflow-x-auto pb-2 no-scrollbar">
                         ${dayStrip.map(day => {
-                            let bgClass = 'bg-zinc-200 dark:bg-zinc-800';
-                            if (day.hasHabit && day.focusHours > 0) bgClass = 'bg-emerald-500';
-                            else if (day.hasHabit) bgClass = 'bg-emerald-400/70';
-                            else if (day.focusHours > 0) bgClass = 'bg-indigo-500';
+                            let bgClass = 'bg-zinc-200 dark:bg-zinc-700 midnight:bg-[#334155]';
+                            if (day.hasHabit && day.focusHours > 0) bgClass = 'bg-mint dark:bg-mint midnight:bg-[#6ee7b7]';
+                            else if (day.hasHabit) bgClass = 'bg-canary dark:bg-canary midnight:bg-[#fbbf24]';
+                            else if (day.focusHours > 0) bgClass = 'bg-lavender dark:bg-lavender midnight:bg-[#c4b5fd]';
 
                             return `
-                                <div class="w-7 h-10 ${bgClass} rounded flex-shrink-0 flex flex-col items-center justify-between py-1 text-[9px] font-bold text-white cursor-pointer relative group" title="${day.date}: ${day.focusHours}h focus | Habit: ${day.hasHabit ? 'Done' : 'Missed'}">
-                                    <span>${new Date(day.date).getDate()}</span>
+                                <div class="w-7 h-10 ${bgClass} border border-black dark:border-white midnight:border-[#475569] flex-shrink-0 flex flex-col items-center justify-between py-1 text-[9px] font-bold text-black dark:text-black midnight:text-[#0f172a] cursor-pointer relative group" title="${day.date}: ${day.focusHours}h focus | Habit: ${day.hasHabit ? 'Done' : 'Missed'}">
+                                    <span class="font-mono">${new Date(day.date).getDate()}</span>
                                     <span>${day.hasHabit ? '✓' : ''}</span>
                                 </div>
                             `;
@@ -142,7 +142,7 @@ export function renderRetrospectiveModal(retroData) {
                 </div>
 
                 <div class="flex justify-end pt-2">
-                    <button onclick="closeRetroModal()" class="px-5 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-semibold text-sm hover:opacity-90 transition">
+                    <button onclick="closeRetroModal()" class="px-5 py-2 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                         Close Overview
                     </button>
                 </div>

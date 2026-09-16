@@ -6,134 +6,134 @@
     <link rel="icon" href="./assets/fav-j4g5CALP.png" type="image/png">
     <link rel="icon" href="./assets/favicon-CP7GyILA.ico" type="image/x-icon" sizes="16x16 32x32">
     <link rel="apple-touch-icon" href="./assets/fav-j4g5CALP.png">
-    <meta name="theme-color" content="#1e1e1e">
+    <meta name="theme-color" content="#171717">
     <title>Focus Synergy - Habits, Topics & Analytics</title>
     <meta name="description" content="Focus Synergy helps you track habits, topics, and deep work sessions with timers, analytics, activity calendars, and notes.">
-    <meta name="keywords" content="time tracker, habit tracker, focus, deep work, productivity, analytics, time management, pomodoro">
-  <script type="module" crossorigin src="./assets/dashboard-DAcJ37uK.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/lucide-B7NFulOb.js">
-  <link rel="stylesheet" crossorigin href="./assets/lucide-DUfh4U2n.css">
+    <meta name="keywords" content="time tracker, habit tracker, focus, deep work, productivity, analytics, time management, pomodoro">
+  <script type="module" crossorigin src="./assets/dashboard-CbaiByYz.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/lucide-CfMXY0bY.js">
+  <link rel="stylesheet" crossorigin href="./assets/lucide-Cl6ikXni.css">
 </head>
-<body class="bg-zinc-50 text-zinc-900 font-sans min-h-screen selection:bg-zinc-200 dark:selection:bg-zinc-700 dark:bg-[#0a0a0a] dark:text-zinc-100 midnight:bg-[#111318] midnight:text-[#b8b5c0] midnight:selection:bg-[#2a2633]">
+<body class="bg-canvas dark:bg-[#171717] midnight:bg-[#0f172a] min-h-screen selection:bg-canary dark:selection:bg-canary midnight:selection:bg-[#fbbf24]">
 
     <div id="loginScreen" class="flex h-screen items-center justify-center p-4">
-        <div class="bg-white dark:bg-zinc-900 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700 w-full max-w-md min-w-[340px]">
-            <div class="flex items-center justify-center mb-6">
-                <div class="w-12 h-12 bg-zinc-900 dark:bg-zinc-100 rounded-xl flex items-center justify-center mr-3">
-                    <i data-lucide="layers" class="w-5 h-5 text-white dark:text-zinc-900"></i>
+        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg w-full max-w-md min-w-[340px] p-8">
+            <div class="flex items-center justify-center mb-8">
+                <div class="w-14 h-14 bg-black dark:bg-white midnight:bg-[#fbbf24] flex items-center justify-center mr-4 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
+                    <i data-lucide="layers" class="w-6 h-6 text-white dark:text-black midnight:text-[#0f172a]"></i>
                 </div>
-                <h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Focus Synergy</h1>
+                <h1 class="text-3xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Focus Synergy</h1>
             </div>
-            
-            <div class="flex gap-2 mb-6 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg">
-                <button onclick="showTab('loginTab')" id="btn-login-tab" class="flex-1 py-2 rounded-md bg-white dark:bg-zinc-700 font-semibold text-sm text-zinc-900 dark:text-zinc-100">Login</button>
-                <button onclick="showTab('registerTab')" id="btn-register-tab" class="flex-1 py-2 rounded-md text-zinc-500 dark:text-zinc-400 font-semibold text-sm">Register</button>
+
+            <div class="flex gap-0 mb-8 border-2 border-black dark:border-white midnight:border-[#475569]">
+                <button onclick="showTab('loginTab')" id="btn-login-tab" class="flex-1 py-2.5 bg-canary dark:bg-canary midnight:bg-[#fbbf24] font-extrabold uppercase text-xs tracking-wider text-black">Login</button>
+                <button onclick="showTab('registerTab')" id="btn-register-tab" class="flex-1 py-2.5 font-extrabold uppercase text-xs tracking-wider text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a]">Register</button>
             </div>
 
             <div id="loginTab">
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email</label>
-                        <input type="email" id="loginEmail" class="w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100" placeholder="you@example.com">
+                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Email</label>
+                        <input type="email" id="loginEmail" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="you@example.com">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Password</label>
-                        <input type="password" id="loginPassword" class="w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100" placeholder="••••••••">
+                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Password</label>
+                        <input type="password" id="loginPassword" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="••••••••">
                     </div>
-                    <button onclick="login()" id="btn-login" class="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition">
+                    <button onclick="login()" id="btn-login" class="w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
                         <span id="login-spinner" class="spinner hidden"></span>
                         <span id="login-text">Sign In</span>
                     </button>
                     <div class="relative my-2">
                         <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t border-zinc-200 dark:border-zinc-700"></div>
+                            <div class="w-full border-t-2 border-black dark:border-white midnight:border-[#475569]"></div>
                         </div>
                         <div class="relative flex justify-center text-xs">
-                            <span class="px-2 bg-white dark:bg-zinc-900 text-zinc-400 dark:text-zinc-500">or</span>
+                            <span class="px-3 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-bold uppercase tracking-widest">or</span>
                         </div>
                     </div>
-                    <button onclick="googleLogin()" id="btn-google" class="w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition hover:bg-zinc-50 dark:hover:bg-zinc-700">
+                    <button onclick="googleLogin()" id="btn-google" class="w-full bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-bold py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
                         <span id="google-spinner" class="spinner hidden"></span>
                         <span id="google-text">Continue with Google</span>
                     </button>
                 </div>
-                <div id="loginError" class="text-red-500 dark:text-red-400 text-xs mt-3 text-center"></div>
+                <div id="loginError" class="text-red-600 dark:text-red-400 midnight:text-[#fda4af] text-xs mt-3 text-center font-bold"></div>
             </div>
 
             <div id="registerTab" class="hidden">
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Full Name</label>
-                        <input type="text" id="registerName" class="w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100" placeholder="John Doe">
+                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Full Name</label>
+                        <input type="text" id="registerName" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="John Doe">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email</label>
-                        <input type="email" id="registerEmail" class="w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100" placeholder="you@example.com">
+                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Email</label>
+                        <input type="email" id="registerEmail" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="you@example.com">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Password</label>
-                        <input type="password" id="registerPassword" class="w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100" placeholder="Min 6 characters">
+                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Password</label>
+                        <input type="password" id="registerPassword" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="Min 6 characters">
                     </div>
-                    <button onclick="register()" id="btn-register" class="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition">
+                    <button onclick="register()" id="btn-register" class="w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
                         <span id="register-spinner" class="spinner hidden"></span>
                         <span id="register-text">Create Account</span>
                     </button>
                 </div>
-                <div id="registerError" class="text-red-500 dark:text-red-400 text-xs mt-3 text-center"></div>
+                <div id="registerError" class="text-red-600 dark:text-red-400 midnight:text-[#fda4af] text-xs mt-3 text-center font-bold"></div>
             </div>
         </div>
     </div>
 
     <div id="mainApp" class="flex h-screen overflow-hidden hidden">
-        <aside class="w-20 lg:w-24 bg-[#1e1e1e] flex flex-col justify-between items-center py-8 z-10">
+        <aside class="w-20 lg:w-24 bg-black dark:bg-[#0a0a0a] midnight:bg-[#0f172a] flex flex-col justify-between items-center py-8 z-10 border-r-2 border-black dark:border-white midnight:border-[#475569]">
             <div class="flex flex-col items-center gap-12 w-full">
-                <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center cursor-pointer transition">
-                    <i data-lucide="layers" class="w-5 h-5 text-gray-900"></i>
+                <div class="w-12 h-12 bg-canary dark:bg-canary midnight:bg-[#fbbf24] flex items-center justify-center cursor-pointer border-2 border-white dark:border-black midnight:border-[#475569] shadow-brutal-sm">
+                    <i data-lucide="layers" class="w-5 h-5 text-black"></i>
                 </div>
-                
-                <nav class="flex flex-col gap-6 w-full px-3" role="tablist" aria-label="Main navigation">
-                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all bg-white/10 text-white" title="Tracker & Timer" role="tab" aria-selected="true" aria-controls="tab-dashboard" aria-label="Tracker & Timer">
+
+                <nav class="flex flex-col gap-4 w-full px-3" role="tablist" aria-label="Main navigation">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full h-12 flex items-center justify-center transition-all bg-white/10 text-canary border-2 border-canary" title="Tracker & Timer" role="tab" aria-selected="true" aria-controls="tab-dashboard" aria-label="Tracker & Timer">
                         <i data-lucide="layout-grid" class="w-5 h-5"></i>
                     </button>
-<button onclick="switchTab('seasons')" id="btn-seasons" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300" title="Seasons Planner" role="tab" aria-selected="false" aria-controls="tab-seasons" aria-label="Seasons Planner">
+                    <button onclick="switchTab('seasons')" id="btn-seasons" class="nav-btn w-full h-12 flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300 border-2 border-transparent" title="Seasons Planner" role="tab" aria-selected="false" aria-controls="tab-seasons" aria-label="Seasons Planner">
                         <i data-lucide="sprout" class="w-5 h-5"></i>
                     </button>
-                    <button onclick="switchTab('calendar')" id="btn-calendar" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300" title="Activity Calendar" role="tab" aria-selected="false" aria-controls="tab-calendar" aria-label="Activity Calendar">
+                    <button onclick="switchTab('calendar')" id="btn-calendar" class="nav-btn w-full h-12 flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300 border-2 border-transparent" title="Activity Calendar" role="tab" aria-selected="false" aria-controls="tab-calendar" aria-label="Activity Calendar">
                         <i data-lucide="calendar" class="w-5 h-5"></i>
                     </button>
-                    <button onclick="switchTab('notes')" id="btn-notes" class="nav-btn w-full h-12 rounded-xl flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300" title="Notes Section" role="tab" aria-selected="false" aria-controls="tab-notes" aria-label="Notes Section">
+                    <button onclick="switchTab('notes')" id="btn-notes" class="nav-btn w-full h-12 flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300 border-2 border-transparent" title="Notes Section" role="tab" aria-selected="false" aria-controls="tab-notes" aria-label="Notes Section">
                         <i data-lucide="book-open" class="w-5 h-5"></i>
                     </button>
                 </nav>
             </div>
-            
-            <button class="w-12 h-12 rounded-xl flex items-center justify-center text-gray-500 hover:text-gray-300 hover:bg-white/5 transition">
+
+            <button class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/5 transition border-2 border-transparent hover:border-white/20">
                 <i data-lucide="log-out" class="w-5 h-5"></i>
             </button>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-6 lg:p-10 flex flex-col gap-8">
-            
-            <header class="flex items-center gap-2 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 border border-zinc-200 dark:border-zinc-700">
-                <h1 class="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex-1 min-w-0 truncate">Focus Synergy</h1>
+        <main class="flex-1 overflow-y-auto p-6 lg:p-10 flex flex-col gap-8 bg-canvas dark:bg-[#171717] midnight:bg-[#0f172a]">
+
+            <header class="flex items-center gap-2 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal px-5 py-3">
+                <h1 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] flex-1 min-w-0 truncate">Focus Synergy</h1>
                 <div class="flex items-center gap-1.5">
-                    <button onclick="handleExportData()" class="p-2 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-lg text-gray-500 dark:text-zinc-400 transition" title="Export Data" aria-label="Export Data">
+                    <button onclick="handleExportData()" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Export Data" aria-label="Export Data">
                         <i data-lucide="download" class="w-4 h-4"></i>
                     </button>
-                    <button onclick="handleImportData()" class="p-2 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-lg text-gray-500 dark:text-zinc-400 transition" title="Import Data" aria-label="Import Data">
+                    <button onclick="handleImportData()" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Import Data" aria-label="Import Data">
                         <i data-lucide="upload" class="w-4 h-4"></i>
                     </button>
                     <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="processImportFile(event)">
-                    <button onclick="openAppSettingsModal()" class="p-2 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-lg text-gray-500 dark:text-zinc-400 transition" title="Settings" aria-label="Settings">
+                    <button onclick="openAppSettingsModal()" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Settings" aria-label="Settings">
                         <i data-lucide="settings" class="w-4 h-4"></i>
                     </button>
-                    <button onclick="toggleTheme()" id="themeToggle" class="p-2 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-lg text-gray-500 dark:text-zinc-400 transition relative" title="Cycle theme" aria-label="Cycle theme">
+                    <button onclick="toggleTheme()" id="themeToggle" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none relative" title="Cycle theme" aria-label="Cycle theme">
                         <i data-lucide="sun" class="w-4 h-4 dark-icon hidden"></i>
                         <i data-lucide="music" class="w-4 h-4 midnight-icon hidden"></i>
                         <i data-lucide="moon" class="w-4 h-4 light-icon"></i>
                     </button>
-                    <div class="flex items-center gap-2 border-l border-gray-200 dark:border-zinc-600 pl-3 ml-0.5">
-                        <span id="userDisplay" class="text-xs font-medium text-zinc-600 dark:text-zinc-400 truncate max-w-[120px]"></span>
+                    <div class="flex items-center gap-2 border-l-2 border-black dark:border-white midnight:border-[#475569] pl-3 ml-0.5">
+                        <span id="userDisplay" class="text-xs font-bold text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] truncate max-w-[120px] uppercase tracking-wider"></span>
                     </div>
                 </div>
             </header>
@@ -141,39 +141,39 @@
             <section id="tab-dashboard" class="tab-content space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-zinc-100 tick-motif">Deep Work Focus</h2>
-                        <p class="text-gray-500 dark:text-zinc-400 text-xs mt-0.5">Spin up custom counters to measure skill cultivation.</p>
+                        <h2 class="text-xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Deep Work Focus</h2>
+                        <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-xs mt-1 font-medium">Spin up custom counters to measure skill cultivation.</p>
                     </div>
-                    <div class="flex gap-2 w-full sm:w-auto bg-white dark:bg-zinc-900 p-2 rounded-lg border border-zinc-200 dark:border-zinc-700">
-                        <input type="text" id="newItemName" placeholder="New track title..." class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 flex-1 sm:w-56 text-zinc-900 dark:text-zinc-100">
-                        <select id="newItemType" class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-600 dark:text-zinc-300 font-medium">
+                    <div class="flex gap-0 w-full sm:w-auto bg-white dark:bg-[#262626] midnight:bg-[#1e293b] p-2 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
+                        <input type="text" id="newItemName" placeholder="New track title..." class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal flex-1 sm:w-56 text-black dark:text-white midnight:text-[#e2e8f0] font-medium">
+                        <select id="newItemType" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-3 py-2 text-sm focus:outline-none font-bold text-black dark:text-white midnight:text-[#e2e8f0]">
                             <option value="topic">Topic</option>
                             <option value="habit">Habit</option>
                         </select>
-                        <button onclick="addItem()" class="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="addItem()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                             <i data-lucide="plus" class="w-4 h-4"></i> Add
                         </button>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 flex flex-col justify-between min-h-[260px]">
+                    <div class="lg:col-span-5 bg-black dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg p-6 flex flex-col justify-between min-h-[260px]">
                         <div class="z-10">
-                            <span class="text-[11px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">Active Core Monitor</span>
-                            <h3 id="activeItemTitle" class="text-2xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">No Item Selected</h3>
+                            <span class="text-[11px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] uppercase">Active Core Monitor</span>
+                            <h3 id="activeItemTitle" class="text-2xl font-extrabold mt-1 uppercase tracking-wider text-white dark:text-white midnight:text-[#e2e8f0]">No Item Selected</h3>
                         </div>
 
                         <div class="my-auto py-2 z-10 flex items-baseline gap-3">
                             <div id="timerA11y" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-                            <div id="timerDisplay" class="text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-mono" aria-live="off" aria-atomic="true">00:00:00</div>
-                            <span class="text-xs bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono px-2 py-0.5 rounded-full font-medium" id="streakBadge">Session Counter</span>
+                            <div id="timerDisplay" class="text-5xl font-bold tracking-tight text-white dark:text-white midnight:text-[#e2e8f0] font-mono tabular-nums" aria-live="off" aria-atomic="true">00:00:00</div>
+                            <span class="text-[10px] bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black font-extrabold uppercase tracking-widest px-2 py-0.5 border-2 border-white dark:border-black midnight:border-[#475569]" id="streakBadge">Session Counter</span>
                         </div>
-                        
+
                         <div class="flex gap-3 z-10">
-                            <button id="timerToggleBtn" onclick="toggleTimer()" disabled class="flex-1 bg-white dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-600 text-zinc-400 dark:text-zinc-500 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed transition">
+                            <button id="timerToggleBtn" onclick="toggleTimer()" disabled class="flex-1 bg-zinc-800 dark:bg-zinc-700 midnight:bg-[#334155] border-2 border-zinc-600 dark:border-zinc-500 midnight:border-[#475569] text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 cursor-not-allowed">
                                 <i data-lucide="play" class="w-4 h-4"></i> Start Session
                             </button>
-                            <button id="timerLogBtn" onclick="logTimer()" disabled class="bg-zinc-900 dark:bg-zinc-700 text-white/40 dark:text-zinc-500 font-semibold px-5 rounded-lg flex items-center justify-center cursor-not-allowed transition">
+                            <button id="timerLogBtn" onclick="logTimer()" disabled class="bg-zinc-800 dark:bg-zinc-700 midnight:bg-[#334155] border-2 border-zinc-600 dark:border-zinc-500 midnight:border-[#475569] text-white/40 dark:text-zinc-500 midnight:text-[#94a3b8] font-extrabold uppercase text-xs px-5 py-3 flex items-center justify-center cursor-not-allowed">
                                 <i data-lucide="check" class="w-4 h-4"></i> Log
                             </button>
                         </div>
@@ -181,40 +181,40 @@
 
                     <div class="lg:col-span-7 flex flex-col justify-between gap-4">
                         <div class="flex justify-between items-center">
-                            <h4 class="text-sm font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wide">Top Focus Metrics</h4>
-                            <i data-lucide="sliders-horizontal" class="w-4 h-4 text-zinc-400 dark:text-zinc-500"></i>
+                            <h4 class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Top Focus Metrics</h4>
+                            <i data-lucide="sliders-horizontal" class="w-4 h-4 text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]"></i>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 h-full" id="highlightsGrid"></div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-7 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 flex flex-col">
+                    <div class="lg:col-span-7 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col">
                         <div class="flex justify-between items-center mb-6">
                             <div>
-                                <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100">Today's Agenda & Stats</h3>
-                                <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5" id="statsSubHeader">Active elements available for timeline recording</p>
+                                <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Today's Agenda & Stats</h3>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-medium" id="statsSubHeader">Active elements available for timeline recording</p>
                             </div>
                         </div>
-                        
-                        <div class="grid grid-cols-12 text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider border-b border-zinc-100 dark:border-zinc-800 pb-3 mb-2 px-2">
+
+                        <div class="grid grid-cols-12 text-[11px] font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase tracking-widest border-b-2 border-black dark:border-white midnight:border-[#475569] pb-3 mb-2 px-2">
                             <div class="col-span-5">Name / Category</div>
                             <div class="col-span-4 text-center">Status / Local Timer</div>
                             <div class="col-span-2 text-right">Logged Time</div>
                             <div class="col-span-1 text-right"></div>
                         </div>
 
-                        <div id="unifiedItemsList" class="space-y-1 divide-y divide-zinc-50 dark:divide-zinc-800 overflow-y-auto max-h-[340px] pr-1"></div>
+                        <div id="unifiedItemsList" class="space-y-1 overflow-y-auto max-h-[340px] pr-1"></div>
                     </div>
 
-                    <div id="quickNotesSidebar" class="lg:col-span-5 bg-zinc-900 dark:bg-zinc-950 border border-zinc-800 dark:border-zinc-900 rounded-xl p-6 text-white flex flex-col justify-between min-h-[380px] relative overflow-hidden">
+                    <div id="quickNotesSidebar" class="lg:col-span-5 bg-black dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 text-white flex flex-col justify-between min-h-[380px] relative overflow-hidden">
                         <div>
-                            <h3 class="text-lg font-bold">Quick Notes & Deep Dives</h3>
-                            <p class="text-zinc-400 dark:text-zinc-500 text-xs mt-1 leading-relaxed" id="quickNotesSubtext">Capture ideas as they come.</p>
-                            <div id="quickNotesPreview" class="mt-6 space-y-4 border-l-2 border-white/10 dark:border-zinc-800 pl-4 py-1 hidden">
+                            <h3 class="text-lg font-extrabold uppercase tracking-wider">Quick Notes & Deep Dives</h3>
+                            <p class="text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] text-xs mt-1 leading-relaxed font-medium" id="quickNotesSubtext">Capture ideas as they come.</p>
+                            <div id="quickNotesPreview" class="mt-6 space-y-4 border-l-4 border-white/20 dark:border-zinc-700 midnight:border-[#334155] pl-4 py-1 hidden">
                             </div>
                         </div>
-                        <button onclick="switchTab('notes')" class="mt-8 bg-white/10 hover:bg-white dark:hover:bg-zinc-100 text-white hover:text-zinc-900 dark:hover:text-zinc-900 w-full font-bold text-sm py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 border border-white/5 dark:border-zinc-800">
+                        <button onclick="switchTab('notes')" class="mt-8 bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black dark:text-black midnight:text-[#0f172a] hover:bg-canary-light w-full font-extrabold uppercase text-xs tracking-wider py-3 px-4 transition-all flex items-center justify-center gap-2 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                             All Notes Workspace <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -224,53 +224,53 @@
             <section id="tab-seasons" class="tab-content hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-zinc-100 tick-motif">Seasons Planner</h2>
-                        <p class="text-gray-500 dark:text-zinc-400 text-sm mt-0.5">Structured 4–6 week focus blocks for sustained professional and personal growth.</p>
+                        <h2 class="text-2xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Seasons Planner</h2>
+                        <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-sm mt-1 font-medium">Structured 4-6 week focus blocks for sustained growth.</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="createNewSeason()" class="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
+                        <button onclick="createNewSeason()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
                             <i data-lucide="plus" class="w-4 h-4"></i> New Season
                         </button>
-                        <button onclick="toggleBacklogDrawer()" class="bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
-                            <i data-lucide="inbox" class="w-4 h-4"></i> Not Right Now <span id="backlogBadge" class="bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                        <button onclick="toggleBacklogDrawer()" class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
+                            <i data-lucide="inbox" class="w-4 h-4"></i> Not Right Now <span id="backlogBadge" class="bg-zinc-200 dark:bg-zinc-700 midnight:bg-[#334155] text-black dark:text-white midnight:text-[#e2e8f0] text-[10px] px-1.5 py-0.5 font-bold ml-1 border border-black dark:border-white midnight:border-[#475569]">0</span>
                         </button>
                     </div>
                 </div>
 
                 <div id="seasonsListContainer" class="space-y-4"></div>
 
-                <div id="backlogDrawer" class="hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6">
+                <div id="backlogDrawer" class="hidden bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                            <i data-lucide="inbox" class="w-5 h-5 text-zinc-400 dark:text-zinc-500"></i> Not Right Now
+                        <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] flex items-center gap-2">
+                            <i data-lucide="inbox" class="w-5 h-5"></i> Not Right Now
                         </h3>
-                        <button onclick="toggleBacklogDrawer()" class="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition">Close</button>
+                        <button onclick="toggleBacklogDrawer()" class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition font-bold uppercase tracking-wider">Close</button>
                     </div>
-                    <p class="text-xs text-zinc-400 dark:text-zinc-500 mb-4">Ideas, frameworks, and hobbies parked here won't distract your current focus.</p>
-                    
-                    <div class="flex gap-2 mb-4">
-                        <input type="text" id="backlogInput" placeholder="Park an idea, framework, or hobby..." class="flex-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100">
-                        <button onclick="addBacklogItem()" class="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 px-4 py-2 rounded-lg text-sm font-semibold transition">Add</button>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mb-4 font-medium">Ideas parked here won't distract your current focus.</p>
+
+                    <div class="flex gap-0 mb-4">
+                        <input type="text" id="backlogInput" placeholder="Park an idea, framework, or hobby..." class="flex-1 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium">
+                        <button onclick="addBacklogItem()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Add</button>
                     </div>
                     <div id="backlogList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
                 </div>
 
                 <div id="seasonDetailContainer" class="hidden space-y-6">
-                    <div class="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 relative overflow-hidden">
+                    <div class="bg-lavender dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg p-6 relative overflow-hidden">
                         <div class="z-10 relative">
-                            <span class="text-[11px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">Current Season</span>
-                            <h3 id="detailSeasonTitle" class="text-2xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">Season Title</h3>
-                            <p id="detailSeasonDates" class="text-sm text-zinc-600 dark:text-zinc-400 mt-1"></p>
+                            <span class="text-[11px] font-extrabold tracking-widest text-black/60 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Current Season</span>
+                            <h3 id="detailSeasonTitle" class="text-2xl font-extrabold mt-1 uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Season Title</h3>
+                            <p id="detailSeasonDates" class="text-sm text-black/70 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-medium"></p>
 
                             <div class="mt-6">
-                                <div class="flex justify-between text-xs font-bold text-zinc-600 dark:text-zinc-400 mb-2">
+                                <div class="flex justify-between text-xs font-extrabold text-black/70 dark:text-zinc-400 midnight:text-[#94a3b8] mb-2 uppercase tracking-wider">
                                     <span>Season Progress</span>
-                                    <span id="detailSeasonProgress">0%</span>
+                                    <span id="detailSeasonProgress" class="font-mono">0%</span>
                                 </div>
-                                <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-3 rounded-full overflow-hidden">
-                                    <div id="detailSeasonProgressBar" class="bg-zinc-900 dark:bg-zinc-100 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                <div class="w-full bg-white/50 dark:bg-zinc-700 midnight:bg-[#334155] h-4 border-2 border-black dark:border-white midnight:border-[#475569] overflow-hidden">
+                                    <div id="detailSeasonProgressBar" class="bg-black dark:bg-white midnight:bg-[#fbbf24] h-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
-                                <div class="flex justify-between text-[10px] text-zinc-400 dark:text-zinc-500 mt-1">
+                                <div class="flex justify-between text-[10px] text-black/50 dark:text-zinc-500 midnight:text-[#64748b] mt-1 font-mono">
                                     <span id="detailSeasonStart">Start</span>
                                     <span id="detailSeasonEnd">End</span>
                                 </div>
@@ -279,96 +279,96 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
+                        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
                             <div class="absolute top-4 right-4">
-                                <select id="devBacklogSelect" class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-md px-2 py-1 text-[10px] font-bold text-zinc-700 dark:text-zinc-300">
+                                <select id="devBacklogSelect" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-2 py-1 text-[10px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase">
                                     <option value="">Load from backlog</option>
                                 </select>
                             </div>
                             <div class="z-10">
-                                <span class="text-[11px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">Developer / Professional Goal</span>
-                                <h4 id="detailDevGoal" class="text-xl font-bold mt-2 text-zinc-900 dark:text-zinc-100">No goal set</h4>
+                                <span class="text-[11px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Developer / Professional Goal</span>
+                                <h4 id="detailDevGoal" class="text-xl font-extrabold mt-2 uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">No goal set</h4>
                             </div>
-                            <div class="z-10 mt-6 bg-zinc-50 dark:bg-zinc-800 rounded-lg p-4 border border-zinc-100 dark:border-zinc-700">
-                                <span class="text-[10px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">Non-Negotiable Minimum</span>
-                                <p id="detailDevMicro" class="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mt-1">No micro-habit set</p>
-                                <button onclick="toggleMicroHabit('dev')" id="btnMicroDev" class="mt-3 w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-bold py-2 rounded-lg transition">Mark Complete Today</button>
+                            <div class="z-10 mt-6 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-2 border-black dark:border-white midnight:border-[#475569]">
+                                <span class="text-[10px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Non-Negotiable Minimum</span>
+                                <p id="detailDevMicro" class="text-sm font-bold text-black dark:text-white midnight:text-[#e2e8f0] mt-1">No micro-habit set</p>
+                                <button onclick="toggleMicroHabit('dev')" id="btnMicroDev" class="mt-3 w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Mark Complete Today</button>
                             </div>
                         </div>
 
-                        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
+                        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
                             <div class="absolute top-4 right-4">
-                                <select id="personalBacklogSelect" class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-md px-2 py-1 text-[10px] font-bold text-zinc-700 dark:text-zinc-300">
+                                <select id="personalBacklogSelect" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-2 py-1 text-[10px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase">
                                     <option value="">Load from backlog</option>
                                 </select>
                             </div>
                             <div class="z-10">
-                                <span class="text-[11px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">Personal / Spiritual / Hobby Goal</span>
-                                <h4 id="detailPersonalGoal" class="text-xl font-bold mt-2 text-zinc-900 dark:text-zinc-100">No goal set</h4>
+                                <span class="text-[11px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Personal / Spiritual / Hobby Goal</span>
+                                <h4 id="detailPersonalGoal" class="text-xl font-extrabold mt-2 uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">No goal set</h4>
                             </div>
-                            <div class="z-10 mt-6 bg-zinc-50 dark:bg-zinc-800 rounded-lg p-4 border border-zinc-100 dark:border-zinc-700">
-                                <span class="text-[10px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">Non-Negotiable Minimum</span>
-                                <p id="detailPersonalMicro" class="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mt-1">No micro-habit set</p>
-                                <button onclick="toggleMicroHabit('personal')" id="btnMicroPersonal" class="mt-3 w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-bold py-2 rounded-lg transition">Mark Complete Today</button>
+                            <div class="z-10 mt-6 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-2 border-black dark:border-white midnight:border-[#475569]">
+                                <span class="text-[10px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Non-Negotiable Minimum</span>
+                                <p id="detailPersonalMicro" class="text-sm font-bold text-black dark:text-white midnight:text-[#e2e8f0] mt-1">No micro-habit set</p>
+                                <button onclick="toggleMicroHabit('personal')" id="btnMicroPersonal" class="mt-3 w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Mark Complete Today</button>
                             </div>
                         </div>
                     </div>
 
-                    <div id="dailyEnergyLogSection" class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 hidden">
+                    <div id="dailyEnergyLogSection" class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 hidden">
                         <div class="flex justify-between items-center mb-6">
                             <div>
-                                <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100">Daily Energy Log</h3>
-                                <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">Log tasks by your current energy level to optimize focus.</p>
+                                <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Daily Energy Log</h3>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-medium">Log tasks by your current energy level.</p>
                             </div>
-                            <div class="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg border border-zinc-200 dark:border-zinc-700">
-                                <button onclick="setEnergyMode('production')" id="btnProduction" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900">High-Energy Production</button>
-                                <button onclick="setEnergyMode('consumption')" id="btnConsumption" class="px-3 py-1.5 rounded-md text-xs font-bold transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100">Low-Energy Consumption</button>
+                            <div class="flex items-center gap-0 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-1 border-2 border-black dark:border-white midnight:border-[#475569]">
+                                <button onclick="setEnergyMode('production')" id="btnProduction" class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider transition bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">High-Energy Production</button>
+                                <button onclick="setEnergyMode('consumption')" id="btnConsumption" class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider transition text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0]">Low-Energy Consumption</button>
                             </div>
                         </div>
-                        <div class="flex gap-2 mb-4">
-                            <input type="text" id="dailyLogInput" placeholder="What are you working on right now?" class="flex-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100">
-                            <button onclick="addDailyLog()" class="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 px-4 py-2 rounded-lg text-sm font-semibold transition">Log</button>
+                        <div class="flex gap-0 mb-4">
+                            <input type="text" id="dailyLogInput" placeholder="What are you working on right now?" class="flex-1 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium">
+                            <button onclick="addDailyLog()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Log</button>
                         </div>
                         <div id="dailyLogList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <button onclick="closeSeasonDetail()" class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 text-sm font-semibold px-4 py-2 transition">Back to Seasons</button>
-                        <button onclick="completeCurrentSeason()" class="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 px-4 py-2.5 rounded-lg text-sm font-semibold transition">Complete Season</button>
+                        <button onclick="closeSeasonDetail()" class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] text-xs font-extrabold uppercase tracking-wider px-4 py-2 transition">Back to Seasons</button>
+                        <button onclick="completeCurrentSeason()" class="bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Complete Season</button>
                     </div>
                 </div>
             </section>
 
             <section id="tab-calendar" class="tab-content hidden space-y-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-zinc-100 tick-motif">Activity & Consistency</h2>
-                    <p class="text-gray-500 dark:text-zinc-400 text-sm mt-0.5">Track systemic metrics and running loops directly.</p>
+                    <h2 class="text-2xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Activity & Consistency</h2>
+                    <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-sm mt-1 font-medium">Track systemic metrics and running loops directly.</p>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-900 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700 flex flex-col gap-4">
+                <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col gap-4">
                     <div class="flex justify-between items-center flex-wrap gap-2">
                         <div>
-                            <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Focus Matrix Progression</h3>
-                            <p class="text-zinc-400 dark:text-zinc-500 text-xs">A breakdown of running time contributions over the year.</p>
+                            <h3 class="text-base font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Focus Matrix Progression</h3>
+                            <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-xs mt-0.5 font-medium">Running time contributions over the year.</p>
                         </div>
-                        <div class="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700">
-                            <span>Less</span>
-                            <div class="w-3 h-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-sm"></div>
-                            <div class="w-3 h-3 bg-zinc-300 dark:bg-zinc-600 border border-zinc-400 dark:border-zinc-500 rounded-sm"></div>
-                            <div class="w-3 h-3 bg-zinc-400 dark:bg-zinc-500 border border-zinc-500 dark:border-zinc-400 rounded-sm"></div>
-                            <div class="w-3 h-3 bg-zinc-600 dark:bg-zinc-400 border border-zinc-700 dark:border-zinc-500 rounded-sm"></div>
-                            <div class="w-3 h-3 bg-zinc-800 dark:bg-zinc-300 border border-zinc-900 dark:border-zinc-400 rounded-sm"></div>
-                            <span>More</span>
+                        <div class="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] px-3 py-1.5 border-2 border-black dark:border-white midnight:border-[#475569] font-bold">
+                            <span class="uppercase tracking-wider text-[10px]">Less</span>
+                            <div class="w-3 h-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600"></div>
+                            <div class="w-3 h-3 bg-zinc-300 dark:bg-zinc-600 border border-zinc-400 dark:border-zinc-500"></div>
+                            <div class="w-3 h-3 bg-zinc-400 dark:bg-zinc-500 border border-zinc-500 dark:border-zinc-400"></div>
+                            <div class="w-3 h-3 bg-zinc-600 dark:bg-zinc-400 border border-zinc-700 dark:border-zinc-500"></div>
+                            <div class="w-3 h-3 bg-zinc-800 dark:bg-zinc-300 border border-zinc-900 dark:border-zinc-400"></div>
+                            <span class="uppercase tracking-wider text-[10px]">More</span>
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto no-scrollbar w-full border border-zinc-100 dark:border-zinc-800 rounded-lg p-4 bg-zinc-50/50 dark:bg-zinc-900/50">
+                    <div class="overflow-x-auto no-scrollbar w-full border-2 border-black dark:border-white midnight:border-[#475569] p-4 bg-zinc-50 dark:bg-[#1a1a1a] midnight:bg-[#0f172a]">
                         <div class="min-w-[760px] flex gap-2">
-                            <div class="grid grid-rows-7 gap-1 text-[10px] text-gray-400 dark:text-zinc-500 font-semibold uppercase pr-2 justify-center pt-5">
+                            <div class="grid grid-rows-7 gap-1 text-[10px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-extrabold uppercase pr-2 justify-center pt-5">
                                 <div></div><div>Mon</div><div></div><div>Wed</div><div></div><div>Fri</div><div></div>
                             </div>
                             <div class="flex-1 flex flex-col gap-1">
-                                <div id="heatmapMonthsHeader" class="flex text-[10px] text-gray-400 dark:text-zinc-500 font-bold uppercase tracking-wider h-4 relative"></div>
+                                <div id="heatmapMonthsHeader" class="flex text-[10px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider h-4 relative"></div>
                                 <div id="heatmapGrid" class="grid grid-flow-col grid-rows-7 gap-1"></div>
                             </div>
                         </div>
@@ -377,15 +377,15 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-12 flex flex-col gap-6">
-                        <div class="flex justify-between items-center bg-white dark:bg-zinc-900 rounded-xl p-5 border border-zinc-200 dark:border-zinc-700">
-                            <h3 id="calendarMonthYear" class="text-base font-bold text-zinc-800 dark:text-zinc-200">Month Year</h3>
-                            <div class="flex gap-1">
-                                <button onclick="changeMonth(-1)" class="p-2 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 transition" title="Previous month" aria-label="Previous month"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                                <button onclick="changeMonth(1)" class="p-2 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 transition" title="Next month" aria-label="Next month"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                        <div class="flex justify-between items-center bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm p-5">
+                            <h3 id="calendarMonthYear" class="text-base font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Month Year</h3>
+                            <div class="flex gap-0">
+                                <button onclick="changeMonth(-1)" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Previous month" aria-label="Previous month"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                <button onclick="changeMonth(1)" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Next month" aria-label="Next month"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                             </div>
                         </div>
-                        <div class="bg-white dark:bg-zinc-900 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700">
-                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase mb-4">
+                        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6">
+                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase mb-4 tracking-wider">
                                 <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                             </div>
                             <div id="calendarGrid" class="grid grid-cols-7 gap-2"></div>
@@ -396,29 +396,29 @@
 
             <section id="tab-notes" class="tab-content hidden space-y-6">
                 <div class="flex flex-wrap items-center gap-3">
-                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tick-motif">Notes Workspace</h2>
+                    <h2 class="text-2xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Notes Workspace</h2>
                     <div class="flex items-center gap-2 ml-auto">
-                        <input type="text" id="notesSearchInput" placeholder="Search notes..." oninput="renderNotesList()" class="w-36 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100 text-zinc-900 dark:text-zinc-100">
-                        <button onclick="createNewNote()" class="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition"><i data-lucide="file-plus" class="w-4 h-4"></i> New Entry</button>
+                        <input type="text" id="notesSearchInput" placeholder="Search notes..." oninput="renderNotesList()" class="w-40 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-3 py-2 text-xs focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-bold uppercase tracking-wider">
+                        <button onclick="createNewNote()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"><i data-lucide="file-plus" class="w-4 h-4"></i> New Entry</button>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-16rem)]">
-                    <div class="lg:col-span-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 flex flex-col overflow-hidden">
+                    <div class="lg:col-span-4 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-4 flex flex-col overflow-hidden">
                         <div id="notesList" class="space-y-2 overflow-y-auto pr-1 flex-1"></div>
                     </div>
-                    <div id="noteEditor" class="hidden lg:col-span-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 flex flex-col space-y-4">
-                        <input type="text" id="noteTitleInput" oninput="saveCurrentNote()" placeholder="Untitled Concept" class="bg-transparent text-xl font-bold focus:outline-none w-full text-zinc-900 dark:text-zinc-100">
-                        <div class="flex items-center gap-2 border-b border-zinc-100 dark:border-zinc-800 pb-2">
-                            <button type="button" onclick="formatNoteText('bold')" class="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Bold"><b class="text-xs font-bold">B</b></button>
-                            <button type="button" onclick="formatNoteText('italic')" class="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Italic"><i class="text-xs font-italic">I</i></button>
-                            <div class="w-px h-5 bg-zinc-200 dark:bg-zinc-700"></div>
-                            <button type="button" onclick="formatNoteText('ul')" class="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Bullet List">•</button>
-                            <button type="button" onclick="formatNoteText('ol')" class="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition" title="Numbered List">1.</button>
+                    <div id="noteEditor" class="hidden lg:col-span-8 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col space-y-4">
+                        <input type="text" id="noteTitleInput" oninput="saveCurrentNote()" placeholder="Untitled Concept" class="bg-transparent text-xl font-extrabold uppercase tracking-wider focus:outline-none w-full text-black dark:text-white midnight:text-[#e2e8f0] border-b-2 border-black dark:border-white midnight:border-[#475569] pb-2">
+                        <div class="flex items-center gap-2 border-b-2 border-black dark:border-white midnight:border-[#475569] pb-2">
+                            <button type="button" onclick="formatNoteText('bold')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Bold"><b class="text-xs font-extrabold">B</b></button>
+                            <button type="button" onclick="formatNoteText('italic')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Italic"><i class="text-xs italic">I</i></button>
+                            <div class="w-0.5 h-5 bg-black dark:border-white midnight:border-[#475569]"></div>
+                            <button type="button" onclick="formatNoteText('ul')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Bullet List">&bull;</button>
+                            <button type="button" onclick="formatNoteText('ol')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Numbered List">1.</button>
                         </div>
-                        <div id="noteBodyInput" contenteditable="true" oninput="saveCurrentNote()" placeholder="Start writing down your ideas..." class="w-full flex-1 bg-transparent text-zinc-700 dark:text-zinc-300 focus:outline-none resize-none leading-relaxed text-sm p-3 border border-zinc-200 dark:border-zinc-700 rounded-lg min-h-[200px] overflow-y-auto"></div>
+                        <div id="noteBodyInput" contenteditable="true" oninput="saveCurrentNote()" placeholder="Start writing down your ideas..." class="w-full flex-1 bg-transparent text-zinc-700 dark:text-zinc-300 midnight:text-[#94a3b8] focus:outline-none resize-none leading-relaxed text-sm p-3 border-2 border-black dark:border-white midnight:border-[#475569] min-h-[200px] overflow-y-auto font-medium"></div>
                     </div>
-                    <div id="noNotePlaceholder" class="lg:col-span-8 bg-white/60 dark:bg-zinc-800/60 border border-dashed border-zinc-300 dark:border-zinc-600 rounded-xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500">
-                        <p class="text-sm font-medium">Select an item or write a new note map.</p>
+                    <div id="noNotePlaceholder" class="lg:col-span-8 border-2 border-dashed border-zinc-300 dark:border-zinc-600 midnight:border-[#475569] flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]">
+                        <p class="text-sm font-extrabold uppercase tracking-wider">Select an item or write a new note map.</p>
                     </div>
                 </div>
             </section>
@@ -429,7 +429,6 @@
         window.__FIREBASE_CONFIG__ = window.__FIREBASE_CONFIG__ || {};
         window.__CLOUDINARY_CONFIG__ = window.__CLOUDINARY_CONFIG__ || {};
     </script>
-    <script src="env.js"></script>
+    <script src="env.js"></script>
 </body>
 </html>
-

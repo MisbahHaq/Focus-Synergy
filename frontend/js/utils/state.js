@@ -28,7 +28,7 @@ export function subscribe(key, fn) {
 
 export function showError(message, context = '') {
   const toast = document.createElement('div');
-  toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-xl shadow-xl border text-xs font-bold bg-red-900 text-red-100 border-red-700 flex items-center gap-2 max-w-sm';
+  toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal text-xs font-extrabold uppercase tracking-wider bg-coral dark:bg-coral midnight:bg-[#fda4af] text-black flex items-center gap-2 max-w-sm';
   toast.innerHTML = `<span>${message}</span>`;
   document.body.appendChild(toast);
   setTimeout(() => {
@@ -42,13 +42,13 @@ export function showError(message, context = '') {
 export function showConfirm(message) {
   return new Promise(resolve => {
     const overlay = document.createElement('div');
-    overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 tab-enter';
+    overlay.className = 'fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 tab-enter';
     overlay.innerHTML = `
-      <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
-        <p class="text-sm text-zinc-700 dark:text-zinc-300">${message}</p>
+      <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg max-w-sm w-full p-6 space-y-4">
+        <p class="text-sm text-black dark:text-white midnight:text-[#e2e8f0] font-bold">${message}</p>
         <div class="flex justify-end gap-2">
-          <button id="confirm-cancel" class="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold text-xs rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">Cancel</button>
-          <button id="confirm-ok" class="px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-xs rounded-xl hover:opacity-90 transition">OK</button>
+          <button id="confirm-cancel" class="px-4 py-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-white midnight:text-[#e2e8f0] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Cancel</button>
+          <button id="confirm-ok" class="px-4 py-2 bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider shadow-brutal-sm hover:shadow-brutal transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">OK</button>
         </div>
       </div>`;
     document.body.appendChild(overlay);
