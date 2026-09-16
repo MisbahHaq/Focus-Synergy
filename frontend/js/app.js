@@ -460,21 +460,49 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
  window.googleLogin = async function() {
  const provider = new GoogleAuthProvider();
+ provider.setCustomParameters({ prompt: 'select_account' });
  try {
  setAuthLoading(true);
  window._pendingLoginAnimation = true;
+ // Google OAuth popup/redirect flows can take >10s (account picker, consent
+ // screen), so do NOT wrap them in authWithTimeout like email/password.
  if (GOOGLE_USE_REDIRECT) {
- await authWithTimeout(signInWithRedirect(getAuthInstance(), provider));
+ await signInWithRedirect(getAuthInstance(), provider);
  } else {
- await authWithTimeout(signInWithPopup(getAuthInstance(), provider));
+ await signInWithPopup(getAuthInstance(), provider);
  }
  setAuthLoading(false);
  } catch (e) {
- document.getElementById('loginError').innerText = e.message;
+ console.error('[GOOGLE LOGIN] Failed:', e.code, e.message);
+ const friendly = friendlyAuthError(e);
+ document.getElementById('loginError').innerText = friendly;
  window._pendingLoginAnimation = false;
  setAuthLoading(false);
  }
  };
+
+ function friendlyAuthError(e) {
+ const code = e.code || '';
+ if (code === 'auth/operation-not-allowed' || code === 'auth/admin-restricted-operation') {
+ return 'Google sign-in is not enabled for this Firebase project. Enable it in Firebase Console → Authentication → Sign-in method.';
+ }
+ if (code === 'auth/unauthorized-domain') {
+ return 'This domain is not authorized for Google sign-in. Add it in Firebase Console → Authentication → Settings → Authorized domains.';
+ }
+ if (code === 'auth/popup-blocked') {
+ return 'Google sign-in popup was blocked by your browser. Allow popups for this site and try again.';
+ }
+ if (code === 'auth/popup-closed-by-user') {
+ return 'Google sign-in was cancelled. Please try again.';
+ }
+ if (code === 'auth/cancelled-popup-request') {
+ return 'Another Google sign-in is already in progress. Wait a moment and try again.';
+ }
+ if (code === 'auth/network-request-failed') {
+ return 'Network error while signing in. Check your connection and try again.';
+ }
+ return e.message || 'Google sign-in failed. Please try again.';
+ }
 
  if (GOOGLE_USE_REDIRECT) {
  const redirectAuth = getAuthInstance();
