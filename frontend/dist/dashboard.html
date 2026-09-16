@@ -6,26 +6,37 @@
     <link rel="icon" href="./assets/fav-j4g5CALP.png" type="image/png">
     <link rel="icon" href="./assets/favicon-CP7GyILA.ico" type="image/x-icon" sizes="16x16 32x32">
     <link rel="apple-touch-icon" href="./assets/fav-j4g5CALP.png">
-    <meta name="theme-color" content="#171717">
+    <meta name="theme-color" content="#FAF5E8">
     <title>Focus Synergy - Habits, Topics & Analytics</title>
     <meta name="description" content="Focus Synergy helps you track habits, topics, and deep work sessions with timers, analytics, activity calendars, and notes.">
     <meta name="keywords" content="time tracker, habit tracker, focus, deep work, productivity, analytics, time management, pomodoro">
-  <script type="module" crossorigin src="./assets/dashboard-CbaiByYz.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/lucide-CfMXY0bY.js">
-  <link rel="stylesheet" crossorigin href="./assets/lucide-Cl6ikXni.css">
+  <script type="module" crossorigin src="./assets/dashboard-qmNDd7li.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/lucide-zFRlcmyM.js">
+  <link rel="stylesheet" crossorigin href="./assets/lucide-CbQndMmm.css">
 </head>
-<body class="bg-canvas dark:bg-[#171717] midnight:bg-[#0f172a] min-h-screen selection:bg-canary dark:selection:bg-canary midnight:selection:bg-[#fbbf24]">
+<body class="bg-parchment dark:bg-[#171717] midnight:bg-[#0f172a] min-h-screen">
 
-    <div id="loginScreen" class="flex h-screen items-center justify-center p-4">
-        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg w-full max-w-md min-w-[340px] p-8">
-            <div class="flex items-center justify-center mb-8">
-                <div class="w-14 h-14 bg-black dark:bg-white midnight:bg-[#fbbf24] flex items-center justify-center mr-4 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
-                    <i data-lucide="layers" class="w-6 h-6 text-white dark:text-black midnight:text-[#0f172a]"></i>
+    <div id="loginScreen" class="flex h-screen items-center justify-center p-4 relative overflow-hidden">
+        <div class="halftone absolute -left-10 bottom-10 w-56 h-56 opacity-40 hidden md:block"></div>
+        <div class="halftone absolute right-6 top-6 w-40 h-40 opacity-30 -rotate-6 hidden md:block"></div>
+        <span class="sticker sticker-pink w-14 h-14 text-xl absolute left-[12%] top-[18%] hidden lg:flex wiggle">☺</span>
+        <span class="sticker sticker-cyan w-12 h-12 text-lg absolute right-[13%] top-[14%] hidden lg:flex" style="transform: rotate(14deg)">★</span>
+
+        <div class="relative bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-lg dark:shadow-brutal-dark-lg midnight:shadow-brutal-lg w-full max-w-md min-w-[340px] p-8 paper-noise">
+            <span class="washi washi-striped -top-3 left-10 -rotate-2"></span>
+            <span class="washi washi-dots -top-2 right-14 rotate-2"></span>
+
+            <div class="flex items-center justify-center mb-6">
+                <div class="sticker sticker-cyber w-14 h-14 text-xl mr-4" style="transform: rotate(-10deg)">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
-                <h1 class="text-3xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Focus Synergy</h1>
+                <div>
+                    <h1 class="font-display font-black uppercase tracking-tight text-3xl leading-none text-ink dark:text-white midnight:text-[#e2e8f0]">Focus<br><em class="zine-heading-italic not-italic">Synergy</em></h1>
+                    <p class="font-scribble text-lg -rotate-1 mt-1 text-punch dark:text-[#ff7ab9] midnight:text-[#c4b5fd]">your focus, curated.</p>
+                </div>
             </div>
 
-            <div class="flex gap-0 mb-8 border-2 border-black dark:border-white midnight:border-[#475569]">
+            <div class="flex gap-0 mb-8 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm">
                 <button onclick="showTab('loginTab')" id="btn-login-tab" class="flex-1 py-2.5 bg-canary dark:bg-canary midnight:bg-[#fbbf24] font-extrabold uppercase text-xs tracking-wider text-black">Login</button>
                 <button onclick="showTab('registerTab')" id="btn-register-tab" class="flex-1 py-2.5 font-extrabold uppercase text-xs tracking-wider text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a]">Register</button>
             </div>
@@ -33,26 +44,26 @@
             <div id="loginTab">
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Email</label>
-                        <input type="email" id="loginEmail" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="you@example.com">
+                        <label class="zine-label text-[11px] text-ink dark:text-zinc-200 midnight:text-[#e2e8f0]">Email</label>
+                        <input type="email" id="loginEmail" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium" placeholder="you@example.com">
                     </div>
                     <div>
-                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Password</label>
-                        <input type="password" id="loginPassword" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="••••••••">
+                        <label class="zine-label text-[11px] text-ink dark:text-zinc-200 midnight:text-[#e2e8f0]">Password</label>
+                        <input type="password" id="loginPassword" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium" placeholder="••••••••">
                     </div>
-                    <button onclick="login()" id="btn-login" class="w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+                    <button onclick="login()" id="btn-login" class="press w-full bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2">
                         <span id="login-spinner" class="spinner hidden"></span>
                         <span id="login-text">Sign In</span>
                     </button>
                     <div class="relative my-2">
                         <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t-2 border-black dark:border-white midnight:border-[#475569]"></div>
+                            <div class="w-full border-t-3 border-ink dark:border-zinc-200 midnight:border-[#475569]"></div>
                         </div>
                         <div class="relative flex justify-center text-xs">
-                            <span class="px-3 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-bold uppercase tracking-widest">or</span>
+                            <span class="px-3 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-mono font-bold uppercase tracking-widest">or</span>
                         </div>
                     </div>
-                    <button onclick="googleLogin()" id="btn-google" class="w-full bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-bold py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+                    <button onclick="googleLogin()" id="btn-google" class="press w-full bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-bold py-3 flex items-center justify-center gap-2">
                         <span id="google-spinner" class="spinner hidden"></span>
                         <span id="google-text">Continue with Google</span>
                     </button>
@@ -63,18 +74,18 @@
             <div id="registerTab" class="hidden">
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Full Name</label>
-                        <input type="text" id="registerName" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="John Doe">
+                        <label class="zine-label text-[11px] text-ink dark:text-zinc-200 midnight:text-[#e2e8f0]">Full Name</label>
+                        <input type="text" id="registerName" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium" placeholder="John Doe">
                     </div>
                     <div>
-                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Email</label>
-                        <input type="email" id="registerEmail" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="you@example.com">
+                        <label class="zine-label text-[11px] text-ink dark:text-zinc-200 midnight:text-[#e2e8f0]">Email</label>
+                        <input type="email" id="registerEmail" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium" placeholder="you@example.com">
                     </div>
                     <div>
-                        <label class="text-[11px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase tracking-widest">Password</label>
-                        <input type="password" id="registerPassword" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium" placeholder="Min 6 characters">
+                        <label class="zine-label text-[11px] text-ink dark:text-zinc-200 midnight:text-[#e2e8f0]">Password</label>
+                        <input type="password" id="registerPassword" class="w-full mt-1.5 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2.5 text-sm focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium" placeholder="Min 6 characters">
                     </div>
-                    <button onclick="register()" id="btn-register" class="w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+                    <button onclick="register()" id="btn-register" class="press w-full bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] font-extrabold uppercase text-xs tracking-wider py-3 flex items-center justify-center gap-2">
                         <span id="register-spinner" class="spinner hidden"></span>
                         <span id="register-text">Create Account</span>
                     </button>
@@ -85,14 +96,14 @@
     </div>
 
     <div id="mainApp" class="flex h-screen overflow-hidden hidden">
-        <aside class="w-20 lg:w-24 bg-black dark:bg-[#0a0a0a] midnight:bg-[#0f172a] flex flex-col justify-between items-center py-8 z-10 border-r-2 border-black dark:border-white midnight:border-[#475569]">
+        <aside class="w-20 lg:w-24 bg-ink dark:bg-[#0a0a0a] midnight:bg-[#0f172a] flex flex-col justify-between items-center py-8 z-10 border-r-3 border-ink dark:border-zinc-200 midnight:border-[#475569]">
             <div class="flex flex-col items-center gap-12 w-full">
-                <div class="w-12 h-12 bg-canary dark:bg-canary midnight:bg-[#fbbf24] flex items-center justify-center cursor-pointer border-2 border-white dark:border-black midnight:border-[#475569] shadow-brutal-sm">
-                    <i data-lucide="layers" class="w-5 h-5 text-black"></i>
+                <div class="sticker sticker-cyber w-12 h-12 cursor-pointer" style="transform: rotate(-8deg); border-width: 2px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
 
                 <nav class="flex flex-col gap-4 w-full px-3" role="tablist" aria-label="Main navigation">
-                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full h-12 flex items-center justify-center transition-all bg-white/10 text-canary border-2 border-canary" title="Tracker & Timer" role="tab" aria-selected="true" aria-controls="tab-dashboard" aria-label="Tracker & Timer">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full h-12 flex items-center justify-center transition-all bg-white/10 text-canary border-2 border-canary shadow-brutal-sm" title="Tracker &amp; Timer" role="tab" aria-selected="true" aria-controls="tab-dashboard" aria-label="Tracker &amp; Timer">
                         <i data-lucide="layout-grid" class="w-5 h-5"></i>
                     </button>
                     <button onclick="switchTab('seasons')" id="btn-seasons" class="nav-btn w-full h-12 flex items-center justify-center transition-all text-gray-500 hover:bg-white/5 hover:text-gray-300 border-2 border-transparent" title="Seasons Planner" role="tab" aria-selected="false" aria-controls="tab-seasons" aria-label="Seasons Planner">
@@ -107,66 +118,68 @@
                 </nav>
             </div>
 
-            <button class="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/5 transition border-2 border-transparent hover:border-white/20">
-                <i data-lucide="log-out" class="w-5 h-5"></i>
-            </button>
+            <span class="sticker sticker-orange w-9 h-9 text-base" style="transform: rotate(12deg); border-width: 2px;">☺</span>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-6 lg:p-10 flex flex-col gap-8 bg-canvas dark:bg-[#171717] midnight:bg-[#0f172a]">
+        <main class="flex-1 overflow-y-auto p-6 lg:p-10 flex flex-col gap-8 bg-parchment dark:bg-[#171717] midnight:bg-[#0f172a]">
 
-            <header class="flex items-center gap-2 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal px-5 py-3">
-                <h1 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] flex-1 min-w-0 truncate">Focus Synergy</h1>
+            <header class="relative flex items-center gap-2 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal px-5 py-3 paper-noise">
+                <span class="washi washi-solid-lemon -top-3 left-16 -rotate-2"></span>
+                <h1 class="font-display font-black uppercase tracking-tight text-lg text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] flex-1 min-w-0 truncate">Focus <em class="text-punch dark:text-[#ff7ab9] midnight:text-[#c4b5fd] not-italic">Synergy</em></h1>
                 <div class="flex items-center gap-1.5">
-                    <button onclick="handleExportData()" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Export Data" aria-label="Export Data">
+                    <button onclick="handleExportData()" class="press p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]" title="Export Data" aria-label="Export Data">
                         <i data-lucide="download" class="w-4 h-4"></i>
                     </button>
-                    <button onclick="handleImportData()" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Import Data" aria-label="Import Data">
+                    <button onclick="handleImportData()" class="press p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]" title="Import Data" aria-label="Import Data">
                         <i data-lucide="upload" class="w-4 h-4"></i>
                     </button>
                     <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="processImportFile(event)">
-                    <button onclick="openAppSettingsModal()" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Settings" aria-label="Settings">
+                    <button onclick="openAppSettingsModal()" class="press p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]" title="Settings" aria-label="Settings">
                         <i data-lucide="settings" class="w-4 h-4"></i>
                     </button>
-                    <button onclick="toggleTheme()" id="themeToggle" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none relative" title="Cycle theme" aria-label="Cycle theme">
+                    <button onclick="toggleTheme()" id="themeToggle" class="press p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] relative" title="Cycle theme" aria-label="Cycle theme">
                         <i data-lucide="sun" class="w-4 h-4 dark-icon hidden"></i>
                         <i data-lucide="music" class="w-4 h-4 midnight-icon hidden"></i>
                         <i data-lucide="moon" class="w-4 h-4 light-icon"></i>
                     </button>
-                    <div class="flex items-center gap-2 border-l-2 border-black dark:border-white midnight:border-[#475569] pl-3 ml-0.5">
-                        <span id="userDisplay" class="text-xs font-bold text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] truncate max-w-[120px] uppercase tracking-wider"></span>
+                    <div class="flex items-center gap-2 border-l-2 border-ink dark:border-zinc-200 midnight:border-[#475569] pl-3 ml-0.5">
+                        <span id="userDisplay" class="text-xs font-mono font-bold text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] truncate max-w-[120px] uppercase tracking-wider"></span>
                     </div>
                 </div>
             </header>
 
             <section id="tab-dashboard" class="tab-content space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                        <h2 class="text-xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Deep Work Focus</h2>
-                        <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-xs mt-1 font-medium">Spin up custom counters to measure skill cultivation.</p>
+                    <div class="relative">
+                        <p class="zine-label mb-1 text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Tracker &amp; Timer</p>
+                        <h2 class="font-display font-black uppercase tracking-tight text-3xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Deep Work <em class="zine-heading-italic text-punch dark:text-[#ff7ab9] midnight:text-[#c4b5fd] not-italic">Focus</em></h2>
+                        <p class="font-scribble text-xl text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] -rotate-1 mt-0.5">spin up custom counters for skill cultivation</p>
                     </div>
-                    <div class="flex gap-0 w-full sm:w-auto bg-white dark:bg-[#262626] midnight:bg-[#1e293b] p-2 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">
-                        <input type="text" id="newItemName" placeholder="New track title..." class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal flex-1 sm:w-56 text-black dark:text-white midnight:text-[#e2e8f0] font-medium">
-                        <select id="newItemType" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-3 py-2 text-sm focus:outline-none font-bold text-black dark:text-white midnight:text-[#e2e8f0]">
-                            <option value="topic">Topic</option>
-                            <option value="habit">Habit</option>
+                    <div class="flex gap-0 w-full sm:w-auto bg-white dark:bg-[#262626] midnight:bg-[#1e293b] p-2 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm">
+                        <input type="text" id="newItemName" placeholder="New track title..." class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal flex-1 sm:w-56 text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium">
+                        <select id="newItemType" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] px-3 py-2 text-sm focus:outline-none font-mono font-bold text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">
+                            <option value="topic">TOPIC</option>
+                            <option value="habit">HABIT</option>
                         </select>
-                        <button onclick="addItem()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
+                        <button onclick="addItem()" class="press bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5">
                             <i data-lucide="plus" class="w-4 h-4"></i> Add
                         </button>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-5 bg-black dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg p-6 flex flex-col justify-between min-h-[260px]">
+                    <div class="relative lg:col-span-5 bg-ink dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-lg dark:shadow-brutal-dark-lg midnight:shadow-brutal-lg p-6 flex flex-col justify-between min-h-[260px] overflow-hidden">
+                        <div class="halftone-invert absolute inset-0 opacity-[0.06] pointer-events-none"></div>
+                        <span class="washi washi-dots -top-3 right-8 rotate-2"></span>
                         <div class="z-10">
-                            <span class="text-[11px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] uppercase">Active Core Monitor</span>
-                            <h3 id="activeItemTitle" class="text-2xl font-extrabold mt-1 uppercase tracking-wider text-white dark:text-white midnight:text-[#e2e8f0]">No Item Selected</h3>
+                            <span class="zine-label text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]">Active Core Monitor</span>
+                            <h3 id="activeItemTitle" class="font-display font-black uppercase tracking-tight mt-1 text-2xl text-white dark:text-white midnight:text-[#e2e8f0]">No Item Selected</h3>
                         </div>
 
                         <div class="my-auto py-2 z-10 flex items-baseline gap-3">
                             <div id="timerA11y" class="sr-only" aria-live="polite" aria-atomic="true"></div>
                             <div id="timerDisplay" class="text-5xl font-bold tracking-tight text-white dark:text-white midnight:text-[#e2e8f0] font-mono tabular-nums" aria-live="off" aria-atomic="true">00:00:00</div>
-                            <span class="text-[10px] bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black font-extrabold uppercase tracking-widest px-2 py-0.5 border-2 border-white dark:border-black midnight:border-[#475569]" id="streakBadge">Session Counter</span>
+                            <span class="sticker sticker-cyber text-[10px] px-2 py-0.5" id="streakBadge" style="border-width:2px; transform: rotate(8deg); height:auto; width:auto; border-radius:4px;">Session Ctr.</span>
                         </div>
 
                         <div class="flex gap-3 z-10">
@@ -181,23 +194,25 @@
 
                     <div class="lg:col-span-7 flex flex-col justify-between gap-4">
                         <div class="flex justify-between items-center">
-                            <h4 class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Top Focus Metrics</h4>
-                            <i data-lucide="sliders-horizontal" class="w-4 h-4 text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]"></i>
+                            <h4 class="zine-label text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Top Focus Metrics</h4>
+                            <span class="sticker sticker-cyan w-8 h-8 text-sm" style="transform: rotate(8deg);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 3 3 4-1-1 4 3 3-3 3 1 4-4-1-3 3-3-3-4 1 1-4-3-3 3-3-1-4 4 1Z"/></svg></span>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 h-full" id="highlightsGrid"></div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-7 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col">
+                    <div class="relative lg:col-span-7 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 flex flex-col paper-noise">
+                        <span class="washi washi-solid-pink -top-3 left-8 -rotate-3"></span>
+                        <span class="washi washi-striped-coral -top-2 right-24 rotate-2"></span>
                         <div class="flex justify-between items-center mb-6">
                             <div>
-                                <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Today's Agenda & Stats</h3>
-                                <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-medium" id="statsSubHeader">Active elements available for timeline recording</p>
+                                <h3 class="font-display font-black uppercase tracking-tight text-xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Today's Agenda <em class="zine-heading-italic text-volt dark:text-[#4dd8ff] midnight:text-[#7dd3fc] not-italic">&amp; Stats</em></h3>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-mono font-bold uppercase tracking-wider" id="statsSubHeader">Active elements available for timeline recording</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-12 text-[11px] font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase tracking-widest border-b-2 border-black dark:border-white midnight:border-[#475569] pb-3 mb-2 px-2">
+                        <div class="grid grid-cols-12 zine-label text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] border-b-3 border-ink dark:border-zinc-200 midnight:border-[#475569] pb-3 mb-2 px-2">
                             <div class="col-span-5">Name / Category</div>
                             <div class="col-span-4 text-center">Status / Local Timer</div>
                             <div class="col-span-2 text-right">Logged Time</div>
@@ -207,14 +222,16 @@
                         <div id="unifiedItemsList" class="space-y-1 overflow-y-auto max-h-[340px] pr-1"></div>
                     </div>
 
-                    <div id="quickNotesSidebar" class="lg:col-span-5 bg-black dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 text-white flex flex-col justify-between min-h-[380px] relative overflow-hidden">
-                        <div>
-                            <h3 class="text-lg font-extrabold uppercase tracking-wider">Quick Notes & Deep Dives</h3>
-                            <p class="text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] text-xs mt-1 leading-relaxed font-medium" id="quickNotesSubtext">Capture ideas as they come.</p>
-                            <div id="quickNotesPreview" class="mt-6 space-y-4 border-l-4 border-white/20 dark:border-zinc-700 midnight:border-[#334155] pl-4 py-1 hidden">
+                    <div id="quickNotesSidebar" class="relative lg:col-span-5 bg-ink dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 text-white flex flex-col justify-between min-h-[380px] overflow-hidden">
+                        <div class="halftone-invert absolute inset-0 opacity-[0.05] pointer-events-none"></div>
+                        <span class="washi washi-solid-lemon -top-3 left-10 -rotate-2"></span>
+                        <div class="z-10">
+                            <h3 class="font-display font-black uppercase tracking-tight text-xl">Quick Notes &amp; Deep Dives</h3>
+                            <p class="font-scribble text-xl text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8] mt-1 -rotate-1" id="quickNotesSubtext">capture ideas as they come.</p>
+                            <div id="quickNotesPreview" class="mt-6 space-y-4 border-l-3 border-white/20 dark:border-zinc-700 midnight:border-[#334155] pl-4 py-1 hidden">
                             </div>
                         </div>
-                        <button onclick="switchTab('notes')" class="mt-8 bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black dark:text-black midnight:text-[#0f172a] hover:bg-canary-light w-full font-extrabold uppercase text-xs tracking-wider py-3 px-4 transition-all flex items-center justify-center gap-2 border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
+                        <button onclick="switchTab('notes')" class="press mt-8 bg-cyber dark:bg-canary midnight:bg-[#fbbf24] text-black dark:text-black midnight:text-[#0f172a] w-full font-extrabold uppercase text-xs tracking-wider py-3 px-4 transition-all flex items-center justify-center gap-2 border-2 border-white dark:border-black midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm">
                             All Notes Workspace <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -223,54 +240,58 @@
 
             <section id="tab-seasons" class="tab-content hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                        <h2 class="text-2xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Seasons Planner</h2>
-                        <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-sm mt-1 font-medium">Structured 4-6 week focus blocks for sustained growth.</p>
+                    <div class="relative">
+                        <p class="zine-label mb-1 text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Issues &amp; Blocks</p>
+                        <h2 class="font-display font-black uppercase tracking-tight text-3xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Seasons <em class="zine-heading-italic text-blaze dark:text-[#ff8a5c] midnight:text-[#fda4af] not-italic">Planner</em></h2>
+                        <p class="font-scribble text-xl text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] -rotate-1 mt-0.5">4-6 week focus blocks, no drift allowed</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="createNewSeason()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
+                        <button onclick="createNewSeason()" class="press bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2">
                             <i data-lucide="plus" class="w-4 h-4"></i> New Season
                         </button>
-                        <button onclick="toggleBacklogDrawer()" class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
-                            <i data-lucide="inbox" class="w-4 h-4"></i> Not Right Now <span id="backlogBadge" class="bg-zinc-200 dark:bg-zinc-700 midnight:bg-[#334155] text-black dark:text-white midnight:text-[#e2e8f0] text-[10px] px-1.5 py-0.5 font-bold ml-1 border border-black dark:border-white midnight:border-[#475569]">0</span>
+                        <button onclick="toggleBacklogDrawer()" class="press bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="inbox" class="w-4 h-4"></i> Not Right Now <span id="backlogBadge" class="bg-zinc-200 dark:bg-zinc-700 midnight:bg-[#334155] text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] text-[10px] px-1.5 py-0.5 font-mono font-bold ml-1 border-2 border-ink dark:border-zinc-200 midnight:border-[#475569]">0</span>
                         </button>
                     </div>
                 </div>
 
                 <div id="seasonsListContainer" class="space-y-4"></div>
 
-                <div id="backlogDrawer" class="hidden bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6">
+                <div id="backlogDrawer" class="relative hidden bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 paper-noise">
+                    <span class="washi washi-dots -top-3 left-10 -rotate-2"></span>
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0] flex items-center gap-2">
+                        <h3 class="font-display font-black uppercase tracking-tight text-xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] flex items-center gap-2">
                             <i data-lucide="inbox" class="w-5 h-5"></i> Not Right Now
                         </h3>
-                        <button onclick="toggleBacklogDrawer()" class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition font-bold uppercase tracking-wider">Close</button>
+                        <button onclick="toggleBacklogDrawer()" class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-ink dark:hover:text-white midnight:hover:text-[#e2e8f0] transition font-mono font-bold uppercase tracking-wider">Close</button>
                     </div>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mb-4 font-medium">Ideas parked here won't distract your current focus.</p>
+                    <p class="font-scribble text-lg text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mb-4 -rotate-1">ideas parked here won't distract your focus</p>
 
                     <div class="flex gap-0 mb-4">
-                        <input type="text" id="backlogInput" placeholder="Park an idea, framework, or hobby..." class="flex-1 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium">
-                        <button onclick="addBacklogItem()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Add</button>
+                        <input type="text" id="backlogInput" placeholder="Park an idea, framework, or hobby..." class="flex-1 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium">
+                        <button onclick="addBacklogItem()" class="press bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider">Add</button>
                     </div>
                     <div id="backlogList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
                 </div>
 
                 <div id="seasonDetailContainer" class="hidden space-y-6">
-                    <div class="bg-lavender dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-lg p-6 relative overflow-hidden">
+                    <div class="relative bg-lavender dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-lg dark:shadow-brutal-dark-lg midnight:shadow-brutal-lg p-6 relative overflow-hidden paper-noise">
+                        <span class="washi washi-solid-pink -top-3 left-14 -rotate-3"></span>
+                        <span class="washi washi-solid-yellow -top-2 right-20 rotate-2"></span>
                         <div class="z-10 relative">
-                            <span class="text-[11px] font-extrabold tracking-widest text-black/60 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Current Season</span>
-                            <h3 id="detailSeasonTitle" class="text-2xl font-extrabold mt-1 uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Season Title</h3>
-                            <p id="detailSeasonDates" class="text-sm text-black/70 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-medium"></p>
+                            <span class="zine-label text-black/60 dark:text-zinc-400 midnight:text-[#94a3b8]">Current Season</span>
+                            <h3 id="detailSeasonTitle" class="font-display font-black uppercase tracking-tight mt-1 text-2xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Season Title</h3>
+                            <p id="detailSeasonDates" class="text-sm text-black/70 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-mono font-bold"></p>
 
                             <div class="mt-6">
-                                <div class="flex justify-between text-xs font-extrabold text-black/70 dark:text-zinc-400 midnight:text-[#94a3b8] mb-2 uppercase tracking-wider">
+                                <div class="flex justify-between text-xs font-mono font-extrabold text-black/70 dark:text-zinc-400 midnight:text-[#94a3b8] mb-2 uppercase tracking-wider">
                                     <span>Season Progress</span>
                                     <span id="detailSeasonProgress" class="font-mono">0%</span>
                                 </div>
-                                <div class="w-full bg-white/50 dark:bg-zinc-700 midnight:bg-[#334155] h-4 border-2 border-black dark:border-white midnight:border-[#475569] overflow-hidden">
-                                    <div id="detailSeasonProgressBar" class="bg-black dark:bg-white midnight:bg-[#fbbf24] h-full transition-all duration-500" style="width: 0%"></div>
+                                <div class="w-full bg-white/50 dark:bg-zinc-700 midnight:bg-[#334155] h-4 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] overflow-hidden shadow-brutal-sm">
+                                    <div id="detailSeasonProgressBar" class="bg-ink dark:bg-zinc-100 midnight:bg-[#fbbf24] h-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
-                                <div class="flex justify-between text-[10px] text-black/50 dark:text-zinc-500 midnight:text-[#64748b] mt-1 font-mono">
+                                <div class="flex justify-between text-[10px] text-black/50 dark:text-zinc-500 midnight:text-[#64748b] mt-1 font-mono font-bold">
                                     <span id="detailSeasonStart">Start</span>
                                     <span id="detailSeasonEnd">End</span>
                                 </div>
@@ -279,79 +300,84 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
+                        <div class="relative bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px] paper-noise">
+                            <span class="washi washi-striped -top-3 left-8 -rotate-3"></span>
                             <div class="absolute top-4 right-4">
-                                <select id="devBacklogSelect" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-2 py-1 text-[10px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase">
+                                <select id="devBacklogSelect" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] px-2 py-1 text-[10px] font-mono font-extrabold text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] uppercase">
                                     <option value="">Load from backlog</option>
                                 </select>
                             </div>
                             <div class="z-10">
-                                <span class="text-[11px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Developer / Professional Goal</span>
-                                <h4 id="detailDevGoal" class="text-xl font-extrabold mt-2 uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">No goal set</h4>
+                                <span class="zine-label text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Developer / Professional Goal</span>
+                                <h4 id="detailDevGoal" class="font-display font-black uppercase tracking-tight mt-2 text-xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">No goal set</h4>
                             </div>
-                            <div class="z-10 mt-6 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-2 border-black dark:border-white midnight:border-[#475569]">
-                                <span class="text-[10px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Non-Negotiable Minimum</span>
-                                <p id="detailDevMicro" class="text-sm font-bold text-black dark:text-white midnight:text-[#e2e8f0] mt-1">No micro-habit set</p>
-                                <button onclick="toggleMicroHabit('dev')" id="btnMicroDev" class="mt-3 w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Mark Complete Today</button>
+                            <div class="z-10 mt-6 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569]">
+                                <span class="zine-label text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Non-Negotiable Minimum</span>
+                                <p id="detailDevMicro" class="font-scribble text-xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] mt-1">No micro-habit set</p>
+                                <button onclick="toggleMicroHabit('dev')" id="btnMicroDev" class="press mt-3 w-full bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2">Mark Complete Today</button>
                             </div>
                         </div>
 
-                        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px]">
+                        <div class="relative bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 flex flex-col justify-between relative overflow-hidden min-h-[200px] paper-noise">
+                            <span class="washi washi-dots -top-3 right-8 rotate-2"></span>
                             <div class="absolute top-4 right-4">
-                                <select id="personalBacklogSelect" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-2 py-1 text-[10px] font-extrabold text-black dark:text-white midnight:text-[#e2e8f0] uppercase">
+                                <select id="personalBacklogSelect" class="bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] px-2 py-1 text-[10px] font-mono font-extrabold text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] uppercase">
                                     <option value="">Load from backlog</option>
                                 </select>
                             </div>
                             <div class="z-10">
-                                <span class="text-[11px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Personal / Spiritual / Hobby Goal</span>
-                                <h4 id="detailPersonalGoal" class="text-xl font-extrabold mt-2 uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">No goal set</h4>
+                                <span class="zine-label text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Personal / Spiritual / Hobby Goal</span>
+                                <h4 id="detailPersonalGoal" class="font-display font-black uppercase tracking-tight mt-2 text-xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">No goal set</h4>
                             </div>
-                            <div class="z-10 mt-6 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-2 border-black dark:border-white midnight:border-[#475569]">
-                                <span class="text-[10px] font-extrabold tracking-widest text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase">Non-Negotiable Minimum</span>
-                                <p id="detailPersonalMicro" class="text-sm font-bold text-black dark:text-white midnight:text-[#e2e8f0] mt-1">No micro-habit set</p>
-                                <button onclick="toggleMicroHabit('personal')" id="btnMicroPersonal" class="mt-3 w-full bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Mark Complete Today</button>
+                            <div class="z-10 mt-6 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-4 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569]">
+                                <span class="zine-label text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Non-Negotiable Minimum</span>
+                                <p id="detailPersonalMicro" class="font-scribble text-xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] mt-1">No micro-habit set</p>
+                                <button onclick="toggleMicroHabit('personal')" id="btnMicroPersonal" class="press mt-3 w-full bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] text-xs font-extrabold uppercase tracking-wider py-2">Mark Complete Today</button>
                             </div>
                         </div>
                     </div>
 
-                    <div id="dailyEnergyLogSection" class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 hidden">
-                        <div class="flex justify-between items-center mb-6">
+                    <div id="dailyEnergyLogSection" class="relative bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 hidden paper-noise">
+                        <span class="washi washi-solid-mint -top-3 left-12 -rotate-2"></span>
+                        <div class="flex justify-between items-center mb-6 flex-wrap gap-3">
                             <div>
-                                <h3 class="text-lg font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Daily Energy Log</h3>
-                                <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-medium">Log tasks by your current energy level.</p>
+                                <h3 class="font-display font-black uppercase tracking-tight text-xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Daily Energy <em class="zine-heading-italic text-volt dark:text-[#4dd8ff] midnight:text-[#7dd3fc] not-italic">Log</em></h3>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] mt-1 font-mono font-bold uppercase tracking-wider">Log tasks by your current energy level.</p>
                             </div>
-                            <div class="flex items-center gap-0 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-1 border-2 border-black dark:border-white midnight:border-[#475569]">
-                                <button onclick="setEnergyMode('production')" id="btnProduction" class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider transition bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm">High-Energy Production</button>
-                                <button onclick="setEnergyMode('consumption')" id="btnConsumption" class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider transition text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0]">Low-Energy Consumption</button>
+                            <div class="flex items-center gap-0 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] p-1 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569]">
+                                <button onclick="setEnergyMode('production')" id="btnProduction" class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider transition bg-canary dark:bg-canary midnight:bg-[#fbbf24] text-black border-2 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm">High-Energy Production</button>
+                                <button onclick="setEnergyMode('consumption')" id="btnConsumption" class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider transition text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-ink dark:hover:text-white midnight:hover:text-[#e2e8f0]">Low-Energy Consumption</button>
                             </div>
                         </div>
                         <div class="flex gap-0 mb-4">
-                            <input type="text" id="dailyLogInput" placeholder="What are you working on right now?" class="flex-1 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-medium">
-                            <button onclick="addDailyLog()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Log</button>
+                            <input type="text" id="dailyLogInput" placeholder="What are you working on right now?" class="flex-1 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-4 py-2 text-sm focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-medium">
+                            <button onclick="addDailyLog()" class="press bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] px-4 py-2 text-xs font-extrabold uppercase tracking-wider">Log</button>
                         </div>
                         <div id="dailyLogList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <button onclick="closeSeasonDetail()" class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] text-xs font-extrabold uppercase tracking-wider px-4 py-2 transition">Back to Seasons</button>
-                        <button onclick="completeCurrentSeason()" class="bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">Complete Season</button>
+                        <button onclick="closeSeasonDetail()" class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] hover:text-ink dark:hover:text-white midnight:hover:text-[#e2e8f0] text-xs font-mono font-bold uppercase tracking-wider px-4 py-2 transition">&larr; Back to Seasons</button>
+                        <button onclick="completeCurrentSeason()" class="press bg-mint dark:bg-mint midnight:bg-[#6ee7b7] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider">Complete Season</button>
                     </div>
                 </div>
             </section>
 
             <section id="tab-calendar" class="tab-content hidden space-y-6">
-                <div>
-                    <h2 class="text-2xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Activity & Consistency</h2>
-                    <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-sm mt-1 font-medium">Track systemic metrics and running loops directly.</p>
+                <div class="relative">
+                    <p class="zine-label mb-1 text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Loops &amp; Streaks</p>
+                    <h2 class="font-display font-black uppercase tracking-tight text-3xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Activity &amp; <em class="zine-heading-italic text-punch dark:text-[#ff7ab9] midnight:text-[#c4b5fd] not-italic">Consistency</em></h2>
+                    <p class="font-scribble text-xl text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] -rotate-1 mt-0.5">no missed days, no excuses</p>
                 </div>
 
-                <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col gap-4">
+                <div class="relative bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 flex flex-col gap-4 paper-noise">
+                    <span class="washi washi-solid-blue -top-3 left-10 -rotate-2"></span>
                     <div class="flex justify-between items-center flex-wrap gap-2">
                         <div>
-                            <h3 class="text-base font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Focus Matrix Progression</h3>
-                            <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-xs mt-0.5 font-medium">Running time contributions over the year.</p>
+                            <h3 class="font-display font-black uppercase tracking-tight text-base text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Focus Matrix Progression</h3>
+                            <p class="text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] text-xs mt-0.5 font-mono font-bold uppercase tracking-wider">Running time contributions over the year.</p>
                         </div>
-                        <div class="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] px-3 py-1.5 border-2 border-black dark:border-white midnight:border-[#475569] font-bold">
+                        <div class="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] px-3 py-1.5 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] font-mono font-bold">
                             <span class="uppercase tracking-wider text-[10px]">Less</span>
                             <div class="w-3 h-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600"></div>
                             <div class="w-3 h-3 bg-zinc-300 dark:bg-zinc-600 border border-zinc-400 dark:border-zinc-500"></div>
@@ -362,13 +388,13 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto no-scrollbar w-full border-2 border-black dark:border-white midnight:border-[#475569] p-4 bg-zinc-50 dark:bg-[#1a1a1a] midnight:bg-[#0f172a]">
+                    <div class="overflow-x-auto no-scrollbar w-full border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] p-4 bg-zinc-50 dark:bg-[#1a1a1a] midnight:bg-[#0f172a]">
                         <div class="min-w-[760px] flex gap-2">
-                            <div class="grid grid-rows-7 gap-1 text-[10px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-extrabold uppercase pr-2 justify-center pt-5">
+                            <div class="grid grid-rows-7 gap-1 text-[10px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-mono font-extrabold uppercase pr-2 justify-center pt-5">
                                 <div></div><div>Mon</div><div></div><div>Wed</div><div></div><div>Fri</div><div></div>
                             </div>
                             <div class="flex-1 flex flex-col gap-1">
-                                <div id="heatmapMonthsHeader" class="flex text-[10px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-extrabold uppercase tracking-wider h-4 relative"></div>
+                                <div id="heatmapMonthsHeader" class="flex text-[10px] text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] font-mono font-extrabold uppercase tracking-wider h-4 relative"></div>
                                 <div id="heatmapGrid" class="grid grid-flow-col grid-rows-7 gap-1"></div>
                             </div>
                         </div>
@@ -377,15 +403,17 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-12 flex flex-col gap-6">
-                        <div class="flex justify-between items-center bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm p-5">
-                            <h3 id="calendarMonthYear" class="text-base font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Month Year</h3>
+                        <div class="relative flex justify-between items-center bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-5 paper-noise">
+                            <span class="washi washi-solid-lemon -top-3 left-16 -rotate-2"></span>
+                            <h3 id="calendarMonthYear" class="font-display font-black uppercase tracking-tight text-base text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Month Year</h3>
                             <div class="flex gap-0">
-                                <button onclick="changeMonth(-1)" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Previous month" aria-label="Previous month"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                                <button onclick="changeMonth(1)" class="p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm text-black dark:text-white midnight:text-[#e2e8f0] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none" title="Next month" aria-label="Next month"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                                <button onclick="changeMonth(-1)" class="press p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]" title="Previous month" aria-label="Previous month"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                <button onclick="changeMonth(1)" class="press p-2 bg-zinc-100 dark:bg-[#1a1a1a] midnight:bg-[#0f172a] hover:bg-zinc-200 dark:hover:bg-[#333] midnight:hover:bg-[#334155] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]" title="Next month" aria-label="Next month"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                             </div>
                         </div>
-                        <div class="bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6">
-                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase mb-4 tracking-wider">
+                        <div class="relative bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 paper-noise">
+                            <span class="washi washi-dots -top-3 right-14 rotate-2"></span>
+                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-mono font-extrabold text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8] uppercase mb-4 tracking-wider">
                                 <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                             </div>
                             <div id="calendarGrid" class="grid grid-cols-7 gap-2"></div>
@@ -396,29 +424,35 @@
 
             <section id="tab-notes" class="tab-content hidden space-y-6">
                 <div class="flex flex-wrap items-center gap-3">
-                    <h2 class="text-2xl font-extrabold uppercase tracking-wider text-black dark:text-white midnight:text-[#e2e8f0]">Notes Workspace</h2>
+                    <div class="relative">
+                        <p class="zine-label mb-1 text-zinc-500 dark:text-zinc-400 midnight:text-[#94a3b8]">Scrapbook</p>
+                        <h2 class="font-display font-black uppercase tracking-tight text-3xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Notes <em class="zine-heading-italic text-volt dark:text-[#4dd8ff] midnight:text-[#7dd3fc] not-italic">Workspace</em></h2>
+                    </div>
                     <div class="flex items-center gap-2 ml-auto">
-                        <input type="text" id="notesSearchInput" placeholder="Search notes..." oninput="renderNotesList()" class="w-40 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-2 border-black dark:border-white midnight:border-[#475569] px-3 py-2 text-xs focus:outline-none focus:shadow-brutal text-black dark:text-white midnight:text-[#e2e8f0] font-bold uppercase tracking-wider">
-                        <button onclick="createNewNote()" class="bg-canary dark:bg-canary midnight:bg-[#fbbf24] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal-sm hover:shadow-brutal text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"><i data-lucide="file-plus" class="w-4 h-4"></i> New Entry</button>
+                        <input type="text" id="notesSearchInput" placeholder="Search notes..." oninput="renderNotesList()" class="w-40 bg-white dark:bg-[#1a1a1a] midnight:bg-[#0f172a] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] px-3 py-2 text-xs focus:outline-none focus:shadow-brutal text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] font-mono font-bold uppercase tracking-wider">
+                        <button onclick="createNewNote()" class="press bg-cyber dark:bg-canary midnight:bg-[#fbbf24] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal-sm dark:shadow-brutal-dark midnight:shadow-brutal-sm text-black dark:text-black midnight:text-[#0f172a] px-4 py-2.5 text-xs font-extrabold uppercase tracking-wider flex items-center gap-2"><i data-lucide="file-plus" class="w-4 h-4"></i> New Entry</button>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-16rem)]">
-                    <div class="lg:col-span-4 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-4 flex flex-col overflow-hidden">
+                    <div class="relative lg:col-span-4 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-4 flex flex-col overflow-hidden paper-noise">
+                        <span class="washi washi-solid-mint -top-3 left-8 -rotate-3"></span>
                         <div id="notesList" class="space-y-2 overflow-y-auto pr-1 flex-1"></div>
                     </div>
-                    <div id="noteEditor" class="hidden lg:col-span-8 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-2 border-black dark:border-white midnight:border-[#475569] shadow-brutal p-6 flex flex-col space-y-4">
-                        <input type="text" id="noteTitleInput" oninput="saveCurrentNote()" placeholder="Untitled Concept" class="bg-transparent text-xl font-extrabold uppercase tracking-wider focus:outline-none w-full text-black dark:text-white midnight:text-[#e2e8f0] border-b-2 border-black dark:border-white midnight:border-[#475569] pb-2">
-                        <div class="flex items-center gap-2 border-b-2 border-black dark:border-white midnight:border-[#475569] pb-2">
-                            <button type="button" onclick="formatNoteText('bold')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Bold"><b class="text-xs font-extrabold">B</b></button>
-                            <button type="button" onclick="formatNoteText('italic')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Italic"><i class="text-xs italic">I</i></button>
-                            <div class="w-0.5 h-5 bg-black dark:border-white midnight:border-[#475569]"></div>
-                            <button type="button" onclick="formatNoteText('ul')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Bullet List">&bull;</button>
-                            <button type="button" onclick="formatNoteText('ol')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-black dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-black dark:hover:border-white midnight:hover:border-[#475569]" title="Numbered List">1.</button>
+                    <div id="noteEditor" class="relative hidden lg:col-span-8 bg-white dark:bg-[#262626] midnight:bg-[#1e293b] border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] shadow-brutal dark:shadow-brutal-dark midnight:shadow-brutal p-6 flex flex-col space-y-4 paper-noise rule-lines">
+                        <span class="washi washi-striped -top-3 left-12 -rotate-2"></span>
+                        <input type="text" id="noteTitleInput" oninput="saveCurrentNote()" placeholder="Untitled Concept" class="bg-transparent font-display font-black uppercase tracking-tight text-xl focus:outline-none w-full text-ink dark:text-zinc-100 midnight:text-[#e2e8f0] border-b-3 border-ink dark:border-zinc-200 midnight:border-[#475569] pb-2">
+                        <div class="flex items-center gap-2 border-b-3 border-ink dark:border-zinc-200 midnight:border-[#475569] pb-2">
+                            <button type="button" onclick="formatNoteText('bold')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-ink dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-ink dark:hover:border-zinc-200 midnight:hover:border-[#475569]" title="Bold"><b class="text-xs font-extrabold">B</b></button>
+                            <button type="button" onclick="formatNoteText('italic')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-ink dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-ink dark:hover:border-zinc-200 midnight:hover:border-[#475569]" title="Italic"><i class="text-xs italic">I</i></button>
+                            <div class="w-0.5 h-5 bg-ink dark:bg-zinc-200 midnight:border-[#475569]"></div>
+                            <button type="button" onclick="formatNoteText('ul')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-ink dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-ink dark:hover:border-zinc-200 midnight:hover:border-[#475569]" title="Bullet List">&bull;</button>
+                            <button type="button" onclick="formatNoteText('ol')" class="p-1.5 hover:bg-zinc-100 dark:hover:bg-[#1a1a1a] midnight:hover:bg-[#0f172a] text-zinc-600 dark:text-zinc-300 midnight:text-[#94a3b8] hover:text-ink dark:hover:text-white midnight:hover:text-[#e2e8f0] transition border border-transparent hover:border-ink dark:hover:border-zinc-200 midnight:hover:border-[#475569]" title="Numbered List">1.</button>
                         </div>
-                        <div id="noteBodyInput" contenteditable="true" oninput="saveCurrentNote()" placeholder="Start writing down your ideas..." class="w-full flex-1 bg-transparent text-zinc-700 dark:text-zinc-300 midnight:text-[#94a3b8] focus:outline-none resize-none leading-relaxed text-sm p-3 border-2 border-black dark:border-white midnight:border-[#475569] min-h-[200px] overflow-y-auto font-medium"></div>
+                        <div id="noteBodyInput" contenteditable="true" oninput="saveCurrentNote()" placeholder="Start writing down your ideas..." class="w-full flex-1 bg-transparent text-zinc-700 dark:text-zinc-300 midnight:text-[#94a3b8] focus:outline-none resize-none leading-relaxed text-sm p-3 border-3 border-ink dark:border-zinc-200 midnight:border-[#475569] min-h-[200px] overflow-y-auto font-medium"></div>
                     </div>
-                    <div id="noNotePlaceholder" class="lg:col-span-8 border-2 border-dashed border-zinc-300 dark:border-zinc-600 midnight:border-[#475569] flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]">
-                        <p class="text-sm font-extrabold uppercase tracking-wider">Select an item or write a new note map.</p>
+                    <div id="noNotePlaceholder" class="lg:col-span-8 border-3 border-dashed border-zinc-300 dark:border-zinc-600 midnight:border-[#475569] flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 midnight:text-[#94a3b8]">
+                        <span class="sticker sticker-orange w-12 h-12 text-lg mb-3">★</span>
+                        <p class="font-scribble text-2xl text-ink dark:text-zinc-100 midnight:text-[#e2e8f0]">Pick a note or write a new one.</p>
                     </div>
                 </div>
             </section>
