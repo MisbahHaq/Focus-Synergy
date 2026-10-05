@@ -1,6 +1,6 @@
 import { StorageAdapter } from './StorageAdapter.js';
 import { 
-    collection, addDoc, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, onSnapshot, query, orderBy, runTransaction, enableIndexedDbPersistence
+    collection, addDoc, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, onSnapshot, query, orderBy, runTransaction, writeBatch, enableIndexedDbPersistence
 } from "firebase/firestore";
 
 const RETRY_MAX = 3;
@@ -159,11 +159,29 @@ export class FirebaseAdapter extends StorageAdapter {
                 title: noteData.title || '',
                 body: noteData.body || '',
                 updatedAt: Date.now(),
-                ...(noteData.createdAt ? { createdAt: noteData.createdAt } : { createdAt: Date.now() })
+                ...(noteData.createdAt ? { createdAt: noteData.createdAt } : { createdAt: Date.now() }),
+                ...(Number.isFinite(noteData.order) ? { order: noteData.order } : {}),
+                ...(noteData.userId ? { userId: noteData.userId } : {})
             };
             await setDoc(ref, payload, { merge: true });
             return { id: noteId, ...payload };
         }, 'upsertNote');
+    }
+
+    /**
+     * Persists explicit note ranks. Accepts `[{ id, order }]` entries so a
+     * partial update (e.g. a single drag) does not have to resend every note.
+     */
+    async reorderNotes(updates) {
+        if (!Array.isArray(updates) || updates.length === 0) return [];
+        return retryWithBackoff(async () => {
+            const batch = writeBatch(this.db);
+            updates.forEach(({ id, order }) => {
+                batch.update(this._getUserDocRef('notes', id), { order });
+            });
+            await batch.commit();
+            return updates;
+        }, 'reorderNotes');
     }
 
     async deleteNote(id) {

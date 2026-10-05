@@ -31,6 +31,12 @@ export class StorageAdapter {
     // --- Notes ---
     async getNotes() { throw new Error("getNotes() not implemented"); }
     async upsertNote(noteData) { throw new Error("upsertNote() not implemented"); }
+    /**
+     * Persists manual note ordering. Accepts only the entries whose rank changed,
+     * so a single drag does not have to rewrite every note.
+     * @param {Array<{id: string, order: number}>} updates
+     */
+    async reorderNotes(updates) { throw new Error("reorderNotes() not implemented"); }
     async deleteNote(id) { throw new Error("deleteNote() not implemented"); }
 
     // --- Seasons ---

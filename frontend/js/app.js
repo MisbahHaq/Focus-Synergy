@@ -10,9 +10,12 @@ import { createStorageAdapter } from './storage/index.js';
  import { checkBreakReminder, resetTimerNotificationState } from './modules/notifications.js';
  import { calculateSeasonRetrospective, renderRetrospectiveModal } from './modules/retrospective.js';
  import { startOnboardingTour } from './modules/onboarding.js';
+import { attachNoteDragHandle, isNotesDragging } from './modules/notes-drag.js';
+
  import { isTauriEnv } from './utils/tauri.js';
  import { escapeHtml } from './utils/sanitize.js';
  import { formatTimeHMS, formatHoursAndMins, formatDateRange, getLocalDateStr } from './utils/format.js';
+import { sortNotesByOrder, nextNoteOrder, ensureNoteOrder } from './utils/notes-order.js';
  import { showToast, playSound } from './utils/ui.js';
  import { toggleTheme, applySavedTheme, applyTheme, updateThemeIcon } from './utils/theme.js';
 import { createStore, subscribe, showError, showConfirm } from './utils/state.js';
@@ -195,10 +198,13 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  });
  unsubscribers.push(unsubLogs);
  // 3. Subscribe to Notes
- const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
- window.state.notes = data.filter(n => n.userId === user.uid);
- scheduleRender('notes', renderNotesList);
- refreshQuickNotesSidebar();
+const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
+  // Notes are already scoped to the user by collection path, so a missing
+  // userId is treated as ours; only reject ids that name another user.
+  window.state.notes = data.filter(n => !n.userId || n.userId === user.uid);
+  ensureNoteOrder(window.state.notes, window.storageAdapter);
+  scheduleRender('notes', renderNotesList);
+  refreshQuickNotesSidebar();
  });
  unsubscribers.push(unsubNotes);
 
@@ -637,13 +643,14 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  }
  };
 
- window.createNewNote = async function() {
+window.createNewNote = async function() {
  if (!window.storageAdapter) return;
  const defaultNote = {
- title: 'Untitled Concept',
- body: '',
- updatedAt: new Date().toISOString(),
- userId: window.state.user.uid
+  title: 'Untitled Concept',
+  body: '',
+  updatedAt: new Date().toISOString(),
+  userId: window.state.user.uid,
+  order: nextNoteOrder(window.state.notes)
  };
  try {
  const created = await window.storageAdapter.upsertNote(defaultNote);
@@ -1571,6 +1578,13 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  createIcons({icons});
  }
 
+ function noteUpdatedMillis(note) {
+ const value = note.updatedAt;
+ if(typeof value === 'number') return value;
+ const parsed = Date.parse(value);
+ return Number.isNaN(parsed) ? 0 : parsed;
+ }
+
  function refreshQuickNotesSidebar() {
  const sidebar = document.getElementById('quickNotesSidebar');
  if (!sidebar) return;
@@ -1578,7 +1592,10 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  const subtext = document.getElementById('quickNotesSubtext');
  if (!preview || !subtext) return;
 
- const recent = window.state.notes.slice(-3).reverse();
+ // Most recently edited, independent of the user's manual list order.
+ const recent = [...window.state.notes]
+ .sort((a, b) => noteUpdatedMillis(b) - noteUpdatedMillis(a))
+ .slice(0, 3);
  if (recent.length === 0) {
  preview.classList.add('hidden');
  subtext.innerText = 'Capture ideas as they come.';
@@ -1847,38 +1864,49 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
  /* NOTES LIST SELECTION ARCHITECTURE */
  window.renderNotesList = renderNotesList;
- function renderNotesList() {
- const container = document.getElementById('notesList');
- if(!container) return;
- container.innerHTML = '';
+function renderNotesList() {
+  const container = document.getElementById('notesList');
+  if(!container) return;
 
- const query = (document.getElementById('notesSearchInput')?.value || '').toLowerCase().trim();
- const filteredNotes = query
- ? window.state.notes.filter(n => (n.title || '').toLowerCase().includes(query) || (n.body || '').toLowerCase().includes(query))
- : window.state.notes;
+  // Rebuilding the list mid-drag would yank the card out from under the
+  // pointer. The drag module owns the list until the pointer is released.
+  if(isNotesDragging()) return;
 
- if(filteredNotes.length === 0) {
- const msg = query ? `No notes matching "${query}".` : 'No notes yet.';
- container.innerHTML = `<div class="text-xs text-zinc-400 dark:text-zinc-500 font-extrabold uppercase tracking-wider text-center py-8">${msg}</div>`;
- return;
- }
+  container.innerHTML = '';
+
+  const query = (document.getElementById('notesSearchInput')?.value || '').toLowerCase().trim();
+  const orderedNotes = sortNotesByOrder(window.state.notes);
+  const filteredNotes = query
+  ? orderedNotes.filter(n => (n.title || '').toLowerCase().includes(query) || (n.body || '').toLowerCase().includes(query))
+  : orderedNotes;
+
+  if(filteredNotes.length === 0) {
+  const msg = query ? `No notes matching "${query}".` : 'No notes yet.';
+  container.innerHTML = `<div class="text-xs text-zinc-400 dark:text-zinc-500 font-extrabold uppercase tracking-wider text-center py-8">${escapeHtml(msg)}</div>`;
+  return;
+  }
 
  filteredNotes.forEach(note => {
- const isSelected = window.state.selectedNoteId === note.id;
- const card = document.createElement('div');
- card.className = `p-4 border-2 text-left cursor-pointer transition relative ${isSelected ? 'bg-canary dark:bg-canary border-black dark:border-white shadow-brutal-sm' : 'bg-zinc-50/50 dark:bg-[#1a1a1a]/50 border-zinc-200 dark:border-white hover:border-black dark:hover:border-zinc-300'}`;
- card.onclick = () => openNoteEditor(note.id);
+  const isSelected = window.state.selectedNoteId === note.id;
+  const card = document.createElement('div');
+  card.className = `p-4 border-2 text-left cursor-pointer transition relative ${isSelected ? 'bg-canary dark:bg-canary border-black dark:border-white shadow-brutal-sm' : 'bg-zinc-50/50 dark:bg-[#1a1a1a]/50 border-zinc-200 dark:border-white hover:border-black dark:hover:border-zinc-300'}`;
+  card.onclick = () => openNoteEditor(note.id);
+  card.dataset.noteId = note.id;
 
  card.innerHTML = `
  <div class="pr-6">
- <h4 class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white truncate">${escapeHtml(note.title) || 'Untitled Concept'}</h4>
- <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-1 font-medium">${note.body ? escapeHtml(note.body.replace(/<[^>]*>/g, '')) : 'Empty note content...'}</p>
- </div>
- <button onclick="deleteNote('${note.id}', event)" class="absolute top-4 right-4 p-1 hover:bg-red-100 dark:hover:bg-red-900/30 border border-transparent hover:border-red-500 text-zinc-300 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 rounded transition">
- <i data-lucide="x" class="w-3.5 h-3.5"></i>
- </button>
- `;
- container.appendChild(card);
+   <h4 class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white truncate">${escapeHtml(note.title) || 'Untitled Concept'}</h4>
+   <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-1 font-medium">${note.body ? escapeHtml(note.body.replace(/<[^>]*>/g, '')) : 'Empty note content...'}</p>
+   </div>
+   <button onclick="deleteNote('${note.id}', event)" class="absolute top-4 right-4 p-1 hover:bg-red-100 dark:hover:bg-red-900/30 border border-transparent hover:border-red-500 text-zinc-300 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 rounded transition">
+   <i data-lucide="x" class="w-3.5 h-3.5"></i>
+   </button>
+  `;
+
+  // Reordering is disabled while a search filter is active, because the visible
+  // subset no longer lines up with the stored sequence.
+  if(!query) attachNoteDragHandle(card);
+  container.appendChild(card);
  });
  createIcons({icons});
  }
