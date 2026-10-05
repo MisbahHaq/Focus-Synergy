@@ -8,3 +8,7 @@ package-lock.json
 src-tauri/target/
 src-tauri/gen/
 
+# Tauri updater signing keys. The public half lives in tauri.conf.json;
+# the private key must never be committed.
+.tauri/
+

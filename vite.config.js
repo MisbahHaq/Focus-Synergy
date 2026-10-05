@@ -22,7 +22,9 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: true,
+    // Tauri owns the window and requires the exact devUrl port.
+    strictPort: true,
+    open: false,
     proxy: {
       '/__/auth': {
         target: 'https://timetable-a3aa5.firebaseapp.com',

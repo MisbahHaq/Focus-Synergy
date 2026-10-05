@@ -195,6 +195,23 @@ body {
     transform: rotate(5deg);
 }
 
+/* ===== NOTES LIST REORDERING ===== */
+.note-drag-handle {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.note-drag-active {
+    cursor: grabbing;
+}
+
+.note-drag-active .note-dragging {
+    z-index: 20;
+    box-shadow: 0 12px 24px -8px rgb(0 0 0 / 0.35);
+    transition: none;
+}
+
 /* ===== COMPONENTS ===== */
 @layer components {
     .nb-card {
@@ -321,6 +338,18 @@ body {
     100% { transform: rotate(-8deg) scale(1); }
 }
 .sticker-pop { animation: sticker-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+/* Notes: manual drag-to-reorder */
+.note-drag-handle { -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
+.note-dragging {
+    z-index: 30;
+    position: relative;
+    cursor: grabbing;
+    box-shadow: 6px 6px 0px 0px #111111;
+    transition: none;
+    opacity: 0.95;
+}
+.note-drag-active { user-select: none; -webkit-user-select: none; cursor: grabbing; }
 
 .heatmap-cell, .calendar-cell { position: relative; }
 .heatmap-cell:hover::after, .calendar-cell:hover::after {
