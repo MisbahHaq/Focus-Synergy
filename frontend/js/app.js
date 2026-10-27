@@ -87,24 +87,131 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  console.error('[UNHANDLED-REJECTION]', e.reason);
  });
 
- window.checkForUpdates = async function() {
- if (!isTauriEnv() || !window.__TAURI__?.updater?.checkUpdate) {
- window.showToast('Update check is only available in the desktop app.', 'warning');
- return;
- }
- try {
- const { checkUpdate } = window.__TAURI__.updater;
- const update = await checkUpdate();
- if (update) {
- window.showToast(`Update available: ${update.version}. Restart to install.`, 'info');
- } else {
- window.showToast('You are on the latest version.', 'info');
- }
- } catch (e) {
- console.error('Update check failed:', e);
- window.showToast('Failed to check for updates.', 'warning');
- }
- };
+window.checkForUpdates = async function() {
+  if (!isTauriEnv() || !window.__TAURI__?.updater?.checkUpdate) {
+  window.showToast('Update check is only available in the desktop app.', 'warning');
+  return;
+  }
+  try {
+  const { checkUpdate } = window.__TAURI__.updater;
+  const update = await checkUpdate();
+  if (update) {
+  window.showToast(`Update available: ${update.version}. Restart to install.`, 'info');
+  } else {
+  window.showToast('You are on the latest version.', 'info');
+  }
+  } catch (e) {
+  console.error('Update check failed:', e);
+  window.showToast('Failed to check for updates.', 'warning');
+  }
+};
+
+/**
+ * Checks if a monthly reset is needed and performs it.
+ * Items from previous months are archived (kept for history) but hidden from dashboard.
+ * Recurring items are recreated for the new month.
+ */
+window.checkAndPerformMonthlyReset = async function() {
+  if (!window.storageAdapter || !window.state.user) return;
+
+  const now = new Date();
+  const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+  // Check if we've already processed this month
+  const lastResetKey = `lastMonthlyReset_${window.state.user.uid}`;
+  const lastReset = localStorage.getItem(lastResetKey);
+  
+  if (lastReset === currentMonthKey) return;
+
+  try {
+    // Get all items
+    const allItems = window.state.items;
+    const previousMonthItems = allItems.filter(item => item.month && item.month !== currentMonthKey);
+
+    if (previousMonthItems.length > 0) {
+      // Archive previous month items (mark as archived, keep for history)
+      for (const item of previousMonthItems) {
+        await window.storageAdapter.updateItem(item.id, { archived: true });
+      }
+
+      // Recreate recurring items for current month
+      const recurringItems = previousMonthItems.filter(item => item.recurring === true);
+      for (const item of recurringItems) {
+        const newItem = {
+          name: item.name,
+          type: item.type,
+          createdAt: now.toISOString(),
+          month: currentMonthKey,
+          recurring: true,
+          isRunning: false,
+          accumulatedSeconds: 0,
+          startedAt: null,
+          pinned: false,
+          userId: window.state.user.uid
+        };
+        await window.storageAdapter.createItem(newItem);
+      }
+
+      window.showToast(`Monthly reset complete! ${recurringItems.length} recurring item(s) restored.`, 'info');
+    }
+
+    localStorage.setItem(lastResetKey, currentMonthKey);
+  } catch (e) {
+    console.error('[MONTHLY-RESET] Failed:', e);
+  }
+};
+
+/**
+ * Manual reset: archives current month items and recreates recurring ones.
+ * History is preserved in logs.
+ */
+window.manualResetMonth = async function() {
+  if (!window.storageAdapter || !window.state.user) return;
+
+  const confirmed = await showConfirm(
+    'Reset current month? This will hide all topics and habits from the dashboard. ' +
+    'Recurring items will be restored. Your time logs and history will be preserved.'
+  );
+  if (!confirmed) return;
+
+  try {
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+    // Get current month items
+    const currentItems = window.state.items.filter(item => item.month === currentMonthKey);
+
+    // Archive current month items
+    for (const item of currentItems) {
+      await window.storageAdapter.updateItem(item.id, { archived: true });
+    }
+
+    // Recreate recurring items for current month
+    const recurringItems = currentItems.filter(item => item.recurring === true);
+    for (const item of recurringItems) {
+      const newItem = {
+        name: item.name,
+        type: item.type,
+        createdAt: now.toISOString(),
+        month: currentMonthKey,
+        recurring: true,
+        isRunning: false,
+        accumulatedSeconds: 0,
+        startedAt: null,
+        pinned: false,
+        userId: window.state.user.uid
+      };
+      await window.storageAdapter.createItem(newItem);
+    }
+
+    window.state.selectedItemId = null;
+    renderDashboard();
+    window.showToast(`Month reset complete! ${recurringItems.length} recurring item(s) restored.`, 'info');
+  } catch (e) {
+    console.error('[MANUAL-RESET] Failed:', e);
+    window.showToast('Failed to reset month.', 'error');
+  }
+};
 
  window.storageAdapter = null;
  let unsubscribers = [];
@@ -125,17 +232,35 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
 
  window.showToast = showToast;
 
- let coreGlobalLoop = null;
+let coreGlobalLoop = null;
+  let monthlyResetCheckInterval = null;
 
- // Immediately force recalculation on visibility change & window focus to eliminate timer drift
- window.addEventListener('visibilitychange', () => {
- if (document.visibilityState === 'visible') {
- processingEngineCycle();
- }
- });
- window.addEventListener('focus', () => {
- processingEngineCycle();
- });
+  // Immediately force recalculation on visibility change & window focus to eliminate timer drift
+  window.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+  processingEngineCycle();
+  window.checkAndPerformMonthlyReset().catch(e => console.error('[MONTHLY-RESET] visibility check failed:', e));
+  }
+  });
+  window.addEventListener('focus', () => {
+  processingEngineCycle();
+  window.checkAndPerformMonthlyReset().catch(e => console.error('[MONTHLY-RESET] focus check failed:', e));
+  });
+
+  // Daily check for monthly reset (runs every hour to catch month boundaries)
+  function startMonthlyResetScheduler() {
+  if (monthlyResetCheckInterval) return;
+  monthlyResetCheckInterval = setInterval(() => {
+  window.checkAndPerformMonthlyReset().catch(e => console.error('[MONTHLY-RESET] scheduler check failed:', e));
+  }, 60 * 60 * 1000); // Every hour
+  }
+
+  function stopMonthlyResetScheduler() {
+  if (monthlyResetCheckInterval) {
+  clearInterval(monthlyResetCheckInterval);
+  monthlyResetCheckInterval = null;
+  }
+  }
 
  async function bootWorkspaceForUser(user, animate = false) {
  try {
@@ -173,22 +298,28 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  });
  }
 
- // 1. Subscribe to Items
- const unsubItems = window.storageAdapter.subscribe('items', (data) => {
- const userItems = data.filter(item => item.userId === user.uid);
- window.state.items = userItems.map(item => ({
- ...item,
- isRunning: item.isRunning || false,
- accumulatedSeconds: item.accumulatedSeconds || 0
- }));
- 
- checkStaleTimersOnLoad().catch(e => console.error('Stale timer check failed:', e));
+// 1. Subscribe to Items
+  const unsubItems = window.storageAdapter.subscribe('items', (data) => {
+  const userItems = data.filter(item => item.userId === user.uid);
+  window.state.items = userItems.map(item => ({
+  ...item,
+  isRunning: item.isRunning || false,
+  accumulatedSeconds: item.accumulatedSeconds || 0,
+  archived: item.archived || false,
+  month: item.month || null,
+  recurring: item.recurring || false
+  }));
+  
+  checkStaleTimersOnLoad().catch(e => console.error('Stale timer check failed:', e));
 
- scheduleRender('dashboard', renderDashboard);
- scheduleRender('analytics', renderAnalyticsViews);
- scheduleRender('calendar', renderCalendarViews);
- });
- unsubscribers.push(unsubItems);
+  // Check for monthly reset after items are loaded
+  window.checkAndPerformMonthlyReset().catch(e => console.error('Monthly reset check failed:', e));
+
+  scheduleRender('dashboard', renderDashboard);
+  scheduleRender('analytics', renderAnalyticsViews);
+  scheduleRender('calendar', renderCalendarViews);
+  });
+  unsubscribers.push(unsubItems);
  // 2. Subscribe to Logs
  const unsubLogs = window.storageAdapter.subscribe('logs', (data) => {
  window.state.logs = data.filter(log => log.userId === user.uid);
@@ -242,10 +373,13 @@ const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
  window.showToast("Timer moved to another device.", "warning");
  }
  });
- unsubscribers.push(unsubActiveTimer);
- if (coreGlobalLoop) clearInterval(coreGlobalLoop);
- coreGlobalLoop = setInterval(processingEngineCycle, 1000);
- // Show main app immediately - don't block on animation.
+unsubscribers.push(unsubActiveTimer);
+  if (coreGlobalLoop) clearInterval(coreGlobalLoop);
+  coreGlobalLoop = setInterval(processingEngineCycle, 1000);
+  startMonthlyResetScheduler();
+  // Run an immediate monthly reset check on boot
+  window.checkAndPerformMonthlyReset().catch(e => console.error('[MONTHLY-RESET] boot check failed:', e));
+  // Show main app immediately - don't block on animation.
  // Kick off a quick non-blocking cross-fade so the transition feels smooth
  // without delaying data binding or subscriptions.
  if (animate) {
@@ -347,28 +481,33 @@ const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
  }
  });
 
- window.register = async function() {
- const name = document.getElementById('registerName').value;
- const email = document.getElementById('registerEmail').value;
- const password = document.getElementById('registerPassword').value;
- 
- try {
- setAuthLoading(true);
- window._pendingLoginAnimation = true;
- const cred = await authWithTimeout(createUserWithEmailAndPassword(getAuthInstance(), email, password));
- await authWithTimeout(updateProfile(cred.user, { displayName: name }));
- await authWithTimeout(setDoc(doc(getFirestoreDb(), 'users', cred.user.uid), { name: name, email: email }));
- document.getElementById('registerName').value = '';
- document.getElementById('registerEmail').value = '';
- document.getElementById('registerPassword').value = '';
- document.getElementById('registerError').innerText = '';
- setAuthLoading(false);
- } catch (e) {
- document.getElementById('registerError').innerText = e.message;
- window._pendingLoginAnimation = false;
- setAuthLoading(false);
- }
- };
+window.register = async function() {
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+  
+  if (!getAuthInstance() || !getFirestoreDb()) {
+  document.getElementById('registerError').innerText = 'Firebase is not configured. Please check your environment settings.';
+  return;
+  }
+  
+  try {
+  setAuthLoading(true);
+  window._pendingLoginAnimation = true;
+  const cred = await authWithTimeout(createUserWithEmailAndPassword(getAuthInstance(), email, password));
+  await authWithTimeout(updateProfile(cred.user, { displayName: name }));
+  await authWithTimeout(setDoc(doc(getFirestoreDb(), 'users', cred.user.uid), { name: name, email: email }));
+  document.getElementById('registerName').value = '';
+  document.getElementById('registerEmail').value = '';
+  document.getElementById('registerPassword').value = '';
+  document.getElementById('registerError').innerText = '';
+  setAuthLoading(false);
+  } catch (e) {
+  document.getElementById('registerError').innerText = e.message;
+  window._pendingLoginAnimation = false;
+  setAuthLoading(false);
+  }
+};
 
  function setAuthLoading(loading) {
  const map = [
@@ -408,25 +547,30 @@ const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
  ]);
  }
 
- window.login = async function() {
- const email = document.getElementById('loginEmail').value;
- const password = document.getElementById('loginPassword').value;
- 
- try {
- setAuthLoading(true);
- window._pendingLoginAnimation = true;
- await authWithTimeout(signInWithEmailAndPassword(getAuthInstance(), email, password));
- document.getElementById('loginEmail').value = '';
- document.getElementById('loginPassword').value = '';
- document.getElementById('loginError').innerText = '';
- setAuthLoading(false);
- } catch (e) {
- console.error('[LOGIN] signInWithEmailAndPassword failed:', e);
- document.getElementById('loginError').innerText = friendlyEmailAuthError(e);
- window._pendingLoginAnimation = false;
- setAuthLoading(false);
- }
- };
+window.login = async function() {
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  if (!getAuthInstance()) {
+  document.getElementById('loginError').innerText = 'Firebase is not configured. Please check your environment settings.';
+  return;
+  }
+  
+  try {
+  setAuthLoading(true);
+  window._pendingLoginAnimation = true;
+  await authWithTimeout(signInWithEmailAndPassword(getAuthInstance(), email, password));
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginError').innerText = '';
+  setAuthLoading(false);
+  } catch (e) {
+  console.error('[LOGIN] signInWithEmailAndPassword failed:', e);
+  document.getElementById('loginError').innerText = friendlyEmailAuthError(e);
+  window._pendingLoginAnimation = false;
+  setAuthLoading(false);
+  }
+};
 
  function friendlyEmailAuthError(e) {
  const code = e.code || '';
@@ -448,64 +592,74 @@ const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
  return e.message || 'Sign-in failed. Please try again.';
  }
 
- window.logout = async function() {
- if (coreGlobalLoop) {
- clearInterval(coreGlobalLoop);
- coreGlobalLoop = null;
- }
- unsubscribers.forEach(u => typeof u === 'function' && u());
- unsubscribers = [];
- Object.assign(window.state, {
- user: null,
- items: [],
- logs: [],
- notes: [],
- seasons: [],
- backlog: [],
- dailyLogs: [],
- habitLogs: [],
- selectedItemId: null,
- selectedNoteId: null,
- selectedSeasonId: null,
- currentCalendarDate: new Date(),
- dailyEnergyMode: 'production',
- backlogOpen: false,
- breakNotificationsEnabled: true,
- breakThresholdMinutes: 50,
- storageMode: 'cloud'
- });
- const authInst = getAuthInstance();
- if (authInst) await signOut(authInst);
- document.getElementById('loginEmail').value = '';
- document.getElementById('loginPassword').value = '';
- document.getElementById('registerName').value = '';
- document.getElementById('registerEmail').value = '';
- document.getElementById('registerPassword').value = '';
- showTab('loginTab');
- };
+window.logout = async function() {
+  const currentUser = window.state.user;
+  if (coreGlobalLoop) {
+  clearInterval(coreGlobalLoop);
+  coreGlobalLoop = null;
+  }
+  stopMonthlyResetScheduler();
+  unsubscribers.forEach(u => typeof u === 'function' && u());
+  unsubscribers = [];
+  // Clear monthly reset tracking on logout
+  if (currentUser) {
+  localStorage.removeItem(`lastMonthlyReset_${currentUser.uid}`);
+  }
+  Object.assign(window.state, {
+  user: null,
+  items: [],
+  logs: [],
+  notes: [],
+  seasons: [],
+  backlog: [],
+  dailyLogs: [],
+  habitLogs: [],
+  selectedItemId: null,
+  selectedNoteId: null,
+  selectedSeasonId: null,
+  currentCalendarDate: new Date(),
+  dailyEnergyMode: 'production',
+  backlogOpen: false,
+  breakNotificationsEnabled: true,
+  breakThresholdMinutes: 50,
+  storageMode: 'cloud'
+  });
+  const authInst = getAuthInstance();
+  if (authInst) await signOut(authInst);
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('registerName').value = '';
+  document.getElementById('registerEmail').value = '';
+  document.getElementById('registerPassword').value = '';
+  showTab('loginTab');
+};
 
- window.googleLogin = async function() {
- const provider = new GoogleAuthProvider();
- provider.setCustomParameters({ prompt: 'select_account' });
- try {
- setAuthLoading(true);
- window._pendingLoginAnimation = true;
- // Google OAuth popup/redirect flows can take >10s (account picker, consent
- // screen), so do NOT wrap them in authWithTimeout like email/password.
- if (GOOGLE_USE_REDIRECT) {
- await signInWithRedirect(getAuthInstance(), provider);
- } else {
- await signInWithPopup(getAuthInstance(), provider);
- }
- setAuthLoading(false);
- } catch (e) {
- console.error('[GOOGLE LOGIN] Failed:', e.code, e.message);
- const friendly = friendlyAuthError(e);
- document.getElementById('loginError').innerText = friendly;
- window._pendingLoginAnimation = false;
- setAuthLoading(false);
- }
- };
+window.googleLogin = async function() {
+  if (!getAuthInstance()) {
+  document.getElementById('loginError').innerText = 'Firebase is not configured. Please check your environment settings.';
+  return;
+  }
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  try {
+  setAuthLoading(true);
+  window._pendingLoginAnimation = true;
+  // Google OAuth popup/redirect flows can take >10s (account picker, consent
+  // screen), so do NOT wrap them in authWithTimeout like email/password.
+  if (GOOGLE_USE_REDIRECT) {
+  await signInWithRedirect(getAuthInstance(), provider);
+  } else {
+  await signInWithPopup(getAuthInstance(), provider);
+  }
+  setAuthLoading(false);
+  } catch (e) {
+  console.error('[GOOGLE LOGIN] Failed:', e.code, e.message);
+  const friendly = friendlyAuthError(e);
+  document.getElementById('loginError').innerText = friendly;
+  window._pendingLoginAnimation = false;
+  setAuthLoading(false);
+  }
+};
 
  function friendlyAuthError(e) {
  const code = e.code || '';
@@ -553,29 +707,36 @@ const unsubNotes = window.storageAdapter.subscribe('notes', (data) => {
  });
  }
 
- window.addItem = async function() {
- const nameInput = document.getElementById('newItemName');
- const typeInput = document.getElementById('newItemType');
- const name = nameInput.value.trim();
- if (!name || !window.storageAdapter) return;
+window.addItem = async function(recurring = false) {
+  const nameInput = document.getElementById('newItemName');
+  const typeInput = document.getElementById('newItemType');
+  const name = nameInput.value.trim();
+  if (!name || !window.storageAdapter) return;
 
- const newItem = {
- name: name,
- type: typeInput.value,
- createdAt: new Date().toISOString(),
- isRunning: false,
- accumulatedSeconds: 0,
- startedAt: null,
- userId: window.state.user.uid
- };
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const newItem = {
+    name: name,
+    type: typeInput.value,
+    createdAt: now.toISOString(),
+    month: monthKey,
+    recurring: recurring,
+    isRunning: false,
+    accumulatedSeconds: 0,
+    startedAt: null,
+    userId: window.state.user.uid
+  };
 
- try {
- await window.storageAdapter.createItem(newItem);
- nameInput.value = '';
- } catch(e) {
- console.error("Storage error creating item", e);
- }
- };
+  try {
+    await window.storageAdapter.createItem(newItem);
+    nameInput.value = '';
+    // Reset recurring checkbox
+    const recurringCheckbox = document.getElementById('newItemRecurring');
+    if (recurringCheckbox) recurringCheckbox.checked = false;
+  } catch(e) {
+    console.error("Storage error creating item", e);
+  }
+};
 
  window.deleteItem = async function(id, event) {
  if (event) event.stopPropagation();
@@ -1022,12 +1183,20 @@ window.createNewNote = async function() {
  </button>
  </div>
 
- <div class="space-y-1.5 border-t-2 border-black dark:border-white pt-3">
- <label class="font-extrabold text-black dark:text-white uppercase tracking-widest">Updates</label>
- <button onclick="checkForUpdates()" class="w-full py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal font-extrabold uppercase tracking-wider text-xs text-black dark:text-white transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-2">
- <i data-lucide="refresh-cw" class="w-4 h-4"></i> Check for Updates
- </button>
- </div>
+<div class="space-y-1.5 border-t-2 border-black dark:border-white pt-3">
+  <label class="font-extrabold text-black dark:text-white uppercase tracking-widest">Updates</label>
+  <button onclick="checkForUpdates()" class="w-full py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal font-extrabold uppercase tracking-wider text-xs text-black dark:text-white transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-2">
+  <i data-lucide="refresh-cw" class="w-4 h-4"></i> Check for Updates
+  </button>
+</div>
+
+<div class="space-y-1.5 border-t-2 border-black dark:border-white pt-3">
+  <label class="font-extrabold text-black dark:text-white uppercase tracking-widest">Monthly Reset</label>
+  <button onclick="manualResetMonth()" class="w-full py-2.5 bg-coral dark:bg-coral border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal font-extrabold uppercase tracking-wider text-xs text-black dark:text-white transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-2">
+  <i data-lucide="rotate-cw" class="w-4 h-4"></i> Reset Current Month
+  </button>
+  <p class="text-zinc-400 text-[11px] font-mono mt-1.5">Hide current month topics/habits. Recurring items restored. History preserved.</p>
+</div>
  </div>
 
  <div class="flex justify-end pt-2 border-t-2 border-black dark:border-white">
@@ -1483,100 +1652,103 @@ window.createNewNote = async function() {
  renderDashboard();
  };
 
- function renderDashboard() {
- const container = document.getElementById('unifiedItemsList');
- if(!container) return;
- container.innerHTML = '';
+function renderDashboard() {
+  const container = document.getElementById('unifiedItemsList');
+  if(!container) return;
+  container.innerHTML = '';
 
- let totalTopicSec = 0;
- let totalHabitSec = 0;
+  const now = new Date();
+  const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
- const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  // Only show items from current month
+  const currentItems = window.state.items.filter(item => item.month === currentMonthKey);
 
- window.state.items.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+  let totalTopicSec = 0;
+  let totalHabitSec = 0;
 
- window.state.items.forEach(item => {
- const historicalSeconds = window.state.logs
- .filter(l => l.itemId === item.id && new Date(l.timestamp) >= monthStart)
- .reduce((acc, curr) => acc + curr.seconds, 0);
- if (item.type === 'topic') totalTopicSec += historicalSeconds;
- if (item.type === 'habit') totalHabitSec += historicalSeconds;
- });
+  currentItems.forEach(item => {
+    const historicalSeconds = window.state.logs
+    .filter(l => l.itemId === item.id && new Date(l.timestamp) >= monthStart)
+    .reduce((acc, curr) => acc + curr.seconds, 0);
+    if (item.type === 'topic') totalTopicSec += historicalSeconds;
+    if (item.type === 'habit') totalHabitSec += historicalSeconds;
+  });
 
- const metricsGrid = document.getElementById('highlightsGrid');
- if(metricsGrid) {
- metricsGrid.innerHTML = `
- <div class="bg-white dark:bg-[#262626] border-2 border-black dark:border-white shadow-brutal-sm p-4 flex flex-col justify-between">
- <div>
- <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400">Topics This Month</span>
- <h5 class="text-xl font-mono font-bold text-black dark:text-white mt-1 tabular-nums">${formatHoursAndMins(totalTopicSec)}</h5>
- </div>
- <div class="w-7 h-7 bg-lavender dark:bg-lavender border-2 border-black dark:border-white text-black flex items-center justify-center mt-3"><i data-lucide="code-2" class="w-4 h-4"></i></div>
- </div>
- <div class="bg-white dark:bg-[#262626] border-2 border-black dark:border-white shadow-brutal-sm p-4 flex flex-col justify-between">
- <div>
- <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400">Habits This Month</span>
- <h5 class="text-xl font-mono font-bold text-black dark:text-white mt-1 tabular-nums">${formatHoursAndMins(totalHabitSec)}</h5>
- </div>
- <div class="w-7 h-7 bg-mint dark:bg-mint border-2 border-black dark:border-white text-black flex items-center justify-center mt-3"><i data-lucide="activity" class="w-4 h-4"></i></div>
- </div>
- <div class="bg-white dark:bg-[#262626] border-2 border-black dark:border-white shadow-brutal-sm p-4 flex flex-col justify-between">
- <div>
- <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400">This Month Total</span>
- <h5 class="text-xl font-mono font-bold text-black dark:text-white mt-1 tabular-nums">${formatHoursAndMins(totalTopicSec + totalHabitSec)}</h5>
- </div>
- <div class="w-7 h-7 bg-skybadge dark:bg-skybadge border-2 border-black dark:border-white text-black flex items-center justify-center mt-3"><i data-lucide="globe" class="w-4 h-4"></i></div>
- </div>
- `;
- }
+  const metricsGrid = document.getElementById('highlightsGrid');
+  if(metricsGrid) {
+    metricsGrid.innerHTML = `
+    <div class="bg-white dark:bg-[#262626] border-2 border-black dark:border-white shadow-brutal-sm p-4 flex flex-col justify-between">
+    <div>
+    <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400">Topics This Month</span>
+    <h5 class="text-xl font-mono font-bold text-black dark:text-white mt-1 tabular-nums">${formatHoursAndMins(totalTopicSec)}</h5>
+    </div>
+    <div class="w-7 h-7 bg-lavender dark:bg-lavender border-2 border-black dark:border-white text-black flex items-center justify-center mt-3"><i data-lucide="code-2" class="w-4 h-4"></i></div>
+    </div>
+    <div class="bg-white dark:bg-[#262626] border-2 border-black dark:border-white shadow-brutal-sm p-4 flex flex-col justify-between">
+    <div>
+    <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400">Habits This Month</span>
+    <h5 class="text-xl font-mono font-bold text-black dark:text-white mt-1 tabular-nums">${formatHoursAndMins(totalHabitSec)}</h5>
+    </div>
+    <div class="w-7 h-7 bg-mint dark:bg-mint border-2 border-black dark:border-white text-black flex items-center justify-center mt-3"><i data-lucide="activity" class="w-4 h-4"></i></div>
+    </div>
+    <div class="bg-white dark:bg-[#262626] border-2 border-black dark:border-white shadow-brutal-sm p-4 flex flex-col justify-between">
+    <div>
+    <span class="text-[10px] uppercase tracking-widest font-extrabold text-zinc-500 dark:text-zinc-400">This Month Total</span>
+    <h5 class="text-xl font-mono font-bold text-black dark:text-white mt-1 tabular-nums">${formatHoursAndMins(totalTopicSec + totalHabitSec)}</h5>
+    </div>
+    <div class="w-7 h-7 bg-skybadge dark:bg-skybadge border-2 border-black dark:border-white text-black flex items-center justify-center mt-3"><i data-lucide="globe" class="w-4 h-4"></i></div>
+    </div>
+    `;
+  }
 
- if (window.state.items.length === 0) {
- container.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500 font-extrabold uppercase tracking-wider">No items yet. Add one above.</div>';
- document.getElementById('statsSubHeader').innerText = "No items tracked.";
- syncActiveMonitorPanel();
- createIcons({icons});
- return;
- }
+  if (currentItems.length === 0) {
+    container.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 dark:text-zinc-500 font-extrabold uppercase tracking-wider">No items yet. Add one above.</div>';
+    document.getElementById('statsSubHeader').innerText = "No items tracked.";
+    syncActiveMonitorPanel();
+    createIcons({icons});
+    return;
+  }
 
- document.getElementById('statsSubHeader').innerText = `${window.state.items.length} item${window.state.items.length !== 1 ? 's' : ''} tracked.`;
+  document.getElementById('statsSubHeader').innerText = `${currentItems.length} item${currentItems.length !== 1 ? 's' : ''} tracked.`;
 
- window.state.items.forEach(item => {
- const historicalSeconds = window.state.logs.filter(l => l.itemId === item.id).reduce((acc, curr) => acc + curr.seconds, 0);
- const isSelected = window.state.selectedItemId === item.id;
- 
- const elementRow = document.createElement('div');
- elementRow.className = `grid grid-cols-12 items-center py-3 px-2 text-xs font-bold cursor-pointer transition ${isSelected ? 'bg-canary dark:bg-canary border-2 border-black dark:border-white shadow-brutal-sm' : 'hover:bg-zinc-100 dark:hover:bg-[#333] border-2 border-transparent'}`;
- elementRow.onclick = () => selectItemForTimer(item.id);
+  currentItems.forEach(item => {
+    const historicalSeconds = window.state.logs.filter(l => l.itemId === item.id).reduce((acc, curr) => acc + curr.seconds, 0);
+    const isSelected = window.state.selectedItemId === item.id;
+    
+    const elementRow = document.createElement('div');
+    elementRow.className = `grid grid-cols-12 items-center py-3 px-2 text-xs font-bold cursor-pointer transition ${isSelected ? 'bg-canary dark:bg-canary border-2 border-black dark:border-white shadow-brutal-sm' : 'hover:bg-zinc-100 dark:hover:bg-[#333] border-2 border-transparent'}`;
+    elementRow.onclick = () => selectItemForTimer(item.id);
 
- elementRow.innerHTML = `
- <div class="col-span-5 flex items-center gap-2">
- <button onclick="event.stopPropagation(); togglePin('${item.id}')" class="p-1 text-zinc-300 dark:text-zinc-600 hover:text-amber-500 dark:hover:text-amber-400 transition ${item.pinned ? 'text-amber-500 dark:text-amber-400' : ''}">
- <i data-lucide="pin" class="w-3 h-3 ${item.pinned ? 'fill-current' : ''}"></i>
- </button>
- <div class="w-2.5 h-2.5 border-2 border-black dark:border-white ${item.type === 'topic' ? 'bg-lavender dark:bg-lavender' : 'bg-mint dark:bg-mint'}"></div>
- <div>
- <div class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white">${escapeHtml(item.name)}</div>
- <div class="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase font-bold">${item.type}</div>
- </div>
- </div>
- <div class="col-span-4 text-center font-mono font-bold text-zinc-600 dark:text-zinc-300 tabular-nums">
- <span id="live-timer-${item.id}">${formatTimeHMS(item.accumulatedSeconds)}</span>
- ${item.isRunning ? '<span class="ml-1.5 px-1.5 py-0.5 bg-canary dark:bg-canary text-black text-[9px] font-extrabold uppercase border border-black dark:border-white">LIVE</span>' : ''}
- </div>
- <div class="col-span-2 text-right font-mono font-bold text-black dark:text-white tabular-nums">${formatHoursAndMins(historicalSeconds)}</div>
- <div class="col-span-1 text-right">
- <button onclick="deleteItem('${item.id}', event)" class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded text-zinc-400 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 transition">
- <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
- </button>
- </div>
- `;
- container.appendChild(elementRow);
- });
+    elementRow.innerHTML = `
+    <div class="col-span-5 flex items-center gap-2">
+    <button onclick="event.stopPropagation(); togglePin('${item.id}')" class="p-1 text-zinc-300 dark:text-zinc-600 hover:text-amber-500 dark:hover:text-amber-400 transition ${item.pinned ? 'text-amber-500 dark:text-amber-400' : ''}">
+    <i data-lucide="pin" class="w-3 h-3 ${item.pinned ? 'fill-current' : ''}"></i>
+    </button>
+    <div class="w-2.5 h-2.5 border-2 border-black dark:border-white ${item.type === 'topic' ? 'bg-lavender dark:bg-lavender' : 'bg-mint dark:bg-mint'}"></div>
+    <div>
+    <div class="text-sm font-extrabold uppercase tracking-wider text-black dark:text-white">${escapeHtml(item.name)}</div>
+    <div class="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase font-bold">${item.type}${item.recurring ? ' (Recurring)' : ''}</div>
+    </div>
+    </div>
+    <div class="col-span-4 text-center font-mono font-bold text-zinc-600 dark:text-zinc-300 tabular-nums">
+    <span id="live-timer-${item.id}">${formatTimeHMS(item.accumulatedSeconds)}</span>
+    ${item.isRunning ? '<span class="ml-1.5 px-1.5 py-0.5 bg-canary dark:bg-canary text-black text-[9px] font-extrabold uppercase border border-black dark:border-white">LIVE</span>' : ''}
+    </div>
+    <div class="col-span-2 text-right font-mono font-bold text-black dark:text-white tabular-nums">${formatHoursAndMins(historicalSeconds)}</div>
+    <div class="col-span-1 text-right">
+    <button onclick="deleteItem('${item.id}', event)" class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded text-zinc-400 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 transition">
+    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+    </button>
+    </div>
+    `;
+    container.appendChild(elementRow);
+  });
 
- syncActiveMonitorPanel();
- refreshQuickNotesSidebar();
- createIcons({icons});
- }
+  syncActiveMonitorPanel();
+  refreshQuickNotesSidebar();
+  createIcons({icons});
+}
 
  function noteUpdatedMillis(note) {
  const value = note.updatedAt;
