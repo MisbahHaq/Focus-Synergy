@@ -12,3 +12,7 @@ src-tauri/gen/
 # the private key must never be committed.
 .tauri/
 
+
+# Build output
+frontend/dist/
+**/*.map
