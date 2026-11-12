@@ -26,9 +26,6 @@ export function applySavedTheme() {
     if (saved) {
         applyTheme(saved);
         updateThemeIcon(saved);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        applyTheme('dark');
-        updateThemeIcon('dark');
     } else {
         applyTheme('light');
         updateThemeIcon('light');

@@ -87,24 +87,7 @@ import { createStore, subscribe, showError, showConfirm } from './utils/state.js
  console.error('[UNHANDLED-REJECTION]', e.reason);
  });
 
-window.checkForUpdates = async function() {
-  if (!isTauriEnv() || !window.__TAURI__?.updater?.checkUpdate) {
-  window.showToast('Update check is only available in the desktop app.', 'warning');
-  return;
-  }
-  try {
-  const { checkUpdate } = window.__TAURI__.updater;
-  const update = await checkUpdate();
-  if (update) {
-  window.showToast(`Update available: ${update.version}. Restart to install.`, 'info');
-  } else {
-  window.showToast('You are on the latest version.', 'info');
-  }
-  } catch (e) {
-  console.error('Update check failed:', e);
-  window.showToast('Failed to check for updates.', 'warning');
-  }
-};
+
 
 /**
  * Checks if a monthly reset is needed and performs it.
@@ -398,22 +381,14 @@ unsubscribers.push(unsubActiveTimer);
  loginScreen.classList.add('hidden');
  mainApp.classList.remove('hidden');
  }
- // Silent startup update check for desktop app
- if (isTauriEnv() && window.__TAURI__?.updater?.checkUpdate) {
- window.__TAURI__.updater.checkUpdate().then(update => {
- if (update) {
- window.showToast(`Update available: ${update.version}. Restart to install.`, 'info');
- }
- }).catch(() => {});
- }
+
 
  // Check onboarding tour flag
  const hasSeen = localStorage.getItem(`onboarding_seen_${user.uid}`);
  if (!hasSeen) {
  try {
- startOnboardingTour(() => {
  localStorage.setItem(`onboarding_seen_${user.uid}`, 'true');
- });
+ startOnboardingTour();
  } catch (tourErr) {
  console.error('[BOOT] onboarding tour FAILED:', tourErr);
  }
@@ -601,6 +576,7 @@ window.logout = async function() {
   stopMonthlyResetScheduler();
   unsubscribers.forEach(u => typeof u === 'function' && u());
   unsubscribers = [];
+  bootInProgress = false;
   // Clear monthly reset tracking on logout
   if (currentUser) {
   localStorage.removeItem(`lastMonthlyReset_${currentUser.uid}`);
@@ -624,13 +600,24 @@ window.logout = async function() {
   breakThresholdMinutes: 50,
   storageMode: 'cloud'
   });
+  const loginScreen = document.getElementById('loginScreen');
+  const mainApp = document.getElementById('mainApp');
+  if (mainApp) mainApp.classList.add('hidden');
+  if (loginScreen) loginScreen.classList.remove('hidden', 'screen-exit');
+  setAuthLoading(false);
   const authInst = getAuthInstance();
+  try {
   if (authInst) await signOut(authInst);
+  } catch (e) {
+  console.error('[LOGOUT] signOut failed:', e);
+  }
   document.getElementById('loginEmail').value = '';
   document.getElementById('loginPassword').value = '';
   document.getElementById('registerName').value = '';
   document.getElementById('registerEmail').value = '';
   document.getElementById('registerPassword').value = '';
+  const userDisplay = document.getElementById('userDisplay');
+  if (userDisplay) userDisplay.innerHTML = '';
   showTab('loginTab');
 };
 
@@ -1183,12 +1170,7 @@ window.createNewNote = async function() {
  </button>
  </div>
 
-<div class="space-y-1.5 border-t-2 border-black dark:border-white pt-3">
-  <label class="font-extrabold text-black dark:text-white uppercase tracking-widest">Updates</label>
-  <button onclick="checkForUpdates()" class="w-full py-2.5 bg-zinc-100 dark:bg-[#1a1a1a] border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal font-extrabold uppercase tracking-wider text-xs text-black dark:text-white transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-2">
-  <i data-lucide="refresh-cw" class="w-4 h-4"></i> Check for Updates
-  </button>
-</div>
+
 
 <div class="space-y-1.5 border-t-2 border-black dark:border-white pt-3">
   <label class="font-extrabold text-black dark:text-white uppercase tracking-widest">Monthly Reset</label>
@@ -1345,11 +1327,11 @@ window.createNewNote = async function() {
  return Math.max(0, Math.min(100, Math.round((elapsed / total) * 100)));
  }
 
- function getHabitStatus(type) {
- const active = getActiveSeason();
- if (!active) return { completed: false, done: false };
+ function getHabitStatus(type, seasonId = null) {
+ const season = seasonId ? window.state.seasons.find(s => s.id === seasonId) : getActiveSeason();
+ if (!season) return { completed: false, done: false };
  const today = getLocalDateStr(new Date());
- const log = window.state.habitLogs.find(h => h.date === today && h.seasonId === active.id && h.userId === window.state.user.uid);
+ const log = window.state.habitLogs.find(h => h.date === today && h.seasonId === season.id && h.userId === window.state.user.uid);
  return { completed: !!log, done: type === 'dev' ? (log ? log.devCompleted : false) : (log ? log.personalCompleted : false) };
  }
 
@@ -1439,24 +1421,40 @@ window.createNewNote = async function() {
  document.getElementById('detailDevMicro').innerText = season.devMicroHabit || 'No micro-habit set';
  document.getElementById('detailPersonalMicro').innerText = season.personalMicroHabit || 'No micro-habit set';
 
- const devHabit = getHabitStatus('dev');
- const personalHabit = getHabitStatus('personal');
+ const devHabit = getHabitStatus('dev', season.id);
+ const personalHabit = getHabitStatus('personal', season.id);
 
  const btnDev = document.getElementById('btnMicroDev');
- btnDev.innerText = devHabit.done ? '? Completed Today' : 'Mark Complete Today';
- btnDev.className = devHabit.done ? 'mt-3 w-full bg-mint dark:bg-mint border-2 border-black dark:border-white text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 opacity-60' : 'mt-3 w-full bg-canary dark:bg-canary border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none';
-
  const btnPersonal = document.getElementById('btnMicroPersonal');
- btnPersonal.innerText = personalHabit.done ? '? Completed Today' : 'Mark Complete Today';
- btnPersonal.className = personalHabit.done ? 'mt-3 w-full bg-mint dark:bg-mint border-2 border-black dark:border-white text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 opacity-60' : 'mt-3 w-full bg-canary dark:bg-canary border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none';
+ const isCurrentSeason = !!season.isActive && !season.isCompleted;
+
+ if (btnDev) {
+  btnDev.disabled = !isCurrentSeason;
+  btnDev.innerText = devHabit.done ? '? Completed Today' : (isCurrentSeason ? 'Mark Complete Today' : 'Season Closed');
+  btnDev.className = isCurrentSeason
+   ? (devHabit.done ? 'mt-3 w-full bg-mint dark:bg-mint border-2 border-black dark:border-white text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 opacity-60' : 'mt-3 w-full bg-canary dark:bg-canary border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none')
+   : 'mt-3 w-full bg-zinc-200 dark:bg-zinc-700 border-2 border-zinc-400 dark:border-zinc-500 text-zinc-500 dark:text-zinc-300 text-xs font-extrabold uppercase tracking-wider py-2 cursor-not-allowed';
+ }
+ if (btnPersonal) {
+  btnPersonal.disabled = !isCurrentSeason;
+  btnPersonal.innerText = personalHabit.done ? '? Completed Today' : (isCurrentSeason ? 'Mark Complete Today' : 'Season Closed');
+  btnPersonal.className = isCurrentSeason
+   ? (personalHabit.done ? 'mt-3 w-full bg-mint dark:bg-mint border-2 border-black dark:border-white text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 opacity-60' : 'mt-3 w-full bg-canary dark:bg-canary border-2 border-black dark:border-white shadow-brutal-sm hover:shadow-brutal text-black dark:text-black text-xs font-extrabold uppercase tracking-wider py-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none')
+   : 'mt-3 w-full bg-zinc-200 dark:bg-zinc-700 border-2 border-zinc-400 dark:border-zinc-500 text-zinc-500 dark:text-zinc-300 text-xs font-extrabold uppercase tracking-wider py-2 cursor-not-allowed';
+ }
 
  renderBacklog();
- renderDailyLogs();
+ renderDailyLogs(season);
+ renderSeasonHistory(season);
 
  const energyLogSection = document.getElementById('dailyEnergyLogSection');
- const activeSeason = getActiveSeason();
  if (energyLogSection) {
- energyLogSection.classList.toggle('hidden', !activeSeason);
+  energyLogSection.classList.toggle('hidden', !isCurrentSeason);
+ }
+ const completeBtn = document.querySelector('#seasonDetailContainer button[onclick="completeCurrentSeason()"]');
+ if (completeBtn) {
+  completeBtn.classList.toggle('hidden', !isCurrentSeason);
+  completeBtn.disabled = !isCurrentSeason;
  }
 
  createIcons({icons});
@@ -1510,35 +1508,89 @@ window.createNewNote = async function() {
  createIcons({icons});
  }
 
- function renderDailyLogs() {
+ function renderDailyLogs(season = null) {
  const container = document.getElementById('dailyLogList');
  if (!container) return;
 
- const active = getActiveSeason();
- const logs = window.state.dailyLogs.filter(l => l.userId === window.state.user.uid && (!active || l.seasonId === active.id));
+ const targetSeason = season || getActiveSeason();
+ const canEdit = !!targetSeason && targetSeason.isActive && !targetSeason.isCompleted;
+ const logs = window.state.dailyLogs.filter(l => l.userId === window.state.user?.uid && (!targetSeason || l.seasonId === targetSeason.id));
 
- logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+ logs.sort((a, b) => new Date(b.timestamp || b.date) - new Date(a.timestamp || a.date));
 
  if (logs.length === 0) {
  container.innerHTML = '<div class="text-xs text-zinc-400 dark:text-zinc-500 font-extrabold uppercase tracking-wider text-center py-4">No entries logged yet.</div>';
  } else {
  container.innerHTML = logs.map(log => {
  const isProduction = log.energyType === 'production';
+ const ts = log.timestamp || log.date;
  return `
  <div class="flex items-center justify-between ${isProduction ? 'bg-zinc-100 dark:bg-[#1a1a1a]' : 'bg-lavender dark:bg-lavender'} border-2 border-black dark:border-white shadow-brutal-sm p-3">
  <div class="flex items-center gap-3">
- <span class="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400">${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+ <span class="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400">${ts ? new Date(ts).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}</span>
  <span class="text-[10px] font-extrabold uppercase tracking-wider ${isProduction ? 'bg-canary dark:bg-canary text-black' : 'bg-white dark:bg-white text-black'} px-2 py-0.5 border border-black dark:border-white">${isProduction ? 'Production' : 'Consumption'}</span>
- <span class="text-sm text-black dark:text-white font-bold">${escapeHtml(log.task)}</span>
+ <span class="text-sm text-black dark:text-white font-bold">${escapeHtml(log.task || '')}</span>
  </div>
- <button onclick="deleteDailyLog('${log.id}', event)" class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 border border-transparent hover:border-red-500 text-zinc-400 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 transition">
- <i data-lucide="x" class="w-3.5 h-3.5"></i>
- </button>
+ ${canEdit ? `<button onclick="deleteDailyLog('${log.id}', event)" class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 border border-transparent hover:border-red-500 text-zinc-400 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 transition"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>` : ''}
  </div>
  `;
  }).join('');
  }
  createIcons({icons});
+ }
+
+ function renderSeasonHistory(season) {
+ const container = document.getElementById('seasonHistoryList');
+ if (!container || !season) return;
+
+ const start = new Date(season.startDate);
+ start.setHours(0, 0, 0, 0);
+ const end = new Date(season.endDate);
+ end.setHours(23, 59, 59, 999);
+ const today = new Date();
+ today.setHours(23, 59, 59, 999);
+ const last = end < today ? end : today;
+
+ const days = [];
+ const cur = new Date(start);
+ while (cur <= last) {
+  days.push(getLocalDateStr(cur));
+  cur.setDate(cur.getDate() + 1);
+ }
+
+ const logs = (window.state.dailyLogs || []).filter(l => l.userId === window.state.user?.uid && l.seasonId === season.id);
+ const habits = (window.state.habitLogs || []).filter(h => h.userId === window.state.user?.uid && h.seasonId === season.id);
+
+ if (days.length === 0) {
+  container.innerHTML = '<div class="text-xs text-zinc-400 dark:text-zinc-500 font-extrabold uppercase tracking-wider text-center py-4">No timeline days yet.</div>';
+  return;
+ }
+
+ container.innerHTML = days.reverse().map(dateStr => {
+  const dayLogs = logs.filter(l => (l.date || getLocalDateStr(l.timestamp)) === dateStr);
+  const habit = habits.find(h => h.date === dateStr);
+  const devDone = !!habit?.devCompleted;
+  const personalDone = !!habit?.personalCompleted;
+  const label = new Date(dateStr + 'T00:00:00').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  const tasksHtml = dayLogs.length
+   ? dayLogs.map(l => {
+     const isProduction = l.energyType === 'production';
+     return `<div class="flex items-center gap-2 text-xs"><span class="px-1.5 py-0.5 border border-black dark:border-white ${isProduction ? 'bg-canary text-black' : 'bg-lavender text-black'} font-extrabold uppercase text-[10px]">${isProduction ? 'Prod' : 'Cons'}</span><span class="font-medium text-black dark:text-white">${escapeHtml(l.task || '')}</span></div>`;
+    }).join('')
+   : '<div class="text-xs text-zinc-400 dark:text-zinc-500 font-medium">No tasks logged</div>';
+  return `
+   <div class="border-2 border-black dark:border-white bg-zinc-50 dark:bg-[#1a1a1a] p-3 space-y-2">
+    <div class="flex items-center justify-between gap-2">
+     <div class="text-xs font-extrabold uppercase tracking-wider text-black dark:text-white">${label}</div>
+     <div class="flex items-center gap-2 text-[10px] font-extrabold uppercase">
+      <span class="px-2 py-0.5 border border-black dark:border-white ${devDone ? 'bg-mint text-black' : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300'}">Dev ${devDone ? 'Done' : 'Missed'}</span>
+      <span class="px-2 py-0.5 border border-black dark:border-white ${personalDone ? 'bg-mint text-black' : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300'}">Personal ${personalDone ? 'Done' : 'Missed'}</span>
+     </div>
+    </div>
+    <div class="space-y-1">${tasksHtml}</div>
+   </div>
+  `;
+ }).join('');
  }
 
  window.renderSeasonsView = renderSeasonsView;

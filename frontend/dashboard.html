@@ -275,7 +275,7 @@
  <span class="washi washi-solid-pink -top-3 left-14 -rotate-3"></span>
  <span class="washi washi-solid-yellow -top-2 right-20 rotate-2"></span>
  <div class="z-10 relative">
- <span class="zine-label text-black/60 dark:text-zinc-400">Current Season</span>
+ <span class="zine-label text-black/60 dark:text-zinc-400">Season</span>
  <h3 id="detailSeasonTitle" class="font-display font-black uppercase tracking-tight mt-1 text-2xl text-ink dark:text-zinc-100">Season Title</h3>
  <p id="detailSeasonDates" class="text-sm text-black/70 dark:text-zinc-400 mt-1 font-mono font-bold"></p>
 
@@ -350,6 +350,15 @@
  <button onclick="addDailyLog()" class="press bg-cyber dark:bg-canary border-3 border-ink dark:border-zinc-200 shadow-brutal-sm dark:shadow-brutal-dark text-black dark:text-black px-4 py-2 text-xs font-extrabold uppercase tracking-wider">Log</button>
  </div>
  <div id="dailyLogList" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
+ </div>
+
+ <div id="seasonHistorySection" class="relative bg-white dark:bg-[#262626] border-3 border-ink dark:border-zinc-200 shadow-brutal dark:shadow-brutal-dark p-6 paper-noise">
+ <span class="washi washi-solid-blue -top-3 right-12 rotate-2"></span>
+ <div class="mb-4">
+ <h3 class="font-display font-black uppercase tracking-tight text-xl text-ink dark:text-zinc-100">Season <em class="zine-heading-italic text-punch dark:text-[#ff7ab9] not-italic">Timeline</em></h3>
+ <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 font-mono font-bold uppercase tracking-wider">Daily micro-habits and logged tasks for this season.</p>
+ </div>
+ <div id="seasonHistoryList" class="space-y-3 max-h-[420px] overflow-y-auto"></div>
  </div>
 
  <div class="flex justify-between items-center">
